@@ -43,12 +43,13 @@ namespace Alarm
         public DocumentView(Document document):base()
         {
             BaseUrl = document.BaseUrl;
+            PathUrl = document.PathUrl;
             Date = document.Date;
             GUID = document.GUID;
             Summary = document.Summary;
             Title = document.Title;
         }
-        public string ValidPageName => "DocumentView.xaml";
+        public string ValidPageName => "ContentView";
     }
     public class SiteModel : INotifyPropertyChanged, IAlertPage
     {
@@ -145,6 +146,7 @@ namespace Alarm
     }
     public class TreeViewModel : ObservableCollection<CategoryItem>
     {
+
     }
     class PageFactory
     {
@@ -156,7 +158,8 @@ namespace Alarm
                     return new CategoryView();
                 case "ContentListView":
                     return new ContentListView();
-                case "DocumentView":
+                case "ContentView":
+                    return new ContentView();
                 default:
                     return new EmptyPage();
             }

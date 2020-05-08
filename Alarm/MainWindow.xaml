@@ -58,7 +58,9 @@
                 </TreeView>
             </ScrollViewer>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
-            <Frame Grid.Column="2" x:Name="PageFrame" NavigationUIVisibility="Hidden"/>
+            <Frame Grid.Column="2" x:Name="PageFrame" NavigationUIVisibility="Hidden"
+                   Content="{Binding Path=DisplayPage, Mode=TwoWay}"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Grid>
     </DockPanel>
 </Controls:MetroWindow>

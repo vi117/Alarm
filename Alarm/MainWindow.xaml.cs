@@ -20,9 +20,10 @@ using System.Windows.Shapes;
 
 namespace Alarm
 {
-    public class ViewModel : INotifyPropertyChanged{
+    public class ViewModel : INotifyPropertyChanged
+    {
         private TreeViewModel treeView;
-        private object page;
+        private Page displayPage;
         public ViewModel()
         {
             //test data
@@ -64,18 +65,22 @@ namespace Alarm
         public TreeViewModel TreeView
         {
             get => treeView;
-            set {
+            set
+            {
                 treeView = value;
                 OnPropertyChanged("TreeView");
             }
         }
-        public object Page
+        public Page DisplayPage
         {
-            get => page;
+            get => displayPage;
             set
             {
-                page = value;
-                OnPropertyChanged("Page");
+                if (displayPage != value)
+                {
+                    displayPage = value;
+                    OnPropertyChanged("DisplayPage");
+                }
             }
         }
         private void OnPropertyChanged(string propertyName)
@@ -94,6 +99,12 @@ namespace Alarm
         {
             InitializeComponent();
             viewModel = new ViewModel();
+            DocumentView doc = new DocumentView();
+            doc.PathUrl = "";
+            doc.BaseUrl = "google.com";
+            var view = PageFactory.Generate(doc.ValidPageName);
+            view.DataContext = doc;
+            viewModel.DisplayPage = view;
             DataContext = viewModel;
         }
 
@@ -107,7 +118,7 @@ namespace Alarm
         {
             var view = PageFactory.Generate(page.ValidPageName);
             view.DataContext = page;
-            PageFrame.Navigate(view);
+            viewModel.DisplayPage = (view);
         }
     }
 }

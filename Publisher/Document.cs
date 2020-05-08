@@ -10,6 +10,7 @@ namespace Publisher
     {
         private string title;
         private string baseUrl;
+        private string pathUrl;
         private string summary;
         /// <summary>
         /// published date
@@ -19,6 +20,7 @@ namespace Publisher
 
         public string Title { get => title; set => title = value; }
         public string BaseUrl { get => baseUrl; set => baseUrl = value; }
+        public string PathUrl { get => pathUrl; set => pathUrl = value; }
         public string Summary { get => summary; set => summary = value; }
         public DateTime Date { get => date; set => date = value; }
         public string GUID { get => guid; set => guid = value; }

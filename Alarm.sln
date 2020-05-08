@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleView", "ConsoleView\
 		{DBD6C19B-C48C-4E60-A80C-CC944F86D27D} = {DBD6C19B-C48C-4E60-A80C-CC944F86D27D}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummaryDocument", "SummaryDocument\SummaryDocument.csproj", "{D03E84E5-5560-42EF-AAE0-E01CFF8D3782}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummaryDocument", "SummaryDocument\SummaryDocument.csproj", "{D03E84E5-5560-42EF-AAE0-E01CFF8D3782}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextRankTest", "TextRank\TextRankTest.csproj", "{1E1F7623-BC11-4BE7-BFF2-48D034AF3084}"
 EndProject
