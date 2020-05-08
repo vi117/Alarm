@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Publisher.Document">
+    <Position X="1.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AADAAAAAAAAAAEAAAAAAAAAAAAAAAAAhAAAAAAAAAAA=</HashCode>
+      <FileName>Document.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Publisher.DocumentBuilder">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AALAAAAAAAAAAEAAAAIAAAAACCAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Document.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Publisher.DocumentPublisher">
+    <Position X="7.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAABAAAAAAAIAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>DocumentPublisher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Publisher.Fetcher">
+    <Position X="4.75" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIEAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fetcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Publisher.FetcherFilter">
+    <Position X="9.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAABAAAAAIAAAAACQAAAAAAAAA=</HashCode>
+      <FileName>DocumentPublisher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Publisher.RSSFetcher">
+    <Position X="5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAiAIAAAAAAAABAAAAAA=</HashCode>
+      <FileName>RSSFetcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>
