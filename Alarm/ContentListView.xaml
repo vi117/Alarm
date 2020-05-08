@@ -7,7 +7,8 @@
       xmlns:pp="clr-namespace:Publisher;assembly=Publisher"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ContentListView">
+      Title="ContentListView"
+      d:DataContext="{d:DesignData Source=/DesignSampleData/DesignNewsSample.xaml}">
     <Page.Resources>
         <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type local:DocumentView}">
             <Grid>

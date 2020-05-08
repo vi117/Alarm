@@ -34,7 +34,13 @@ namespace Alarm
     [Table("Document")]
     public class DocumentView : Document, IAlertPage
     {
-        public DocumentView(Document document)
+        public DocumentView():base()
+        {
+            /*if (!System.Reflection.Assembly.GetExecutingAssembly().Location.Contains("VisualStudio")){               
+                throw new Exception("Called Not in Design Mode");
+            }*/
+        }
+        public DocumentView(Document document):base()
         {
             BaseUrl = document.BaseUrl;
             Date = document.Date;
@@ -47,10 +53,10 @@ namespace Alarm
     public class SiteModel : INotifyPropertyChanged, IAlertPage
     {
         private string title;
-        private List<DocumentView> documents;
+        private ObservableCollection<DocumentView> documents;
         public SiteModel()
         {
-            documents = new List<DocumentView>();
+            documents = new ObservableCollection<DocumentView>();
         }
         public SiteModel(string title):this()
         {
@@ -65,9 +71,13 @@ namespace Alarm
                 OnPropertyChanged("Title");
             }
         }
-        public IEnumerable<DocumentView> Documents 
+        public ObservableCollection<DocumentView> Documents
         {
             get => documents;
+            set
+            {
+                documents = value;
+            }
         }
 
         public string ValidPageName => "ContentListView";
