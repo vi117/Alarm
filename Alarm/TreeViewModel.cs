@@ -42,8 +42,8 @@ namespace Alarm
         }
         public DocumentView(Document document):base()
         {
-            BaseUrl = document.BaseUrl;
-            PathUrl = document.PathUrl;
+            HostUri = document.HostUri;
+            PathUri = document.PathUri;
             Date = document.Date;
             GUID = document.GUID;
             Summary = document.Summary;

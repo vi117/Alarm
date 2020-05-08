@@ -29,7 +29,7 @@ namespace Alarm
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             var doc = DataContext as DocumentView;
-            CBrowser.Address = doc.BaseUrl + doc.PathUrl;
+            CBrowser.Address = doc.Uri;
         }
     }
 }

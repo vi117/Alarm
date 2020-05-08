@@ -100,8 +100,7 @@ namespace Alarm
             InitializeComponent();
             viewModel = new ViewModel();
             DocumentView doc = new DocumentView();
-            doc.PathUrl = "";
-            doc.BaseUrl = "google.com";
+            doc.Uri = "http://dotnetmvp.tistory.com/43";
             var view = PageFactory.Generate(doc.ValidPageName);
             view.DataContext = doc;
             viewModel.DisplayPage = view;

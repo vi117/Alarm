@@ -9,8 +9,8 @@ namespace Publisher
     public class Document
     {
         private string title;
-        private string baseUrl;
-        private string pathUrl;
+        private string hostUri;
+        private string pathUri;
         private string summary;
         /// <summary>
         /// published date
@@ -19,8 +19,16 @@ namespace Publisher
         private string guid;
 
         public string Title { get => title; set => title = value; }
-        public string BaseUrl { get => baseUrl; set => baseUrl = value; }
-        public string PathUrl { get => pathUrl; set => pathUrl = value; }
+
+        public string HostUri { get => hostUri; set => hostUri = value; }
+        public string PathUri { get => pathUri; set => pathUri = value; }
+        public string Uri { get => hostUri + "/" + pathUri;
+            set {
+                var uri = new Uri(value);
+                HostUri = uri.Host;
+                PathUri = uri.PathAndQuery;
+            }
+        }
         public string Summary { get => summary; set => summary = value; }
         public DateTime Date { get => date; set => date = value; }
         public string GUID { get => guid; set => guid = value; }
@@ -44,7 +52,7 @@ namespace Publisher
         }
         public DocumentBuilder BaseURL(string t)
         {
-            ret.BaseUrl = t;
+            ret.HostUri = t;
             return this;
         }
         public DocumentBuilder Summary(string t)

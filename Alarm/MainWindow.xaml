@@ -7,10 +7,9 @@
         xmlns:local="clr-namespace:Alarm"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" MinWidth="100" MinHeight="100">
     <Controls:MetroWindow.Resources>
-        <HierarchicalDataTemplate 
-            
+        <HierarchicalDataTemplate
             DataType="{x:Type local:CategoryItem}"
             ItemsSource="{Binding Path=SiteModels}">
             <TextBlock Text="{Binding Path=Title}"></TextBlock>
@@ -48,9 +47,9 @@
         </Grid>
         <Grid DockPanel.Dock="Top" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" MinWidth="10"/>
                 <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" MinWidth="10"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <TreeView ItemsSource="{Binding Path=TreeView}"
