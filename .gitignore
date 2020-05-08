@@ -340,7 +340,4 @@ ASALocalRun/
 healthchecksdb
 
 #Model
-*.dict
-*.mdl
-*.lang
-*.morph
+*/lang-model/

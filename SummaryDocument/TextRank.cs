@@ -16,7 +16,7 @@ namespace SummaryDocument
 
         public KoreanTokenizer()
         {
-            var cwd = ".\\model\\";
+            var cwd = ".\\lang-model\\";
             Trace.WriteLine($"Load Model Path : {cwd}");
             kiwi = new Kiwi.KiwiCS(cwd, 0);
             kiwi.prepare();
