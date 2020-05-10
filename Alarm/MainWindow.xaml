@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:ie="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Alarm"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
@@ -12,7 +13,7 @@
         <HierarchicalDataTemplate
             DataType="{x:Type local:CategoryItem}"
             ItemsSource="{Binding Path=SiteModels}">
-            <TextBlock Text="{Binding Path=Title}"></TextBlock>
+            <TextBlock Text="{Binding Path=Title}"/>
         </HierarchicalDataTemplate>
         <DataTemplate DataType="{x:Type local:SiteModel}">
             <TextBlock Text="{Binding Path=Title}"></TextBlock>
@@ -52,8 +53,7 @@
                 <ColumnDefinition Width="5*" MinWidth="10"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <TreeView ItemsSource="{Binding Path=TreeView}"
-                          SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeView ItemsSource="{Binding Path=TreeView}">
                 </TreeView>
             </ScrollViewer>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>

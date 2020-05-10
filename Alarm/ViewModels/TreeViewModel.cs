@@ -11,12 +11,13 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace Alarm
 {
-    interface IAlertPage
+    public interface IAlertPage
     {
         string ValidPageName
         {
@@ -30,17 +31,34 @@ namespace Alarm
         {
             options.UseSqlite("Data Source=doc.db");
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
     }
     [Table("Document")]
-    public class DocumentView : Document, IAlertPage
+    public class DocumentView : ViewModelBase, IAlertPage, IDocument
     {
-        public DocumentView():base()
+        public string Title { get; set;}
+
+        public string HostUri { get; set; }
+        public string PathUri { get; set; }
+        public string Uri
         {
-            /*if (!System.Reflection.Assembly.GetExecutingAssembly().Location.Contains("VisualStudio")){               
-                throw new Exception("Called Not in Design Mode");
-            }*/
+            get => HostUri + "/" + PathUri;
+            set
+            {
+                var uri = new Uri(value);
+                HostUri = uri.Host;
+                PathUri = uri.PathAndQuery;
+            }
         }
-        public DocumentView(Document document):base()
+        public string Summary { get; set; }
+        public DateTime Date { get; set; }
+        public string GUID { get; set; }
+
+        public DocumentView():base()
+        {}
+        public DocumentView(IDocument document):base()
         {
             HostUri = document.HostUri;
             PathUri = document.PathUri;
@@ -51,7 +69,7 @@ namespace Alarm
         }
         public string ValidPageName => "ContentView";
     }
-    public class SiteModel : INotifyPropertyChanged, IAlertPage
+    public class SiteModel : ViewModelBase, IAlertPage
     {
         private string title;
         private ObservableCollection<DocumentView> documents;
@@ -86,26 +104,19 @@ namespace Alarm
         public void RemoveFirstDocument()
         {
             documents.Remove(documents.First());
-            OnPropertyChanged("Documents");
+            OnPropertyChanged(nameof(Documents));
         }
         public void RemoveDocument(DocumentView document)
         {
-            OnPropertyChanged("Documents");
+            OnPropertyChanged(nameof(Documents));
         }
         public void Add(DocumentView document)
         {
             documents.Add(document);
-            OnPropertyChanged("Documents");
+            OnPropertyChanged(nameof(Documents));
         }
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            Trace.WriteLine($"{propertyName} is changed!");
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
     }
-    public class CategoryItem : INotifyPropertyChanged, IAlertPage
+    public class CategoryItem : ViewModelBase, IAlertPage
     {
         private string title;
         private ObservableCollection<SiteModel> siteModels;
@@ -123,7 +134,7 @@ namespace Alarm
             set
             {
                 title = value;
-                OnPropertyChanged("Title");
+                OnPropertyChanged(nameof(Title));
             }
         }
         public ObservableCollection<SiteModel> SiteModels
@@ -132,21 +143,16 @@ namespace Alarm
             set
             {
                 siteModels = value;
-                OnPropertyChanged("SiteModels");
+                OnPropertyChanged(nameof(SiteModels));
             }
         }
 
         public string ValidPageName => "CategoryView";
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
     }
     public class TreeViewModel : ObservableCollection<CategoryItem>
     {
-
+        public TreeViewModel():base()
+        {}
     }
     class PageFactory
     {
@@ -163,6 +169,12 @@ namespace Alarm
                 default:
                     return new EmptyPage();
             }
+        }
+        public static Page Generate(IAlertPage page)
+        {
+            var ret = Generate(page.ValidPageName);
+            ret.DataContext = page;
+            return ret;
         }
     }
 }

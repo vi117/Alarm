@@ -5,8 +5,16 @@ using System.Runtime.Serialization;
 
 namespace Publisher
 {
+    public interface IDocument {
+        string Title { get; set; }
+        string HostUri { get; set; }
+        string PathUri { get; set; }
+        string Summary { get; set; }
+        DateTime Date { get; set; }
+        string GUID { get; set; }
+    }
     [Serializable()]
-    public class Document
+    public class Document : IDocument
     {
         private string title;
         private string hostUri;
