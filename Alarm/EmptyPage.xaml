@@ -9,6 +9,6 @@
       Title="EmptyPage">
 
     <Grid>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" Text="Error! Couldn't not find View!"></TextBlock>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" x:Name="MessageTextBlock" Text="Error! Couldn't not find View!"></TextBlock>
     </Grid>
 </Page>

@@ -24,5 +24,9 @@ namespace Alarm
         {
             InitializeComponent();
         }
+        public EmptyPage(string viewName):this()
+        {
+            this.MessageTextBlock.Text = $"Error! Couldn't not find {viewName} View!";
+        }
     }
 }

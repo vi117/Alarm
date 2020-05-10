@@ -33,7 +33,7 @@ namespace Alarm.ViewModels
                 case "ContentView":
                     return new ContentView();
                 default:
-                    return new EmptyPage();
+                    return new EmptyPage(name);
             }
         }
         public static Page Generate(IAlertPage page)
