@@ -1,9 +1,9 @@
-﻿<local:SiteModel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<local:SiteViewModel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Alarm">
-    <local:SiteModel.Documents>
-        <local:DocumentView Title="News1" Summary="News1"/>
-        <local:DocumentView Title="News2" Summary="News2"/>
-        <local:DocumentView Title="News3" Summary="News3"/>
-    </local:SiteModel.Documents>
-</local:SiteModel>
+                    xmlns:local="clr-namespace:Alarm.ViewModels">
+    <local:SiteViewModel.Documents>
+        <local:DocumentViewModel Title="News1" Summary="News1"/>
+        <local:DocumentViewModel Title="News2" Summary="News2"/>
+        <local:DocumentViewModel Title="News3" Summary="News3"/>
+    </local:SiteViewModel.Documents>
+</local:SiteViewModel>

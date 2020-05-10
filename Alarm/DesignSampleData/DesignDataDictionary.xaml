@@ -1,21 +1,20 @@
-﻿<local:ViewModel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<view:ViewModel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Alarm">
-    <local:ViewModel.TreeView>
-        <local:TreeViewModel>
-            <local:CategoryItem Title="Science">
-                <local:CategoryItem.SiteModels>
-                    <local:SiteModel Title="A"></local:SiteModel>
-                    <local:SiteModel Title="B"></local:SiteModel>
-                    <local:SiteModel Title="C"></local:SiteModel>
-                </local:CategoryItem.SiteModels>
-            </local:CategoryItem>
-            <local:CategoryItem Title="Mathematics">
-                <local:CategoryItem.SiteModels>
-                    <local:SiteModel Title="A"></local:SiteModel>
-                    <local:SiteModel Title="B"></local:SiteModel>
-                </local:CategoryItem.SiteModels>
-            </local:CategoryItem>
-        </local:TreeViewModel>
-    </local:ViewModel.TreeView>
-</local:ViewModel>
+                    xmlns:local="clr-namespace:Alarm"
+                    xmlns:view ="clr-namespace:Alarm.ViewModels">
+    <view:ViewModel.TreeView>
+        <view:CategoryViewModel Title="Science">
+                <view:CategoryViewModel.SiteModels>
+                    <view:SiteViewModel Title="A"></view:SiteViewModel>
+                    <view:SiteViewModel Title="B"></view:SiteViewModel>
+                    <view:SiteViewModel Title="C"></view:SiteViewModel>
+                </view:CategoryViewModel.SiteModels>
+            </view:CategoryViewModel>
+        <view:CategoryViewModel Title="Mathematics">
+            <view:CategoryViewModel.SiteModels>
+                <view:SiteViewModel Title="A"></view:SiteViewModel>
+                <view:SiteViewModel Title="B"></view:SiteViewModel>
+            </view:CategoryViewModel.SiteModels>
+        </view:CategoryViewModel>
+    </view:ViewModel.TreeView>
+</view:ViewModel>

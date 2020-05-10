@@ -193,7 +193,12 @@
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\TreeViewModel.cs" />
+    <Compile Include="ViewModels\CategoryViewModel.cs" />
+    <Compile Include="ViewModels\CollectionViewModel.cs" />
+    <Compile Include="ViewModels\DocumentViewModel.cs" />
+    <Compile Include="ViewModels\IViewModelBehavior.cs" />
+    <Compile Include="ViewModels\SiteViewModel.cs" />
+    <Compile Include="ViewModels\PageFactory.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Page Include="CategoryView.xaml">
       <SubType>Designer</SubType>

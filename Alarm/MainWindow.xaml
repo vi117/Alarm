@@ -6,18 +6,23 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:ie="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Alarm"
+        xmlns:view ="clr-namespace:Alarm.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
         Title="MainWindow" Height="450" Width="800" MinWidth="100" MinHeight="100">
     <Controls:MetroWindow.Resources>
         <HierarchicalDataTemplate
-            DataType="{x:Type local:CategoryItem}"
+            DataType="{x:Type view:CategoryViewModel}"
             ItemsSource="{Binding Path=SiteModels}">
             <TextBlock Text="{Binding Path=Title}"/>
         </HierarchicalDataTemplate>
-        <DataTemplate DataType="{x:Type local:SiteModel}">
+        <DataTemplate DataType="{x:Type view:SiteViewModel}">
             <TextBlock Text="{Binding Path=Title}"></TextBlock>
         </DataTemplate>
+        <Style TargetType="TreeViewItem">
+            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+        </Style>
     </Controls:MetroWindow.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Top">

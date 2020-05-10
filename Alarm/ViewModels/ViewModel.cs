@@ -12,29 +12,40 @@ using System.Windows.Controls;
 using System.Windows.Diagnostics;
 using System.Windows.Input;
 
-namespace Alarm
+namespace Alarm.ViewModels
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
+        protected IViewModelBehavior root;
+        //for designer mode
+        public ViewModelBase() { root = null; }
+        public ViewModelBase(IViewModelBehavior behavior)
+        {
+            root = behavior;
+        }
+        public IViewModelBehavior Root {
+            get => root;
+            set => root = value;
+        }
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         public event PropertyChangedEventHandler PropertyChanged;
     }
-    public class ViewModel : ViewModelBase
+    public class ViewModel : ViewModelBase, IViewModelBehavior
     {
-        private TreeViewModel treeView;
+        private CollectionViewModel<CategoryViewModel> treeView;
         private Page displayPage;
         public ViewModel()
         {
             //test data
             {
-                treeView = new TreeViewModel();
+                treeView = new CollectionViewModel<CategoryViewModel>();
                 {
-                    var sc = new CategoryItem("Science");
-                    sc.SiteModels = new ObservableCollection<SiteModel>();
-                    var siteA = new SiteModel("A");
+                    var sc = new CategoryViewModel("Science");
+                    sc.SiteModels = new CollectionViewModel<SiteViewModel>();
+                    var siteA = new SiteViewModel("A");
                     {
                         var doc = new Document
                         {
@@ -43,7 +54,7 @@ namespace Alarm
                             Date = DateTime.Now,
                             GUID = "1"
                         };
-                        siteA.Add(new DocumentView(doc));
+                        siteA.Add(new DocumentViewModel(doc));
                         doc = new Document
                         {
                             Title = "News2",
@@ -51,23 +62,23 @@ namespace Alarm
                             Date = DateTime.Now,
                             GUID = "2"
                         };
-                        siteA.Add(new DocumentView(doc));
+                        siteA.Add(new DocumentViewModel(doc));
                     }
                     sc.SiteModels.Add(siteA);
-                    sc.SiteModels.Add(new SiteModel("B"));
-                    sc.SiteModels.Add(new SiteModel("C"));
+                    sc.SiteModels.Add(new SiteViewModel("B"));
+                    sc.SiteModels.Add(new SiteViewModel("C"));
                     treeView.Add(sc);
                 }
                 {
-                    var yt = new CategoryItem("Youtube");
-                    yt.SiteModels = new ObservableCollection<SiteModel>();
-                    yt.SiteModels.Add(new SiteModel("A"));
-                    yt.SiteModels.Add(new SiteModel("B"));
+                    var yt = new CategoryViewModel("Youtube");
+                    yt.SiteModels = new CollectionViewModel<SiteViewModel>();
+                    yt.SiteModels.Add(new SiteViewModel("A"));
+                    yt.SiteModels.Add(new SiteViewModel("B"));
                     treeView.Add(yt);
                 }
             }
         }
-        public TreeViewModel TreeView
+        public CollectionViewModel<CategoryViewModel> TreeView
         {
             get => treeView;
             set
