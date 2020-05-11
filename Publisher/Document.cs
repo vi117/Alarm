@@ -78,6 +78,24 @@ namespace Publisher
             ret.Date = d;
             return this;
         }
+        /// <summary>
+        /// Try to convert <paramref name="dateString"/> to date and set. if failed, set <c>DateTime.Now</c> to it. 
+        /// </summary>
+        /// <param name="dateString">The string converted to date</param>
+        /// <returns></returns>
+        public DocumentBuilder pubDate(string dateString)
+        {
+            DateTime date;
+            if (DateTime.TryParse(dateString, out date))
+            {
+                ret.Date = date;
+            }
+            else
+            {
+                ret.Date = DateTime.Now;
+            }
+            return this;
+        }
         public Document Build()
         {
             return ret;

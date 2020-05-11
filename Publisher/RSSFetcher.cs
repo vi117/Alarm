@@ -37,7 +37,7 @@ namespace Publisher
                                 .Title(title)
                                 .Summary(description)
                                 .GUID(guid)
-                                .pubDate(DateTime.Parse(pubData))
+                                .pubDate(pubData)
                                 .Build();
                 return doclist.ToList();
             }
