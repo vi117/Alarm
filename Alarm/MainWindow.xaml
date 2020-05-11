@@ -9,7 +9,7 @@
         xmlns:view ="clr-namespace:Alarm.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
-        Title="MainWindow" Height="450" Width="800" MinWidth="100" MinHeight="100">
+        Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100">
     <Controls:MetroWindow.Resources>
         <HierarchicalDataTemplate
             DataType="{x:Type view:CategoryViewModel}"
@@ -19,7 +19,7 @@
         <DataTemplate DataType="{x:Type view:SiteViewModel}">
             <TextBlock Text="{Binding Path=Title}"></TextBlock>
         </DataTemplate>
-        <Style TargetType="TreeViewItem">
+        <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
             <Setter Property="IsSelected" Value="{Binding IsSelected}" />
             <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
         </Style>
@@ -58,7 +58,19 @@
                 <ColumnDefinition Width="5*" MinWidth="10"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <TreeView ItemsSource="{Binding Path=TreeView}">
+                <TreeView ItemsSource="{Binding Path=TreeView}"
+                          x:Name="TreeView"
+                          >
+                    <ie:Interaction.Triggers>
+                        <ie:EventTrigger EventName="SelectedItemChanged">
+                            <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
+                                                    CommandParameter="{Binding ElementName=TreeView,Path=SelectedItem}"></ie:InvokeCommandAction>
+                        </ie:EventTrigger>
+                        <ie:EventTrigger EventName="MouseDoubleClick">
+                            <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
+                                                    CommandParameter="{Binding ElementName=TreeView,Path=SelectedItem}"></ie:InvokeCommandAction>
+                        </ie:EventTrigger>
+                    </ie:Interaction.Triggers>
                 </TreeView>
             </ScrollViewer>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>

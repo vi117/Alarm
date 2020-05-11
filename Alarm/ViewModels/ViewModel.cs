@@ -16,7 +16,7 @@ namespace Alarm.ViewModels
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
-        protected IViewModelBehavior root;
+        private IViewModelBehavior root;
         //for designer mode
         public ViewModelBase() { root = null; }
         public ViewModelBase(IViewModelBehavior behavior)
@@ -39,20 +39,21 @@ namespace Alarm.ViewModels
         private Page displayPage;
         public ViewModel()
         {
+            Root = this;
             //test data
             {
-                treeView = new CollectionViewModel<CategoryViewModel>();
+                treeView = new CollectionViewModel<CategoryViewModel>(Root);
                 {
-                    var sc = new CategoryViewModel("Science");
-                    sc.SiteModels = new CollectionViewModel<SiteViewModel>();
-                    var siteA = new SiteViewModel("A");
+                    var sc = new CategoryViewModel(this,"Science");
+                    var siteA = new SiteViewModel(this,"A");
                     {
                         var doc = new Document
                         {
                             Title = "News1",
                             Summary = "News1 Summary",
                             Date = DateTime.Now,
-                            GUID = "1"
+                            GUID = "1",
+                            Uri = "https://www.naver.com"
                         };
                         siteA.Add(new DocumentViewModel(doc));
                         doc = new Document
@@ -60,20 +61,20 @@ namespace Alarm.ViewModels
                             Title = "News2",
                             Summary = "News2 Summary",
                             Date = DateTime.Now,
-                            GUID = "2"
+                            GUID = "2",
+                            Uri = "https://www.google.com"
                         };
                         siteA.Add(new DocumentViewModel(doc));
                     }
                     sc.SiteModels.Add(siteA);
-                    sc.SiteModels.Add(new SiteViewModel("B"));
-                    sc.SiteModels.Add(new SiteViewModel("C"));
+                    sc.SiteModels.Add(new SiteViewModel(this, "B"));
+                    sc.SiteModels.Add(new SiteViewModel(this, "C"));
                     treeView.Add(sc);
                 }
                 {
-                    var yt = new CategoryViewModel("Youtube");
-                    yt.SiteModels = new CollectionViewModel<SiteViewModel>();
-                    yt.SiteModels.Add(new SiteViewModel("A"));
-                    yt.SiteModels.Add(new SiteViewModel("B"));
+                    var yt = new CategoryViewModel(this,"Youtube");
+                    yt.SiteModels.Add(new SiteViewModel(this, "A"));
+                    yt.SiteModels.Add(new SiteViewModel(this, "B"));
                     treeView.Add(yt);
                 }
             }
@@ -99,11 +100,10 @@ namespace Alarm.ViewModels
                 }
             }
         }
-        public void Navigate(IAlertPage model)
+        public void Navigate(IPageShow model)
         {
-            var page = PageFactory.Generate(model.ValidPageName);
-            page.DataContext = model;
-            displayPage = page;
+            var page = PageFactory.Generate(model);
+            DisplayPage = page;
         }
     }
 }

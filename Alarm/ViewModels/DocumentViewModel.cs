@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Publisher;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Windows.Controls;
 
 namespace Alarm.ViewModels
 {
@@ -23,7 +24,7 @@ namespace Alarm.ViewModels
         }
     }
     [Table("Document")]
-    public class DocumentViewModel : ViewModelBase, IAlertPage, IDocument
+    public class DocumentViewModel : ViewModelBase, IPageShow, IDocument
     {
         public string Title { get; set; }
 
@@ -42,6 +43,17 @@ namespace Alarm.ViewModels
         public string Summary { get; set; }
         public DateTime Date { get; set; }
         public string GUID { get; set; }
+        private bool isSelected;
+
+        public bool IsSelected
+        {
+            get => isSelected;
+            set
+            {
+                isSelected = value;
+                OnPropertyChanged(nameof(isSelected));
+            }
+        }
 
         public DocumentViewModel() : base()
         { }
@@ -54,6 +66,11 @@ namespace Alarm.ViewModels
             Summary = document.Summary;
             Title = document.Title;
         }
-        public string ValidPageName => "ContentView";
+        public string ShowingPageName => "ContentView";
+        public Page ShowingPage { get; set; }
+        public Page CreatePageShowing()
+        {
+            return new ContentView();
+        }
     }
 }

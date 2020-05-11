@@ -37,7 +37,13 @@ namespace Alarm
             InitializeComponent();
             viewModel = new ViewModel();
             DataContext = viewModel;
+            CommandBindings.Add(new CommandBinding(AppCommand.NavigateCommand,
+                (sender, eventArgs) => {
+                    viewModel.Navigate(eventArgs.Parameter as IPageShow);
+                    eventArgs.Handled = true;
+                },
+                (s, e) => { e.CanExecute = true; }
+            ));
         }
-
     }
 }

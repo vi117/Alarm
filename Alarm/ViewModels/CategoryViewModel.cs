@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Forms;
 
 namespace Alarm.ViewModels
 {
-    public class CategoryViewModel : ViewModelBase, IAlertPage
+    public class CategoryViewModel : ViewModelBase, IPageShow
     {
         private string title;
         private CollectionViewModel<SiteViewModel> siteModels;
@@ -18,9 +20,13 @@ namespace Alarm.ViewModels
             isSelected = false;
             isExpanded = false;
         }
-        public CategoryViewModel(string title)
+        public CategoryViewModel(ViewModel viewModel, string title)
         {
+            Root = viewModel;
             this.title = title;
+            isSelected = false;
+            isExpanded = false;
+            siteModels = new CollectionViewModel<SiteViewModel>(viewModel);
         }
         public string Title
         {
@@ -65,6 +71,13 @@ namespace Alarm.ViewModels
             }
         }
 
-        public string ValidPageName => "CategoryView";
+        public string ShowingPageName => "CategoryView";
+
+        public Page ShowingPage { get; set; }
+
+        public Page CreatePageShowing()
+        {
+            return new CategoryView();
+        }
     }
 }

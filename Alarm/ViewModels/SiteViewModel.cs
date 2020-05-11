@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Alarm.ViewModels
 {
-    public class SiteViewModel : ViewModelBase, IAlertPage
+    public class SiteViewModel : ViewModelBase, IPageShow
     {
         private bool isSelected;
         private bool isExpanded;
@@ -19,9 +20,13 @@ namespace Alarm.ViewModels
             isSelected = false;
             isExpanded = false;
         }
-        public SiteViewModel(string title) : this()
+        public SiteViewModel(ViewModel viewModel,string title)
         {
+            Root = viewModel;
             this.title = title;
+            documents = new CollectionViewModel<DocumentViewModel>(Root);
+            isSelected = false;
+            isExpanded = false;
         }
         public string Title
         {
@@ -42,7 +47,6 @@ namespace Alarm.ViewModels
             }
         }
 
-        public string ValidPageName => "ContentListView";
 
         public void RemoveFirstDocument()
         {
@@ -51,6 +55,7 @@ namespace Alarm.ViewModels
         }
         public void RemoveDocument(DocumentViewModel document)
         {
+            documents.Remove(document);
             OnPropertyChanged(nameof(Documents));
         }
         public void Add(DocumentViewModel document)
@@ -58,6 +63,14 @@ namespace Alarm.ViewModels
             documents.Add(document);
             OnPropertyChanged(nameof(Documents));
         }
+
+        public string ShowingPageName => "ContentListView";
+        public Page CreatePageShowing()
+        {
+            return new ContentListView();
+        }
+        public Page ShowingPage { get; set; }
+
         public bool IsSelected
         {
             get => isSelected;

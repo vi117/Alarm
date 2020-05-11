@@ -6,10 +6,12 @@
       xmlns:local="clr-namespace:Alarm"
       xmlns:view ="clr-namespace:Alarm.ViewModels"
       xmlns:pp="clr-namespace:Publisher;assembly=Publisher"
+      xmlns:ie="http://schemas.microsoft.com/expression/2010/interactivity"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ContentListView"
-      d:DataContext="{d:DesignData Source=/DesignSampleData/DesignNewsSample.xaml}">
+      d:DataContext="{d:DesignData Source=/DesignSampleData/DesignNewsSample.xaml}"
+      >
     <Page.Resources>
         <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}">
             <Grid>
@@ -21,11 +23,20 @@
                 <TextBlock Text="{Binding Path=Summary}" Grid.Row="1"></TextBlock>
             </Grid>
         </DataTemplate>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="IsSelected" Value="{Binding Path=IsSelected}"></Setter>
+        </Style>
     </Page.Resources>
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ListBox ItemTemplate="{StaticResource DocumentTemplate}" ItemsSource="{Binding Path=Documents}">
-        </ListBox>
+            <ListBox x:Name="ListBox" ItemTemplate="{StaticResource DocumentTemplate}" ItemsSource="{Binding Path=Documents}">
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="MouseDoubleClick">
+                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
+                                                    CommandParameter="{Binding ElementName=ListBox,Path=SelectedItem}"></ie:InvokeCommandAction>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
+            </ListBox>
         </ScrollViewer>
     </Grid>
 </Page>

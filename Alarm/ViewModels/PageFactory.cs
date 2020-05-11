@@ -13,34 +13,26 @@ using System.Windows.Forms;
 
 namespace Alarm.ViewModels
 {
-    public interface IAlertPage
+    public interface IPageShow
     {
-        string ValidPageName
+        string ShowingPageName
         {
             get;
         }
+        Page ShowingPage
+        {
+            get; set;
+        }
+        Page CreatePageShowing();
     }
     class PageFactory
     {
-        public static Page Generate(string name)
+        public static Page Generate(IPageShow modelExpressed)
         {
-            switch (name)
-            {
-                case "CategoryView":
-                    return new CategoryView();
-                case "ContentListView":
-                    return new ContentListView();
-                case "ContentView":
-                    return new ContentView();
-                default:
-                    return new EmptyPage(name);
-            }
-        }
-        public static Page Generate(IAlertPage page)
-        {
-            var ret = Generate(page.ValidPageName);
-            ret.DataContext = page;
-            return ret;
+            var page = modelExpressed.CreatePageShowing();
+            page.DataContext = modelExpressed;
+            modelExpressed.ShowingPage = page;
+            return page;
         }
     }
 }
