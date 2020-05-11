@@ -90,6 +90,7 @@ namespace TextRankTest
             textRanker.MakeTokens(tests);
 
             var ret = textRanker.GetSimilarityMatrix();
+			var SList = Ranker.Rank(ret);
 
             //O(k)+O(t)+O(k*k*mt*mt)
             double max = 0;
