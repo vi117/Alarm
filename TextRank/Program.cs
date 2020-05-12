@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace TextRankTest
 {
+
+	[TestClass]
     class Program
     {
         static string test = @"타입스트립트(TypeScript)는 자바스크립트(JavaScript)의 인기를 기반으로 하지만 기업 개발자를 좀 더 행복하고 생산적으로 만들기 위해 기능을 추가한 객체 지향 프로그래밍 언어다.
@@ -79,7 +81,9 @@ namespace TextRankTest
 타입스크립트는 이전부터 클래스를 포함했으며 현재 자바스크립트와 동일한 구문을 사용한다. 타입스크립트 컴파일러의 혜택 중 하나는 자바스크립트 클래스가 있는 코드를 2015 이전의 표준에 부합하는 레거시 자바스크립트 코드로 변환할 수 있다는 것이다.
 타입스크립트에서 날짜와 시간을 구하고 설정하는 데 사용할 수 있는 메서드와 객체는 여러 가지이며 대부분은 자바스크립트에서 물려받은 것이다. JavaTPoint에서 작동 방식에 대한 자세한 설명을 볼 수 있다.
 더 깊은 내용을 원한다면? 다음 타입스크립트 자습서를 활용해보자.";
-        static void Main(string[] args)
+
+		[TestMethod]
+        static void TestTextRank()
         {
             var textRanker = new SummaryDocument.TextRank();
 
@@ -112,6 +116,7 @@ namespace TextRankTest
 
             Console.ReadLine();
         }
+
         private static void Benchmark(Action act, int iterations)
         {
             GC.Collect();
