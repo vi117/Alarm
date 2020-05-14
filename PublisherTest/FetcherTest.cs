@@ -15,6 +15,7 @@ namespace PublisherTest
         [TestMethod]
         public void FetchTest()
         {
+			// TODO: Change this test to be more sensible.
 			var atom_fetcher = new AtomFetcher("https://xkcd.com/atom.xml");
 			
 			var title = "Common Cold";

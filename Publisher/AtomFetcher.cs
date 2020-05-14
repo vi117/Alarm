@@ -14,9 +14,10 @@ namespace Publisher {
 
 		public override Task<List<Document>> Fetch() {
 			var reader = XmlReader.Create(url);
-			var feed = SyndicationFeed.Load(reader);
+			var feed = SyndicationFeed.Load(reader); // use SyndicationFeed to load atom feed
 			reader.Close();
 
+			// Build document list
 			var docs = from item in feed.Items
 				let title = item.Title.Text
 				let summary = item.Summary.Text
