@@ -6,6 +6,10 @@ using System.Timers;
 
 namespace Publisher
 {
+    /// <summary>
+    /// Base of all fetcher class
+    /// Property setter must exist.
+    /// </summary>
     abstract public class Fetcher
     {
         private TimeSpan interval;

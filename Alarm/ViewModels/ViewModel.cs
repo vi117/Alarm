@@ -33,6 +33,9 @@ namespace Alarm.ViewModels
         }
         public event PropertyChangedEventHandler PropertyChanged;
     }
+    /// <summary>
+    /// ViewModel of All
+    /// </summary>
     public class ViewModel : ViewModelBase, IViewModelBehavior
     {
         private CollectionViewModel<CategoryViewModel> treeView;
@@ -100,6 +103,7 @@ namespace Alarm.ViewModels
                 }
             }
         }
+        //Navigate page
         public void Navigate(IPageShow model)
         {
             var page = PageFactory.Generate(model);

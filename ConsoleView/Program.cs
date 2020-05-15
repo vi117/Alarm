@@ -25,6 +25,15 @@ namespace ConsoleView
     {
         static void Main(string[] args)
         {
+            RSSFetcher obj = new RSSFetcher(@"https://media.daum.net/syndication/economic.rss");
+            var infos = obj.GetType().GetProperties();
+            foreach (var info in infos)
+            {
+                Console.WriteLine($"{info.CanWrite},{info.CanRead},{info.PropertyType},{info.Name}");
+                object v = info.GetGetMethod().Invoke(obj,null);
+                Console.WriteLine($"Value : {v}");
+            }
+            /*
             DocumentPublisher publisher = new DocumentPublisher();
             publisher.AddFetcher(new RSSFetcher(@"https://media.daum.net/syndication/economic.rss"));
             //publisher.AddFetcher(new RSSFetcher(@"http://www.aving.net/rss/life.xml"));
@@ -43,7 +52,8 @@ namespace ConsoleView
                     else break;
                 }
                 Thread.Sleep(100);
-            }
+            }*/
+            Console.ReadLine();
         }
     }
 }

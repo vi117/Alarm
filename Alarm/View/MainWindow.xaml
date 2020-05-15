@@ -1,11 +1,11 @@
-﻿<Controls:MetroWindow x:Class="Alarm.MainWindow"
+﻿<Controls:MetroWindow x:Class="Alarm.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:ie="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:local="clr-namespace:Alarm"
+        xmlns:local="clr-namespace:Alarm.View"
         xmlns:view ="clr-namespace:Alarm.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
@@ -48,7 +48,14 @@
             <Button Content="&#xE97e;" Grid.Column="2"/>
             <Button Content="&#xE74d;" Grid.Column="3"/>
             <Button Content="&#xE70f;" Grid.Column="4"/>
-            <Button Content="&#xE713;" Grid.Column="5"/>
+            <Button Content="&#xE713;" Grid.Column="5">
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="Click">
+                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.ShowSettingWindowCommand}"/>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
+            </Button>
+
             <Button Content="&#xE72B;" Grid.Column="6"/>
         </Grid>
         <Grid DockPanel.Dock="Top" >
@@ -59,8 +66,7 @@
             </Grid.ColumnDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <TreeView ItemsSource="{Binding Path=TreeView}"
-                          x:Name="TreeView"
-                          >
+                          x:Name="TreeView">
                     <ie:Interaction.Triggers>
                         <ie:EventTrigger EventName="SelectedItemChanged">
                             <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"

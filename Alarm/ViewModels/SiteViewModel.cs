@@ -67,7 +67,7 @@ namespace Alarm.ViewModels
         public string ShowingPageName => "ContentListView";
         public Page CreatePageShowing()
         {
-            return new ContentListView();
+            return new View.ContentListView();
         }
         public Page ShowingPage { get; set; }
 

@@ -13,20 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Alarm
+namespace Alarm.View
 {
     /// <summary>
-    /// EmptyPage.xaml에 대한 상호 작용 논리
+    /// CategoryView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class EmptyPage : Page
+    public partial class CategoryView : Page
     {
-        public EmptyPage()
+        public CategoryView()
         {
             InitializeComponent();
-        }
-        public EmptyPage(string viewName):this()
-        {
-            this.MessageTextBlock.Text = $"Error! Couldn't not find {viewName} View!";
         }
     }
 }

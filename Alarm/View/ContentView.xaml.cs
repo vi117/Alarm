@@ -13,16 +13,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Alarm
+
+namespace Alarm.View
 {
     /// <summary>
-    /// CategoryView.xaml에 대한 상호 작용 논리
+    /// ContentView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class CategoryView : Page
+    public partial class ContentView : Page
     {
-        public CategoryView()
+        public ContentView()
         {
             InitializeComponent();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            var doc = DataContext as ViewModels.DocumentViewModel;
+            CBrowser.Address = doc.Uri;
         }
     }
 }

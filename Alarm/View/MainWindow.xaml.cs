@@ -18,7 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 
-namespace Alarm
+namespace Alarm.View
 {
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
@@ -40,6 +40,14 @@ namespace Alarm
             CommandBindings.Add(new CommandBinding(AppCommand.NavigateCommand,
                 (sender, eventArgs) => {
                     viewModel.Navigate(eventArgs.Parameter as IPageShow);
+                    eventArgs.Handled = true;
+                },
+                (s, e) => { e.CanExecute = true; }
+            ));
+            CommandBindings.Add(new CommandBinding(AppCommand.ShowSettingWindowCommand,
+                (sender, eventArgs) => {
+                    SettingWindow window = new SettingWindow();
+                    window.ShowDialog();
                     eventArgs.Handled = true;
                 },
                 (s, e) => { e.CanExecute = true; }

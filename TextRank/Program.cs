@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SummaryDocument;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 
@@ -79,36 +81,64 @@ namespace TextRankTest
 타입스크립트는 이전부터 클래스를 포함했으며 현재 자바스크립트와 동일한 구문을 사용한다. 타입스크립트 컴파일러의 혜택 중 하나는 자바스크립트 클래스가 있는 코드를 2015 이전의 표준에 부합하는 레거시 자바스크립트 코드로 변환할 수 있다는 것이다.
 타입스크립트에서 날짜와 시간을 구하고 설정하는 데 사용할 수 있는 메서드와 객체는 여러 가지이며 대부분은 자바스크립트에서 물려받은 것이다. JavaTPoint에서 작동 방식에 대한 자세한 설명을 볼 수 있다.
 더 깊은 내용을 원한다면? 다음 타입스크립트 자습서를 활용해보자.";
+
+        static string[] test2 = new string[]{
+ "오패산터널 총격전 용의자 검거 서울 연합뉴스 경찰 관계자들이 19일 오후 서울 강북구 오패산 터널 인근에서 사제 총기를 발사해 경찰을 살해한 용의자 성모씨를 검거하고 있다 성씨는 검거 당시 서바이벌 게임에서 쓰는 방탄조끼에 헬멧까지 착용한 상태였다",
+  "서울 연합뉴스 김은경 기자 사제 총기로 경찰을 살해한 범인 성모 46 씨는 주도면밀했다",
+  "경찰에 따르면 성씨는 19일 오후 강북경찰서 인근 부동산 업소 밖에서 부동산업자 이모 67 씨가 나오기를 기다렸다 이씨와는 평소에도 말다툼을 자주 한 것으로 알려졌다",
+  "이씨가 나와 걷기 시작하자 성씨는 따라가면서 미리 준비해온 사제 총기를 이씨에게 발사했다 총알이 빗나가면서 이씨는 도망갔다 그 빗나간 총알은 지나가던 행인 71 씨의 배를 스쳤다",
+  "성씨는 강북서 인근 치킨집까지 이씨 뒤를 쫓으며 실랑이하다 쓰러뜨린 후 총기와 함께 가져온 망치로 이씨 머리를 때렸다",
+  "이 과정에서 오후 6시 20분께 강북구 번동 길 위에서 사람들이 싸우고 있다 총소리가 났다 는 등의 신고가 여러건 들어왔다",
+  "5분 후에 성씨의 전자발찌가 훼손됐다는 신고가 보호관찰소 시스템을 통해 들어왔다 성범죄자로 전자발찌를 차고 있던 성씨는 부엌칼로 직접 자신의 발찌를 끊었다",
+  "용의자 소지 사제총기 2정 서울 연합뉴스 임헌정 기자 서울 시내에서 폭행 용의자가 현장 조사를 벌이던 경찰관에게 사제총기를 발사해 경찰관이 숨졌다 19일 오후 6시28분 강북구 번동에서 둔기로 맞았다 는 폭행 피해 신고가 접수돼 현장에서 조사하던 강북경찰서 번동파출소 소속 김모 54 경위가 폭행 용의자 성모 45 씨가 쏜 사제총기에 맞고 쓰러진 뒤 병원에 옮겨졌으나 숨졌다 사진은 용의자가 소지한 사제총기",
+  "신고를 받고 번동파출소에서 김창호 54 경위 등 경찰들이 오후 6시 29분께 현장으로 출동했다 성씨는 그사이 부동산 앞에 놓아뒀던 가방을 챙겨 오패산 쪽으로 도망간 후였다",
+  "김 경위는 오패산 터널 입구 오른쪽의 급경사에서 성씨에게 접근하다가 오후 6시 33분께 풀숲에 숨은 성씨가 허공에 난사한 10여발의 총알 중 일부를 왼쪽 어깨 뒷부분에 맞고 쓰러졌다",
+  "김 경위는 구급차가 도착했을 때 이미 의식이 없었고 심폐소생술을 하며 병원으로 옮겨졌으나 총알이 폐를 훼손해 오후 7시 40분께 사망했다",
+  "김 경위는 외근용 조끼를 입고 있었으나 총알을 막기에는 역부족이었다",
+  "머리에 부상을 입은 이씨도 함께 병원으로 이송됐으나 생명에는 지장이 없는 것으로 알려졌다",
+  "성씨는 오패산 터널 밑쪽 숲에서 오후 6시 45분께 잡혔다",
+  "총격현장 수색하는 경찰들 서울 연합뉴스 이효석 기자 19일 오후 서울 강북구 오패산 터널 인근에서 경찰들이 폭행 용의자가 사제총기를 발사해 경찰관이 사망한 사건을 조사 하고 있다",
+  "총 때문에 쫓던 경관들과 민간인들이 몸을 숨겼는데 인근 신발가게 직원 이모씨가 다가가 성씨를 덮쳤고 이어 현장에 있던 다른 상인들과 경찰이 가세해 체포했다",
+  "성씨는 경찰에 붙잡힌 직후 나 자살하려고 한 거다 맞아 죽어도 괜찮다 고 말한 것으로 전해졌다",
+  "성씨 자신도 경찰이 발사한 공포탄 1발 실탄 3발 중 실탄 1발을 배에 맞았으나 방탄조끼를 입은 상태여서 부상하지는 않았다",
+  "경찰은 인근을 수색해 성씨가 만든 사제총 16정과 칼 7개를 압수했다 실제 폭발할지는 알 수 없는 요구르트병에 무언가를 채워두고 심지를 꽂은 사제 폭탄도 발견됐다",
+  "일부는 숲에서 발견됐고 일부는 성씨가 소지한 가방 안에 있었다"};
         static void Main(string[] args)
         {
             var textRanker = new SummaryDocument.TextRank();
+            /*Kiwi.KiwiCS kiwiCS = new Kiwi.KiwiCS(".\\lang-model\\", 3);
+            string mmm = "타입스크립트를 설치하고 나면 이제 타입스크립트 구문의 기본을 파악할 차례다";
+            kiwiCS.prepare();
+            var ee = kiwiCS.analyze(mmm, 1);
+            foreach(var tt in ee)
+            {
+                foreach(var t in tt.morphs)
+                {
+                    Console.Write(t.Item1);
+                }
+            }
+            Console.WriteLine();*/
 
-            string[] tests = test.Split(new char[] { '\n', '.', '?' })
+            string[] tests = Regex.Split(test, "([^.!?]*[.!?])")
                 .Select((s) => s.Trim())
                 .Where((s) => s.Length != 0)
                 .ToArray();
             textRanker.MakeTokens(tests);
 
             var ret = textRanker.GetSimilarityMatrix();
-			var SList = Ranker.Rank(ret);
-
-            //O(k)+O(t)+O(k*k*mt*mt)
-            double max = 0;
-            int mj = 0, mi = 0;
-            for (int i = 0; i < ret.GetLength(0); i++)
+            var Slist = Ranker.Rank(ret);
+            foreach(var si in Slist)
             {
-                for (int j = 0; j < ret.GetLength(1); j++)
-                {
-                    if (i != j && max < ret[i, j])
-                    {
-                        max = ret[i, j];
-                        mi = i;
-                        mj = j;
-                    }
-                }
+                Console.WriteLine(tests[si]);
             }
-            Console.WriteLine(tests[mi]);
-            Console.WriteLine(tests[mj]);
+            Console.WriteLine("==============");
+            textRanker.MakeTokens(test2);
+            var matt = textRanker.GetSimilarityMatrix();
+            var MSlist = Ranker.Rank(matt);
+            foreach(var si in MSlist)
+            {
+                Console.WriteLine(test2[si]);
+            }
 
             Console.ReadLine();
         }

@@ -77,7 +77,7 @@ namespace Alarm.ViewModels
 
         public Page CreatePageShowing()
         {
-            return new CategoryView();
+            return new View.CategoryView();
         }
     }
 }

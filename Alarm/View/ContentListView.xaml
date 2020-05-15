@@ -1,9 +1,9 @@
-﻿<Page x:Class="Alarm.ContentListView"
+﻿<Page x:Class="Alarm.View.ContentListView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Alarm"
+      xmlns:local="clr-namespace:Alarm.View"
       xmlns:view ="clr-namespace:Alarm.ViewModels"
       xmlns:pp="clr-namespace:Publisher;assembly=Publisher"
       xmlns:ie="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -13,7 +13,7 @@
       d:DataContext="{d:DesignData Source=/DesignSampleData/DesignNewsSample.xaml}"
       >
     <Page.Resources>
-        <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}">
+        <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -24,7 +24,7 @@
             </Grid>
         </DataTemplate>
         <Style TargetType="ListBoxItem">
-            <Setter Property="IsSelected" Value="{Binding Path=IsSelected}"></Setter>
+            <Setter Property="IsSelected" Value="{Binding Path=IsSelected}"/>
         </Style>
     </Page.Resources>
     <Grid>

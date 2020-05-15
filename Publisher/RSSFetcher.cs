@@ -13,10 +13,8 @@ namespace Publisher
     public class RSSFetcher : Fetcher
     {
         private string url;
-        public string URL => url;
-        public RSSFetcher(string url) : base(){
-            this.url = url;
-        }
+        public string URL { get => url; set => url = value; }
+        public RSSFetcher(string url) : base() => this.url = url;
         public override Task<List<Document>> Fetch()
         {
             var cur_doc = GetRSS();

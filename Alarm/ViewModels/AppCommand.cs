@@ -12,7 +12,9 @@ namespace Alarm.ViewModels
         static AppCommand()
         {
             NavigateCommand = new RoutedCommand("Navigate", typeof(AppCommand));
+            ShowSettingWindowCommand = new RoutedCommand("ShowSettingWindow", typeof(AppCommand));
         }
-        static public RoutedCommand NavigateCommand{get;}
+        static public RoutedCommand NavigateCommand { get; }
+        static public RoutedCommand ShowSettingWindowCommand { get; }
     }
 }

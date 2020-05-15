@@ -23,7 +23,8 @@ namespace SummaryDocument
         }
         public string[] Tokenize(string sentence)
         {
-            var result = kiwi.analyze(sentence, 1)[0].morphs;
+            var tt = kiwi.analyze(sentence, 1);
+            var result = tt[0].morphs;
             return (from morph in result
                     where !morph.Item2.StartsWith("J") //조사 거르기.
                     where !morph.Item2.StartsWith("S") //기호 거르기.
@@ -32,11 +33,8 @@ namespace SummaryDocument
     }
     public class TextRank
     {
+        const double MinSimilarity = 0.3;
         public KoreanTokenizer KoreanTokenizer;
-        
-        private Dictionary<string,int> StringToIndexTable;
-        private string[] IndexToStringTable;
-        private Dictionary<string, int> CountTable;
         /// <summary>
         /// Tokens of Sentences Array.
         /// </summary>
@@ -45,54 +43,11 @@ namespace SummaryDocument
         {
             KoreanTokenizer = new KoreanTokenizer();
         }
-        public string GetIndexToWord(int i)
-        {
-            return IndexToStringTable[i];
-        }
-        public int GetWordToIndex(string token)
-        {
-            return StringToIndexTable[token];
-        }
+        
         static public string[] SentenceSplit(string paragraph)
         {
             return paragraph.Split('.');
-        }/*
-
-        public void MakeIndexTable(string[] sentences)
-        {
-            MakeCountTable(sentences);
-            var order = CountTable.OrderBy((k) => k.Value);
-            IndexToStringTable = new string[order.Count()];
-            StringToIndexTable = new Dictionary<string, int>();
-            int i = 0;
-            foreach (var s in order)
-            {
-                IndexToStringTable[i] = s.Key;
-                StringToIndexTable.Add(s.Key, i);
-            }
         }
-        private void MakeCountTable(string[] sentences)
-        {
-            CountTable = new Dictionary<string, int>();
-            Sentences = new string[sentences.Length][];
-            for (int i = 0; i < sentences.Length; i++)
-            {
-                string sentence = sentences[i];
-                var tokens = KoreanTokenizer.Tokenize(sentence);
-                Sentences[i] = tokens;
-                foreach (var token in tokens)
-                {
-                    if (!CountTable.ContainsKey(token))
-                    {
-                        CountTable.Add(token, 0);
-                    }
-                    else
-                    {
-                        CountTable[token] += 1;
-                    }
-                }
-            }
-        }*/
         public void MakeTokens(string[] sentences)
         {
             Sentences = new string[sentences.Length][];
@@ -112,7 +67,8 @@ namespace SummaryDocument
                 {
                     if (i < j)
                     {
-                        ret[i, j] = CalculateSimilarity(i, j);
+                        var sim = CalculateSimilarity(i, j);
+                        ret[i, j] = sim >= MinSimilarity ? sim : 0;
                     }
                     else if(i == j)
                     {
@@ -130,6 +86,7 @@ namespace SummaryDocument
         {
             var s1 = Sentences[i];
             var s2 = Sentences[j];
+            if (s1.Length <= 1 || s2.Length <= 1) return 0;
             double dimender = s1.Intersect(s2).Count();
             double divider = Math.Log(s1.Length) + Math.Log(s2.Length);
             return dimender / divider;

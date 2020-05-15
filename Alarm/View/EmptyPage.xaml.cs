@@ -13,23 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
-namespace Alarm
+namespace Alarm.View
 {
     /// <summary>
-    /// ContentView.xaml에 대한 상호 작용 논리
+    /// EmptyPage.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ContentView : Page
+    public partial class EmptyPage : Page
     {
-        public ContentView()
+        public EmptyPage()
         {
             InitializeComponent();
         }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        public EmptyPage(string viewName):this()
         {
-            var doc = DataContext as ViewModels.DocumentViewModel;
-            CBrowser.Address = doc.Uri;
+            this.MessageTextBlock.Text = $"Error! Couldn't not find {viewName} View!";
         }
     }
 }

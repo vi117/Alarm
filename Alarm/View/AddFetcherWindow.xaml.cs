@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Alarm
+namespace Alarm.View
 {
     /// <summary>
-    /// SettingWindow.xaml에 대한 상호 작용 논리
+    /// AddFetcherWindow.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class SettingWindow : Window
+    public partial class AddFetcherWindow : Window
     {
-        public SettingWindow()
+        public AddFetcherWindow()
         {
             InitializeComponent();
         }

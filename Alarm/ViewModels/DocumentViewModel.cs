@@ -70,7 +70,7 @@ namespace Alarm.ViewModels
         public Page ShowingPage { get; set; }
         public Page CreatePageShowing()
         {
-            return new ContentView();
+            return new View.ContentView();
         }
     }
 }
