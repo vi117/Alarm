@@ -43,7 +43,13 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="&#xE710;" Grid.Column="0"/>
+            <Button Content="&#xE710;" Grid.Column="0">
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="Click">
+                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.ShowAddFetcherWindowCommand}"/>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
+            </Button>
             <Button Content="&#xE72c;" Grid.Column="1"/>
             <Button Content="&#xE97e;" Grid.Column="2"/>
             <Button Content="&#xE74d;" Grid.Column="3"/>

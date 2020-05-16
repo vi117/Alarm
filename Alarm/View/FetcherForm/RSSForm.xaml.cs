@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Publisher;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,18 +11,24 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Alarm.View
+namespace Alarm.View.FetcherForm
 {
     /// <summary>
-    /// SettingWindow.xaml에 대한 상호 작용 논리
+    /// RSSForm.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class SettingWindow : MahApps.Metro.Controls.MetroWindow
+    public partial class RSSForm : FetcherFormControl
     {
-        public SettingWindow()
+        public RSSForm()
         {
             InitializeComponent();
+        }
+
+        public Publisher.Fetcher GetFetcher()
+        {
+            return new RSSFetcher(URLContent.Text);
         }
     }
 }

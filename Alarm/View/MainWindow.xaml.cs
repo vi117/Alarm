@@ -32,11 +32,8 @@ namespace Alarm.View
         {
             get => viewModel;
         }
-        public MainWindow()
+        void BindCommand()
         {
-            InitializeComponent();
-            viewModel = new ViewModel();
-            DataContext = viewModel;
             CommandBindings.Add(new CommandBinding(AppCommand.NavigateCommand,
                 (sender, eventArgs) => {
                     viewModel.Navigate(eventArgs.Parameter as IPageShow);
@@ -52,6 +49,21 @@ namespace Alarm.View
                 },
                 (s, e) => { e.CanExecute = true; }
             ));
+            CommandBindings.Add(new CommandBinding(AppCommand.ShowAddFetcherWindowCommand,
+                (sender, eventArgs) => {
+                    AddFetcherWindow window = new AddFetcherWindow();
+                    window.ShowDialog();
+                    eventArgs.Handled = true;
+                },
+                (s, e) => { e.CanExecute = true; }
+            ));
+        }
+        public MainWindow()
+        {
+            InitializeComponent();
+            viewModel = new ViewModel();
+            DataContext = viewModel;
+            BindCommand();
         }
     }
 }

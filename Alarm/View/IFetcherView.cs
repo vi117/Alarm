@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Alarm.View.Creator
+namespace Alarm.View
 {
     public interface IFetcherView
     {

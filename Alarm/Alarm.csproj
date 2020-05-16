@@ -181,7 +181,14 @@
     <Compile Include="View\AddFetcherWindow.xaml.cs">
       <DependentUpon>AddFetcherWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Creator\IFetcherView.cs" />
+    <Compile Include="View\FetcherForm\AtomForm.xaml.cs">
+      <DependentUpon>AtomForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FetcherForm\FetcherFormControl.cs" />
+    <Compile Include="View\FetcherForm\RSSForm.xaml.cs">
+      <DependentUpon>RSSForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\IFetcherView.cs" />
     <Compile Include="View\CategoryView.xaml.cs">
       <DependentUpon>CategoryView.xaml</DependentUpon>
     </Compile>
@@ -193,9 +200,6 @@
     </Compile>
     <Compile Include="View\EmptyPage.xaml.cs">
       <DependentUpon>EmptyPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\InputTypes\TextBlockPair.xaml.cs">
-      <DependentUpon>TextBlockPair.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
@@ -236,7 +240,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\InputTypes\TextBlockPair.xaml">
+    <Page Include="View\FetcherForm\AtomForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FetcherForm\RSSForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
