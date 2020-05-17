@@ -6,14 +6,16 @@ using System.Linq;
 
 namespace Publisher {
 	public class AtomFetcher : Fetcher {
-		private string url;
+		private string uri;
 
-		public AtomFetcher(string url) {
-			this.url = url;
+		public AtomFetcher(string uri) {
+			this.uri = uri;
 		}
 
+		public string Uri { get => uri; set => uri = value; }
+
 		public override Task<List<Document>> Fetch() {
-			var reader = XmlReader.Create(url);
+			var reader = XmlReader.Create(uri);
 			var feed = SyndicationFeed.Load(reader); // use SyndicationFeed to load atom feed
 			reader.Close();
 

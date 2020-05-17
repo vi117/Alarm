@@ -29,7 +29,7 @@ namespace Alarm.View.FetcherForm
         public Publisher.Fetcher GetFetcher()
         {
             //Temp
-            return new RSSFetcher(URLContent.Text);
+            return new AtomFetcher(URLContent.Text);
         }
     }
 }
