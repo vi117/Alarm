@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alarm", "Alarm\Alarm.csproj
 		{DBD6C19B-C48C-4E60-A80C-CC944F86D27D} = {DBD6C19B-C48C-4E60-A80C-CC944F86D27D}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Publisher", "Publisher\Publisher.csproj", "{DBD6C19B-C48C-4E60-A80C-CC944F86D27D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Publisher\Model.csproj", "{DBD6C19B-C48C-4E60-A80C-CC944F86D27D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleView", "ConsoleView\ConsoleView.csproj", "{1624F286-EECC-467C-8291-D95A9478E7CA}"
 	ProjectSection(ProjectDependencies) = postProject

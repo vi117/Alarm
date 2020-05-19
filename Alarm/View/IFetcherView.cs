@@ -9,6 +9,6 @@ namespace Alarm.View
 {
     public interface IFetcherView
     {
-        Publisher.Fetcher GetFetcher();
+        Model.Fetcher GetFetcher();
     }
 }

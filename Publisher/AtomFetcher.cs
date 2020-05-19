@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Linq;
 
-namespace Publisher {
+namespace Model {
 	public class AtomFetcher : Fetcher {
 		private string uri;
 

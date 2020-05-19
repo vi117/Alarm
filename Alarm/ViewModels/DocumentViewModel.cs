@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Publisher;
+using Model;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Controls;

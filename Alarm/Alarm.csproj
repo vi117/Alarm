@@ -178,6 +178,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\ISiteViewModel.cs" />
     <Compile Include="View\AddFetcherWindow.xaml.cs">
       <DependentUpon>AddFetcherWindow.xaml</DependentUpon>
     </Compile>
@@ -304,9 +305,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Publisher\Publisher.csproj">
+    <ProjectReference Include="..\Publisher\Model.csproj">
       <Project>{dbd6c19b-c48c-4e60-a80c-cc944f86d27d}</Project>
-      <Name>Publisher</Name>
+      <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

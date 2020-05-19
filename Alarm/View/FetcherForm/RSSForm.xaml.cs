@@ -1,4 +1,4 @@
-﻿using Publisher;
+﻿using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace Alarm.View.FetcherForm
             InitializeComponent();
         }
 
-        override public Publisher.Fetcher GetFetcher()
+        override public Model.Fetcher GetFetcher()
         {
             return new RSSFetcher(URLContent.Text);
         }

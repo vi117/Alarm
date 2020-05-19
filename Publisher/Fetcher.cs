@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Publisher
+namespace Model
 {
     /// <summary>
     /// Base of all fetcher class

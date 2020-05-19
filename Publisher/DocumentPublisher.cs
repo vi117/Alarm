@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 
-namespace Publisher
+namespace Model
 {
     class FetcherFilter
     {
@@ -67,15 +67,11 @@ namespace Publisher
         /// <returns>document or null if queue is empty</returns>
         public Document PopDocument()
         {
-            try
+            lock (documents)
             {
-                lock(documents){
+                if (documents.Count != 0)
                     return documents.Dequeue();
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                return null;
+                else return null;
             }
         }
     }

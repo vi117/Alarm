@@ -7,7 +7,7 @@ using System.Windows.Controls;
 
 namespace Alarm.ViewModels
 {
-    public class SiteViewModel : ViewModelBase, IPageShow
+    public class SiteViewModel : ViewModelBase, ISiteViewModel
     {
         private bool isSelected;
         private bool isExpanded;
@@ -20,7 +20,7 @@ namespace Alarm.ViewModels
             isSelected = false;
             isExpanded = false;
         }
-        public SiteViewModel(ViewModel viewModel,string title)
+        public SiteViewModel(ViewModel viewModel, string title)
         {
             Root = viewModel;
             this.title = title;

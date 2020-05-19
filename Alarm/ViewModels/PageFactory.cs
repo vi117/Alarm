@@ -15,14 +15,27 @@ namespace Alarm.ViewModels
 {
     public interface IPageShow
     {
+        /// <summary>
+        /// For debugging
+        /// </summary>
         string ShowingPageName
         {
             get;
         }
+        /// <summary>
+        /// Show related page
+        /// </summary>
         Page ShowingPage
         {
             get; set;
         }
+
+        /// <summary>
+        /// create <c>Page</c> to relate ViewModel.
+        /// Do not invoke directly.
+        /// Use <c>PageFactory.Gernerate</c> method.
+        /// </summary>
+        /// <returns>page relateive to ViewModel</returns>
         Page CreatePageShowing();
     }
     class PageFactory

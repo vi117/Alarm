@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
 
-namespace Publisher
+namespace Model
 {
     public class RSSFetcher : Fetcher
     {
