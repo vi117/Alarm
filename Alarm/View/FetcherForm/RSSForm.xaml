@@ -12,6 +12,8 @@
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <Label Content="URL" FontSize="16"/>
-        <TextBox Grid.Column="1" x:Name="URLContent"/>
+        <local:LineInput Grid.Column="1" BackgroundText="URLContent" FontSize="16" x:Name="URLContent"
+                         BackgroundTextFill="Gray">
+        </local:LineInput>
     </Grid>
 </local:FetcherFormControl>

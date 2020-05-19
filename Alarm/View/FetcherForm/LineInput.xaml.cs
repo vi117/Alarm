@@ -42,12 +42,6 @@ namespace Alarm.View.FetcherForm
                typeof(VerityHandler),
                typeof(LineInput),
                new PropertyMetadata(new VerityHandler((s) => true)));
-        static readonly DependencyProperty TextForegroundProperty =
-            DependencyProperty.Register(
-                nameof(TextForegroundProperty),
-                typeof(Brush),
-                typeof(LineInput),
-                new PropertyMetadata(Brushes.Black));
 
         static private void BackgroundTextChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
@@ -90,13 +84,8 @@ namespace Alarm.View.FetcherForm
         }
         public Brush BackgroundTextFill
         {
-            get => GetValue(BackgroundTextFillProperty) as Brush;
-            set => SetValue(BackgroundTextProperty, value as Brush);
-        }
-        public Brush TextForeground
-        {
-            get => GetValue(TextForegroundProperty) as Brush;
-            set => SetValue(TextForegroundProperty, value as Brush);
+            get => (Brush)GetValue(BackgroundTextFillProperty);
+            set => SetValue(BackgroundTextFillProperty, value);
         }
 
         public VerityHandler Validation
@@ -104,13 +93,19 @@ namespace Alarm.View.FetcherForm
             get => GetValue(ValidationHandler) as VerityHandler;
             set => SetValue(ValidationHandler, value as VerityHandler);
         }
+
+        public string Text {
+            get => InputBox.Text;
+            set => InputBox.Text = value;
+        }
+
         private void InputBox_GotFocus(object sender, RoutedEventArgs e)
         {
             var box = sender as TextBox;
             if (box.Text == BackgroundText)
             {
                 box.Text = "";
-                box.Foreground = TextForeground;
+                box.Foreground = this.Foreground;
             }
             FocusedStoryBoard.Begin();
         }

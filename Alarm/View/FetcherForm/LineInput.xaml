@@ -21,7 +21,7 @@
         </Storyboard>
     </UserControl.Resources>
     <StackPanel>
-        <TextBox Text="" ToolTip="ASD" BorderThickness="0" x:Name="InputBox" 
+        <TextBox Text="" BorderThickness="0" x:Name="InputBox" 
                  Width="{Binding ElementName=Parent,Path=Width,Mode=OneWay}"
                  TextChanged="InputBox_TextChanged">
         </TextBox>
