@@ -185,6 +185,9 @@
       <DependentUpon>AtomForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\FetcherForm\FetcherFormControl.cs" />
+    <Compile Include="View\FetcherForm\LineInput.xaml.cs">
+      <DependentUpon>LineInput.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\FetcherForm\RSSForm.xaml.cs">
       <DependentUpon>RSSForm.xaml</DependentUpon>
     </Compile>
@@ -241,6 +244,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\FetcherForm\AtomForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FetcherForm\LineInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
