@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Alarm.ViewModels.Interface;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Alarm.ViewModels
 {
-    public class CollectionViewModel<T> : ObservableCollection<T> where T : ViewModelBase
+    public class CollectionViewModel<T> : ObservableCollection<T> where T : IViewModelBase
     {
         private IViewModelBehavior modelBehavior;
         //for designer mode

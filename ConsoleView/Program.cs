@@ -53,7 +53,7 @@ namespace ConsoleView
                 }
                 Thread.Sleep(100);
             }
-            Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 }

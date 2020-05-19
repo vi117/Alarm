@@ -2,17 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Serialization;
+using Model.Interface;
 
 namespace Model
 {
-    public interface IDocument {
-        string Title { get; set; }
-        string HostUri { get; set; }
-        string PathUri { get; set; }
-        string Summary { get; set; }
-        DateTime Date { get; set; }
-        string GUID { get; set; }
-    }
     [Serializable()]
     public class Document : IDocument
     {
@@ -30,8 +23,11 @@ namespace Model
 
         public string HostUri { get => hostUri; set => hostUri = value; }
         public string PathUri { get => pathUri; set => pathUri = value; }
-        public string Uri { get => hostUri + "/" + pathUri;
-            set {
+        public string Uri
+        {
+            get => hostUri + "/" + pathUri;
+            set
+            {
                 var uri = new Uri(value);
                 HostUri = uri.Host;
                 PathUri = uri.PathAndQuery;

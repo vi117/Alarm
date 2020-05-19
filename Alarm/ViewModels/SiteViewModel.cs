@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Alarm.ViewModels.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,11 +13,11 @@ namespace Alarm.ViewModels
         private bool isSelected;
         private bool isExpanded;
         private string title;
-        private CollectionViewModel<DocumentViewModel> documents;
+        private CollectionViewModel<IDocumentViewModel> documents;
 
         public SiteViewModel()
         {
-            documents = new CollectionViewModel<DocumentViewModel>();
+            documents = new CollectionViewModel<IDocumentViewModel>();
             isSelected = false;
             isExpanded = false;
         }
@@ -24,7 +25,7 @@ namespace Alarm.ViewModels
         {
             Root = viewModel;
             this.title = title;
-            documents = new CollectionViewModel<DocumentViewModel>(Root);
+            documents = new CollectionViewModel<IDocumentViewModel>(Root);
             isSelected = false;
             isExpanded = false;
         }
@@ -37,7 +38,7 @@ namespace Alarm.ViewModels
                 OnPropertyChanged(nameof(Title));
             }
         }
-        public CollectionViewModel<DocumentViewModel> Documents
+        public CollectionViewModel<IDocumentViewModel> Documents
         {
             get => documents;
             set

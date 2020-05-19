@@ -3,28 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Model;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Controls;
+using Model.Interface;
+using Alarm.ViewModels.Interface;
 
 namespace Alarm.ViewModels
 {
-    public class DocumentDbContext : DbContext
-    {
-        public DocumentDbContext() : base() { }
-        public DbSet<Document> Documents { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlite("Data Source=doc.db");
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-        }
-    }
-    [Table("Document")]
-    public class DocumentViewModel : ViewModelBase, IPageShow, IDocument
+    public class DocumentViewModel : ViewModelBase, IDocumentViewModel
     {
         public string Title { get; set; }
 

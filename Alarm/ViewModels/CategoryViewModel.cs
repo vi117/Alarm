@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Alarm.ViewModels.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,17 @@ using System.Windows.Forms;
 
 namespace Alarm.ViewModels
 {
-    public class CategoryViewModel : ViewModelBase, IPageShow
+    public class CategoryViewModel : ViewModelBase, ICategoryViewModel
     {
         private string title;
-        private CollectionViewModel<SiteViewModel> siteModels;
+        private CollectionViewModel<ISiteViewModel> siteModels;
         private bool isSelected;
         private bool isExpanded;
+
+        /// <summary>
+        /// Method for Only Designer Mode.
+        /// Do not invoke.
+        /// </summary>
         public CategoryViewModel()
         {
             this.title = "No Named Category";
@@ -26,7 +32,7 @@ namespace Alarm.ViewModels
             this.title = title;
             isSelected = false;
             isExpanded = false;
-            siteModels = new CollectionViewModel<SiteViewModel>(viewModel);
+            siteModels = new CollectionViewModel<ISiteViewModel>(viewModel);
         }
         public string Title
         {
@@ -37,7 +43,7 @@ namespace Alarm.ViewModels
                 OnPropertyChanged(nameof(Title));
             }
         }
-        public CollectionViewModel<SiteViewModel> SiteModels
+        public CollectionViewModel<ISiteViewModel> SiteModels
         {
             get => siteModels;
             set

@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Alarm.ViewModels.Interface;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +15,7 @@ using System.Windows.Input;
 
 namespace Alarm.ViewModels
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : IViewModelBase
     {
         private IViewModelBehavior root;
         //for designer mode
@@ -23,11 +24,12 @@ namespace Alarm.ViewModels
         {
             root = behavior;
         }
-        public IViewModelBehavior Root {
+        public IViewModelBehavior Root
+        {
             get => root;
             set => root = value;
         }
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
