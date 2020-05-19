@@ -52,7 +52,7 @@ namespace Alarm.View
             CommandBindings.Add(new CommandBinding(AppCommand.ShowAddFetcherWindowCommand,
                 (sender, eventArgs) => {
                     AddFetcherWindow window = new AddFetcherWindow();
-                    window.ShowDialog();
+                    bool? b = window.ShowDialog();
                     eventArgs.Handled = true;
                 },
                 (s, e) => { e.CanExecute = true; }

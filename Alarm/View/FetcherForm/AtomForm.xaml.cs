@@ -26,7 +26,7 @@ namespace Alarm.View.FetcherForm
             InitializeComponent();
         }
 
-        public Publisher.Fetcher GetFetcher()
+        override public Publisher.Fetcher GetFetcher()
         {
             //Temp
             return new AtomFetcher(URLContent.Text);

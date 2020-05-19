@@ -13,6 +13,6 @@ namespace Alarm.View.FetcherForm
     ///</summary>
     public class FetcherFormControl : UserControl, IFetcherView
     {
-        public Fetcher GetFetcher() { throw new NotImplementedException(); }
+        virtual public Fetcher GetFetcher() { throw new NotImplementedException(); }
     }
 }

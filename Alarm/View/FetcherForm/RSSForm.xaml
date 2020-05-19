@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <Label Content="URL" FontSize="16"/>
         <local:LineInput Grid.Column="1" BackgroundText="URLContent" FontSize="16" x:Name="URLContent"
-                         BackgroundTextFill="Gray">
+                         BackgroundTextFill="Gray" Validation="UrlValid">
         </local:LineInput>
     </Grid>
 </local:FetcherFormControl>

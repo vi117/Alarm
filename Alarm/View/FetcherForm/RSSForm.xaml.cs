@@ -26,9 +26,13 @@ namespace Alarm.View.FetcherForm
             InitializeComponent();
         }
 
-        public Publisher.Fetcher GetFetcher()
+        override public Publisher.Fetcher GetFetcher()
         {
             return new RSSFetcher(URLContent.Text);
+        }
+        private bool UrlValid(string url)
+        {
+            return Uri.IsWellFormedUriString(url, UriKind.Absolute);
         }
     }
 }

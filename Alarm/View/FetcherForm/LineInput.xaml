@@ -5,24 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Alarm.View.FetcherForm"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="400">
+             d:DesignHeight="100" d:DesignWidth="400"
+             x:Name="ControlRoot">
     <UserControl.Resources>
-        <Storyboard x:Key="WarningSB">
-            <ColorAnimation To="Red" Duration="0:0:0.4" Storyboard.TargetName="DecoLine" Storyboard.TargetProperty="Fill.Color"/>
-        </Storyboard>
-        <Storyboard x:Key="ValidateSB">
-            <ColorAnimation To="Blue" Duration="0:0:0.4" Storyboard.TargetName="DecoLine" Storyboard.TargetProperty="Fill.Color"/>
-        </Storyboard>
-        <Storyboard x:Key="FocusedSB">
-            <ColorAnimation To="Green" Duration="0:0:0.4" Storyboard.TargetName="DecoLine" Storyboard.TargetProperty="Fill.Color"/>
-        </Storyboard>
-        <Storyboard x:Key="NotFocusedSB">
-            <ColorAnimation To="Gray" Duration="0:0:0.4" Storyboard.TargetName="DecoLine" Storyboard.TargetProperty="Fill.Color"/>
-        </Storyboard>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Alarm;component/Themes/Colors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Storyboard x:Key="WarningSB">
+                <ColorAnimation To="{StaticResource DangerColor}" Duration="0:0:0.4" Storyboard.TargetName="DecoLine" Storyboard.TargetProperty="Fill.Color"/>
+            </Storyboard>
+            <Storyboard x:Key="ValidateSB">
+                <ColorAnimation To="{StaticResource SuccessColor}" Duration="0:0:0.4" Storyboard.TargetName="DecoLine" Storyboard.TargetProperty="Fill.Color"/>
+            </Storyboard>
+            <Storyboard x:Key="FocusedSB">
+                <ColorAnimation To="{StaticResource PrimaryColor}" Duration="0:0:0.4" Storyboard.TargetName="DecoLine" Storyboard.TargetProperty="Fill.Color"/>
+            </Storyboard>
+            <Storyboard x:Key="NotFocusedSB">
+                <ColorAnimation To="{StaticResource SecondaryColor}" Duration="0:0:0.4" Storyboard.TargetName="DecoLine" Storyboard.TargetProperty="Fill.Color"/>
+            </Storyboard>
+        </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel>
         <TextBox Text="" BorderThickness="0" x:Name="InputBox" 
-                 Width="{Binding ElementName=Parent,Path=Width,Mode=OneWay}"
+                 Width="{Binding ElementName=ControlRoot,Path=Width,Mode=OneWay}"
                  TextChanged="InputBox_TextChanged">
         </TextBox>
         <Rectangle Width="{Binding ElementName=InputBox,Path=Width}" Fill="Gray" Height="2" x:Name="DecoLine"/>
