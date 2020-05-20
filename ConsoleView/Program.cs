@@ -25,6 +25,7 @@ namespace ConsoleView
     {
         static void Main(string[] args)
         {
+            AppDBContext.Test();
             RSSFetcher obj = new RSSFetcher(@"https://media.daum.net/syndication/economic.rss");
            /* var infos = obj.GetType().GetProperties();
             foreach (var info in infos)
