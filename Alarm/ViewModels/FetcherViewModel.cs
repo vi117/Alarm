@@ -1,15 +1,21 @@
-﻿using Alarm.ViewModels.Interface;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace Alarm.ViewModels
 {
-    public abstract class CategoryViewModel : ViewModelBase, IPageShow
+    public abstract class FetcherViewModel : ViewModelBase, IPageShow
     {
-        public string ShowingPageName => "CategoryView";
-        public Page ShowingPage { get; set; }
-        private bool isSelected = false;
-        private bool isExpanded = false;
+        private bool isSelected;
+        private bool isExpanded;
 
+        public string ShowingPageName => "ContentListView";
+        public Page ShowingPage { get; set; }
+
+        public abstract CollectionViewModel<DocumentViewModel> Documents { get; set; }
 
         public bool IsSelected
         {
@@ -35,12 +41,12 @@ namespace Alarm.ViewModels
                 }
             }
         }
-        public abstract CollectionViewModel<FetcherViewModel> SiteModels { get; set; }
+
         public abstract string Title { get; set; }
 
         public Page CreatePageShowing()
         {
-            return new View.CategoryView();
+            return new View.ContentListView();
         }
     }
 }

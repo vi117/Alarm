@@ -12,7 +12,7 @@
       d:DataContext="{d:DesignData Source=/DesignSampleData/DesignNewsSample.xaml}"
       >
     <Page.Resources>
-        <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}" >
+        <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:MockDocumentViewModel}" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>

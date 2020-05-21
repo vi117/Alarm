@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model;
-using System.Windows.Controls;
+﻿using Alarm.ViewModels.Interface;
 using Model.Interface;
-using Alarm.ViewModels.Interface;
+using System;
+using System.Windows.Controls;
 
 namespace Alarm.ViewModels
 {
-    public class DocumentViewModel : ViewModelBase, IDocumentViewModel
+    public abstract class DocumentViewModel : ViewModelBase, IPageShow, IDocument
     {
-        public string Title { get; set; }
-
-        public string HostUri { get; set; }
-        public string PathUri { get; set; }
+        public abstract string Title { get; set; }
+        public abstract string HostUri { get; set; }
+        public abstract string PathUri { get; set; }
+        public abstract string Summary { get; set; }
+        public abstract DateTime Date { get; set; }
+        public abstract string GUID { get; set; }
         public string Uri
         {
             get => HostUri + "/" + PathUri;
@@ -26,11 +23,8 @@ namespace Alarm.ViewModels
                 PathUri = uri.PathAndQuery;
             }
         }
-        public string Summary { get; set; }
-        public DateTime Date { get; set; }
-        public string GUID { get; set; }
-        private bool isSelected;
 
+        private bool isSelected;
         public bool IsSelected
         {
             get => isSelected;
@@ -41,19 +35,9 @@ namespace Alarm.ViewModels
             }
         }
 
-        public DocumentViewModel() : base()
-        { }
-        public DocumentViewModel(IDocument document) : base()
-        {
-            HostUri = document.HostUri;
-            PathUri = document.PathUri;
-            Date = document.Date;
-            GUID = document.GUID;
-            Summary = document.Summary;
-            Title = document.Title;
-        }
         public string ShowingPageName => "ContentView";
         public Page ShowingPage { get; set; }
+
         public Page CreatePageShowing()
         {
             return new View.ContentView();

@@ -2,11 +2,12 @@
 using Model.Interface;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
-namespace Model
+namespace Model.DB
 {
     public class AppDBContext : DbContext
     {
@@ -17,7 +18,7 @@ namespace Model
         {
             if (!_created)
             {
-                //Database.EnsureDeleted();
+                Database.EnsureDeleted();
                 Database.EnsureCreated();
                 _created = true;
             }
@@ -50,7 +51,7 @@ namespace Model
                 var fs = ctx.Categorys.ToList();
                 foreach (var f in fs)
                 {
-                    Console.WriteLine($"{f.DBCategoryId} : {f.Title} , {(f.Documents).GetType().FullName}");
+                    Console.WriteLine($"{f.DBCategoryId} : {f.Title} , {f.Documents.GetType().FullName}");
                 }
             }
         }
@@ -59,23 +60,29 @@ namespace Model
     public class DBCategory
     {
         public int DBCategoryId { get; set; }
+        [Required]
         public string Title { get; set; }
         public virtual ICollection<DBDocument> Documents{ get; set; } = new List<DBDocument>(); /*{ get; set; }*/
     }
-    /*public class DBFetcher {
+    public class DBFetcher {
         public int DBFetcherId { get; set; }
+        [Required]
         public string Name {get; set;}
-        public string FetcherXaml;
-    }*/
+        public string FetcherXaml { get; set; }
+    }
     public class DBDocument : IDocument
     {
         public int DBDocumentId { get; set; }
+        [Required]
         public string Title { get; set; }
         public string HostUri { get; set; }
         public string PathUri { get; set; }
         public string Summary { get; set; }
         public DateTime Date { get; set; }
+        [Required]
         public string GUID { get; set; }
+        
+        public bool IsRead { get; set; }
 
         public DBCategory DBCategory { get; set; }
     }

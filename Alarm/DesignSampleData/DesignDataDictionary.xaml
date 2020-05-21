@@ -3,18 +3,18 @@
                     xmlns:local="clr-namespace:Alarm"
                     xmlns:view ="clr-namespace:Alarm.ViewModels">
     <view:ViewModel.TreeView>
-        <view:CategoryViewModel Title="Science">
-                <view:CategoryViewModel.SiteModels>
-                    <view:SiteViewModel Title="A"></view:SiteViewModel>
-                    <view:SiteViewModel Title="B"></view:SiteViewModel>
-                    <view:SiteViewModel Title="C"></view:SiteViewModel>
-                </view:CategoryViewModel.SiteModels>
-            </view:CategoryViewModel>
-        <view:CategoryViewModel Title="Mathematics">
-            <view:CategoryViewModel.SiteModels>
-                <view:SiteViewModel Title="A"></view:SiteViewModel>
-                <view:SiteViewModel Title="B"></view:SiteViewModel>
-            </view:CategoryViewModel.SiteModels>
-        </view:CategoryViewModel>
+        <view:MockCategoryViewModel Title="Science">
+                <view:MockCategoryViewModel.SiteModels>
+                    <view:MockFetcherViewModel Title="A"></view:MockFetcherViewModel>
+                    <view:MockFetcherViewModel Title="B"></view:MockFetcherViewModel>
+                    <view:MockFetcherViewModel Title="C"></view:MockFetcherViewModel>
+                </view:MockCategoryViewModel.SiteModels>
+            </view:MockCategoryViewModel>
+        <view:MockCategoryViewModel Title="Mathematics">
+            <view:MockCategoryViewModel.SiteModels>
+                <view:MockFetcherViewModel Title="A"></view:MockFetcherViewModel>
+                <view:MockFetcherViewModel Title="B"></view:MockFetcherViewModel>
+            </view:MockCategoryViewModel.SiteModels>
+        </view:MockCategoryViewModel>
     </view:ViewModel.TreeView>
 </view:ViewModel>

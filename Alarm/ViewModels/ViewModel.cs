@@ -3,7 +3,6 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,26 +14,6 @@ using System.Windows.Input;
 
 namespace Alarm.ViewModels
 {
-    public abstract class ViewModelBase : IViewModelBase
-    {
-        private IViewModelBehavior root;
-        //for designer mode
-        public ViewModelBase() { root = null; }
-        public ViewModelBase(IViewModelBehavior behavior)
-        {
-            root = behavior;
-        }
-        public IViewModelBehavior Root
-        {
-            get => root;
-            set => root = value;
-        }
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-    }
     /// <summary>
     /// ViewModel of All
     /// </summary>
@@ -49,8 +28,8 @@ namespace Alarm.ViewModels
             {
                 treeView = new CollectionViewModel<CategoryViewModel>(Root);
                 {
-                    var sc = new CategoryViewModel(this,"Science");
-                    var siteA = new SiteViewModel(this,"A");
+                    var sc = new MockCategoryViewModel(this,"Science");
+                    var siteA = new MockFetcherViewModel(this,"A");
                     {
                         var doc = new Document
                         {
@@ -60,7 +39,7 @@ namespace Alarm.ViewModels
                             GUID = "1",
                             Uri = "https://www.naver.com"
                         };
-                        siteA.Add(new DocumentViewModel(doc));
+                        siteA.Add(new MockDocumentViewModel(doc));
                         doc = new Document
                         {
                             Title = "News2",
@@ -69,17 +48,17 @@ namespace Alarm.ViewModels
                             GUID = "2",
                             Uri = "https://www.google.com"
                         };
-                        siteA.Add(new DocumentViewModel(doc));
+                        siteA.Add(new MockDocumentViewModel(doc));
                     }
                     sc.SiteModels.Add(siteA);
-                    sc.SiteModels.Add(new SiteViewModel(this, "B"));
-                    sc.SiteModels.Add(new SiteViewModel(this, "C"));
+                    sc.SiteModels.Add(new MockFetcherViewModel(this, "B"));
+                    sc.SiteModels.Add(new MockFetcherViewModel(this, "C"));
                     treeView.Add(sc);
                 }
                 {
-                    var yt = new CategoryViewModel(this,"Youtube");
-                    yt.SiteModels.Add(new SiteViewModel(this, "A"));
-                    yt.SiteModels.Add(new SiteViewModel(this, "B"));
+                    var yt = new MockCategoryViewModel(this,"Youtube");
+                    yt.SiteModels.Add(new MockFetcherViewModel(this, "A"));
+                    yt.SiteModels.Add(new MockFetcherViewModel(this, "B"));
                     treeView.Add(yt);
                 }
             }

@@ -37,6 +37,8 @@ namespace Model
             return (new FetcherFilter(fetcher, documents)).OnElapsed;
         }
     }
+    public class PublishEventArg : EventArgs { }
+
     public class DocumentPublisher
     {
         private List<Timer> timers;

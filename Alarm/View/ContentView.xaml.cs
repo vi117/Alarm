@@ -28,7 +28,7 @@ namespace Alarm.View
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            var doc = DataContext as ViewModels.DocumentViewModel;
+            var doc = DataContext as ViewModels.MockDocumentViewModel;
             CBrowser.Address = doc.Uri;
         }
     }

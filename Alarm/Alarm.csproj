@@ -178,10 +178,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\Interface\IDocumentViewModel.cs" />
-    <Compile Include="ViewModels\Interface\ICategoryViewModel.cs" />
-    <Compile Include="ViewModels\Interface\ISiteViewModel.cs" />
+    <Compile Include="ViewModels\DocumentViewModel.cs" />
+    <Compile Include="ViewModels\CategoryViewModel.cs" />
+    <Compile Include="ViewModels\FetcherViewModel.cs" />
     <Compile Include="ViewModels\Interface\IViewModelBase.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="View\AddFetcherWindow.xaml.cs">
       <DependentUpon>AddFetcherWindow.xaml</DependentUpon>
     </Compile>
@@ -212,11 +213,11 @@
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AppCommand.cs" />
-    <Compile Include="ViewModels\CategoryViewModel.cs" />
+    <Compile Include="ViewModels\Mock\MockCategoryViewModel.cs" />
     <Compile Include="ViewModels\CollectionViewModel.cs" />
-    <Compile Include="ViewModels\DocumentViewModel.cs" />
+    <Compile Include="ViewModels\Mock\MockDocumentViewModel.cs" />
     <Compile Include="ViewModels\Interface\IViewModelBehavior.cs" />
-    <Compile Include="ViewModels\SiteViewModel.cs" />
+    <Compile Include="ViewModels\Mock\MockFetcherViewModel.cs" />
     <Compile Include="ViewModels\PageFactory.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Page Include="Themes\Colors.xaml">
