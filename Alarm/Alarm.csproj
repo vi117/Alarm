@@ -182,6 +182,7 @@
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\FetcherViewModel.cs" />
     <Compile Include="ViewModels\Interface\IViewModelBase.cs" />
+    <Compile Include="ViewModels\Updater\MockFetcherViewModelUpdater.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="View\AddFetcherWindow.xaml.cs">
       <DependentUpon>AddFetcherWindow.xaml</DependentUpon>

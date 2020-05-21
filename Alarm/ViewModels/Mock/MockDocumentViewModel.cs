@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Model;
 using System.Windows.Controls;
 using Model.Interface;
+using Alarm.ViewModels.Interface;
 
 namespace Alarm.ViewModels
 {
@@ -19,9 +20,10 @@ namespace Alarm.ViewModels
         public override DateTime Date { get; set; }
         public override string GUID { get; set; }
 
-        public MockDocumentViewModel() : base()
+        public MockDocumentViewModel() : base(null)
         { }
-        public MockDocumentViewModel(IDocument document) : base()
+        public MockDocumentViewModel(IViewModelBehavior behavior) : base(behavior) { }
+        public MockDocumentViewModel(IViewModelBehavior behavior,IDocument document) : base(behavior)
         {
             HostUri = document.HostUri;
             PathUri = document.PathUri;

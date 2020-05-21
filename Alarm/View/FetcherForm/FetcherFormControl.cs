@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Alarm.ViewModels;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Alarm.View.FetcherForm
     public class FetcherFormControl : UserControl, IFetcherView
     {
         virtual public Fetcher GetFetcher() { throw new NotImplementedException(); }
+        virtual public FetcherViewModel GetFetcherViewModel() { throw new NotImplementedException(); }
     }
 }

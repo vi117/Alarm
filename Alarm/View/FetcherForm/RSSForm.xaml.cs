@@ -1,6 +1,8 @@
-﻿using Model;
+﻿using Alarm.ViewModels;
+using Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +31,12 @@ namespace Alarm.View.FetcherForm
         override public Model.Fetcher GetFetcher()
         {
             return new RSSFetcher(URLContent.Text);
+        }
+        override public FetcherViewModel GetFetcherViewModel()
+        {
+            return new MockFetcherViewModel() {
+                Title = FetcherTitle.Text
+            };
         }
         private bool UrlValid(string url)
         {

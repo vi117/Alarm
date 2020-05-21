@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -35,19 +36,26 @@ namespace ConsoleView
                 Console.WriteLine($"Value : {v}");
             }*/
             
+            var q = new Queue<Document>();
             DocumentPublisher publisher = new DocumentPublisher();
             publisher.AddFetcher(new RSSFetcher(@"https://media.daum.net/syndication/economic.rss"));
+            publisher.OnPublished += (o, e) => {    
+                foreach(var doc in e.Documents)
+                {
+                    q.Enqueue(doc);
+                }
+            };
+
             //publisher.AddFetcher(new RSSFetcher(@"http://www.aving.net/rss/life.xml"));
             //error
             //publisher.AddFetcher(new RSSFetcher(@"http://www.ilemonde.com/rss/allArticle.xml"));
-            publisher.Start();
             while (true)
             {
                 while (true)
                 {
-                    var doc = publisher.PopDocument();
-                    if (!(doc is null))
+                    if (q.Count > 0)
                     {
+                        var doc = q.Dequeue();
                         Console.WriteLine(doc.Title);
                     }
                     else break;

@@ -73,15 +73,15 @@
             </Grid.ColumnDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <TreeView ItemsSource="{Binding Path=TreeView}"
-                          x:Name="TreeView">
+                          x:Name="NavTreeView">
                     <ie:Interaction.Triggers>
                         <ie:EventTrigger EventName="SelectedItemChanged">
                             <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
-                                                    CommandParameter="{Binding ElementName=TreeView,Path=SelectedItem}"/>
+                                                    CommandParameter="{Binding ElementName=NavTreeView,Path=SelectedItem}"/>
                         </ie:EventTrigger>
                         <ie:EventTrigger EventName="MouseDoubleClick">
                             <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
-                                                    CommandParameter="{Binding ElementName=TreeView,Path=SelectedItem}"/>
+                                                    CommandParameter="{Binding ElementName=NavTreeView,Path=SelectedItem}"/>
                         </ie:EventTrigger>
                     </ie:Interaction.Triggers>
                 </TreeView>

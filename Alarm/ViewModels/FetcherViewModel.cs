@@ -43,6 +43,7 @@ namespace Alarm.ViewModels
         }
 
         public abstract string Title { get; set; }
+        public int FetcherHashId { get; set; }
 
         public Page CreatePageShowing()
         {

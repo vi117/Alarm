@@ -39,7 +39,7 @@ namespace Alarm.ViewModels
                             GUID = "1",
                             Uri = "https://www.naver.com"
                         };
-                        siteA.Add(new MockDocumentViewModel(doc));
+                        siteA.Add(new MockDocumentViewModel(this,doc));
                         doc = new Document
                         {
                             Title = "News2",
@@ -48,7 +48,7 @@ namespace Alarm.ViewModels
                             GUID = "2",
                             Uri = "https://www.google.com"
                         };
-                        siteA.Add(new MockDocumentViewModel(doc));
+                        siteA.Add(new MockDocumentViewModel(this,doc));
                     }
                     sc.SiteModels.Add(siteA);
                     sc.SiteModels.Add(new MockFetcherViewModel(this, "B"));

@@ -1,6 +1,7 @@
 ﻿using Alarm.ViewModels.Interface;
 using Model.Interface;
 using System;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace Alarm.ViewModels
@@ -25,6 +26,9 @@ namespace Alarm.ViewModels
         }
 
         private bool isSelected;
+
+        protected DocumentViewModel(IViewModelBehavior behavior) : base(behavior) {}
+
         public bool IsSelected
         {
             get => isSelected;

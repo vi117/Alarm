@@ -29,13 +29,15 @@ namespace Model
                 var doclist = from item in items
                               let title = item.Element("title").Value
                               let description = item.Element("description").Value
-                              let guid = item.Element("guid").Value
+                              let guid = (item.Element("guid")?.Value) ?? title
                               let pubData = item.Element("pubDate").Value
+                              let wholeUri = item.Element("link").Value
                               select DocumentBuilder.Doc()
                                 .Title(title)
                                 .Summary(description)
                                 .GUID(guid)
                                 .pubDate(pubData)
+                                .URL(wholeUri)
                                 .Build();
                 return doclist.ToList();
             }

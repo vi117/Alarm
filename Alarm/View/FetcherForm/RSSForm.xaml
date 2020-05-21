@@ -11,8 +11,16 @@
             <ColumnDefinition Width="1*" MinWidth="50"/>
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="URL" FontSize="16"/>
-        <local:LineInput Grid.Column="1" BackgroundText="URLContent" FontSize="16" x:Name="URLContent"
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Content="Fetcher Title" FontSize="16"/>
+        <local:LineInput Grid.Column="1" BackgroundText="Fetcher Title" FontSize="16" x:Name="FetcherTitle"
+                         BackgroundTextFill="Gray">
+        </local:LineInput>
+        <Label Content="URL" FontSize="16" Grid.Row="1"/>
+        <local:LineInput Grid.Row="1" Grid.Column="1" BackgroundText="URLContent" FontSize="16" x:Name="URLContent"
                          BackgroundTextFill="Gray" Validation="UrlValid">
         </local:LineInput>
     </Grid>

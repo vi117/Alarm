@@ -59,6 +59,11 @@ namespace Model
             ret.HostUri = t;
             return this;
         }
+        public DocumentBuilder URL(string t)
+        {
+            ret.Uri = t;
+            return this;
+        }
         public DocumentBuilder Summary(string t)
         {
             ret.Summary = t;

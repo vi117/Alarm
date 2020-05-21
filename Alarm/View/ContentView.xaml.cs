@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace Alarm.View
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             var doc = DataContext as ViewModels.MockDocumentViewModel;
+            Trace.WriteLine("Go to " + doc.Uri);
             CBrowser.Address = doc.Uri;
         }
     }

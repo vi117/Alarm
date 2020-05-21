@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Timers;
 
 namespace Model
@@ -9,16 +10,18 @@ namespace Model
     {
         private Fetcher fetcher;
         private HashSet<string> GUIDSet;
-        private Queue<Document> documents;
-        public FetcherFilter(Fetcher fetcher,Queue<Document> documents)
+
+        public event PublishedEventHandler OnPublished;
+
+        public FetcherFilter(Fetcher fetcher)
         {
             this.fetcher = fetcher;
-            this.documents = documents;
             this.GUIDSet = new HashSet<string>();
         }
 
         public async void OnElapsed(object obj, ElapsedEventArgs args)
         {
+            Queue<Document> documents = new Queue<Document>();
             var docList = await fetcher.Fetch();
             foreach (Document doc in docList)
             {
@@ -31,49 +34,67 @@ namespace Model
                     GUIDSet.Add(doc.GUID);
                 }
             }
+            
+            OnPublished?.Invoke(fetcher, new PublishedEventArg(documents));
         }
-        static public ElapsedEventHandler GetHandler(Fetcher fetcher, Queue<Document> documents)
+        static public ElapsedEventHandler GetHandler(Fetcher fetcher, 
+            PublishedEventHandler publishedEventHandler)
         {
-            return (new FetcherFilter(fetcher, documents)).OnElapsed;
+            var ret = new FetcherFilter(fetcher);
+            ret.OnPublished += publishedEventHandler;
+            return ret.OnElapsed;
         }
     }
-    public class PublishEventArg : EventArgs { }
+    public class PublishedEventArg : EventArgs {
+        private Queue<Document> documents;
+
+        public PublishedEventArg(Queue<Document> documents)
+        {
+            Documents = documents;
+        }
+
+        public Queue<Document> Documents { get => documents; set => documents = value; }
+    }
+    public delegate void PublishedEventHandler(object sender, PublishedEventArg arg);
 
     public class DocumentPublisher
     {
         private List<Timer> timers;
-        private Queue<Document> documents;
+
+        public event PublishedEventHandler OnPublished;
+
         public DocumentPublisher()
         {
             timers = new List<Timer>();
-            documents = new Queue<Document>();
+            //OnPublished += (o, e) => { };
         }
         public void AddFetcher(Fetcher fetcher)
         {
-            var t = new Timer();
-            t.AutoReset = true;
-            t.Interval = fetcher.Interval.TotalMilliseconds;
-            t.Elapsed += FetcherFilter.GetHandler(fetcher, documents);
+            var t = new Timer
+            {
+                AutoReset = true,
+                Interval = fetcher.Interval.TotalMilliseconds
+            };
+            t.Elapsed += FetcherFilter.GetHandler(fetcher, (o,e)=> { OnPublished?.Invoke(o, e); });
             timers.Add(t);
+            t.Start();
         }
-        public void Start()
+        /*public void Start()
         {
             foreach(var t in timers)
             {
                 t.Start();
             }
-        }
+        }*/
         /// <summary>
-        /// Pop the subscribed document
+        /// refresh timers.
         /// </summary>
-        /// <returns>document or null if queue is empty</returns>
-        public Document PopDocument()
+        public void Refresh()
         {
-            lock (documents)
+            foreach(var t in timers)
             {
-                if (documents.Count != 0)
-                    return documents.Dequeue();
-                else return null;
+                t.Stop();
+                t.Start();
             }
         }
     }

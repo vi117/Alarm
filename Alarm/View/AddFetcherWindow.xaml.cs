@@ -1,4 +1,5 @@
 ﻿using Alarm.View.FetcherForm;
+using Alarm.ViewModels;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,13 @@ namespace Alarm.View
                 return null;
             else
                 return fetcherView.GetFetcher();
+        }
+        public FetcherViewModel GetFetcherViewModel()
+        {
+            if (fetcherView == null)
+                return null;
+            else
+                return fetcherView.GetFetcherViewModel();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
