@@ -27,7 +27,7 @@ namespace Alarm.ViewModels
 
         private bool isSelected;
 
-        protected DocumentViewModel(IViewModelBehavior behavior) : base(behavior) {}
+        protected DocumentViewModel() : base() {}
 
         public bool IsSelected
         {

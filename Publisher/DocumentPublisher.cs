@@ -68,6 +68,10 @@ namespace Model
             timers = new List<Timer>();
             //OnPublished += (o, e) => { };
         }
+        /// <summary>
+        /// add fetcher. 
+        /// </summary>
+        /// <param name="fetcher"></param>
         public void AddFetcher(Fetcher fetcher)
         {
             var t = new Timer
@@ -76,6 +80,17 @@ namespace Model
                 Interval = fetcher.Interval.TotalMilliseconds
             };
             t.Elapsed += FetcherFilter.GetHandler(fetcher, (o,e)=> { OnPublished?.Invoke(o, e); });
+            timers.Add(t);
+            t.Start();
+        }
+        public void AddFetcher(Fetcher fetcher, PublishedEventHandler eventHandler)
+        {
+            var t = new Timer
+            {
+                AutoReset = true,
+                Interval = fetcher.Interval.TotalMilliseconds
+            };
+            t.Elapsed += FetcherFilter.GetHandler(fetcher, eventHandler + ((o, e) => { OnPublished?.Invoke(o, e); }));
             timers.Add(t);
             t.Start();
         }

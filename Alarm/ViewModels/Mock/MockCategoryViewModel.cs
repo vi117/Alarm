@@ -21,12 +21,12 @@ namespace Alarm.ViewModels
         public MockCategoryViewModel()
         {
             this.title = "No Named Category";
+            siteModels = new CollectionViewModel<FetcherViewModel>(this);
         }
-        public MockCategoryViewModel(ViewModel viewModel, string title)
+        public MockCategoryViewModel(string title)
         {
-            Root = viewModel;
             this.title = title;
-            siteModels = new CollectionViewModel<FetcherViewModel>(viewModel);
+            siteModels = new CollectionViewModel<FetcherViewModel>(this);
         }
         public override string Title
         {

@@ -5,17 +5,12 @@ namespace Alarm.ViewModels
 {
     public abstract class ViewModelBase : IViewModelBase
     {
-        private IViewModelBehavior root;
-        //for designer mode
-        public ViewModelBase() { root = null; }
-        public ViewModelBase(IViewModelBehavior behavior)
+        public IViewModelBase Parent { get; set; }
+
+        public ViewModelBase() { Parent = null; }
+        public ViewModelBase(IViewModelBase parent)
         {
-            root = behavior;
-        }
-        public IViewModelBehavior Root
-        {
-            get => root;
-            set => root = value;
+            Parent = parent;
         }
         protected void OnPropertyChanged(string propertyName)
         {

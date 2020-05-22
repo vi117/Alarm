@@ -14,15 +14,14 @@ namespace Alarm.ViewModels
 
         public MockFetcherViewModel()
         {
-            documents = new CollectionViewModel<DocumentViewModel>();
+            documents = new CollectionViewModel<DocumentViewModel>(this);
             IsSelected = false;
             IsExpanded = false;
         }
-        public MockFetcherViewModel(ViewModel viewModel, string title)
+        public MockFetcherViewModel(string title)
         {
-            Root = viewModel;
             this.title = title;
-            documents = new CollectionViewModel<DocumentViewModel>(Root);
+            documents = new CollectionViewModel<DocumentViewModel>(this);
             IsSelected = false;
             IsExpanded = false;
         }

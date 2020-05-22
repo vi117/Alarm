@@ -12,7 +12,7 @@
       d:DataContext="{d:DesignData Source=/DesignSampleData/DesignNewsSample.xaml}"
       >
     <Page.Resources>
-        <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:MockDocumentViewModel}" >
+        <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -27,15 +27,13 @@
         </Style>
     </Page.Resources>
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ListBox x:Name="ListBox" ItemTemplate="{StaticResource DocumentTemplate}" ItemsSource="{Binding Path=Documents}">
-                <ie:Interaction.Triggers>
-                    <ie:EventTrigger EventName="MouseDoubleClick">
-                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
+        <ListBox x:Name="ListBox" ItemTemplate="{StaticResource DocumentTemplate}" ItemsSource="{Binding Path=Documents}">
+            <ie:Interaction.Triggers>
+                <ie:EventTrigger EventName="MouseDoubleClick">
+                    <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
                                                     CommandParameter="{Binding ElementName=ListBox,Path=SelectedItem}"></ie:InvokeCommandAction>
-                    </ie:EventTrigger>
-                </ie:Interaction.Triggers>
-            </ListBox>
-        </ScrollViewer>
+                </ie:EventTrigger>
+            </ie:Interaction.Triggers>
+        </ListBox>
     </Grid>
 </Page>

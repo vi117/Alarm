@@ -20,10 +20,9 @@ namespace Alarm.ViewModels
         public override DateTime Date { get; set; }
         public override string GUID { get; set; }
 
-        public MockDocumentViewModel() : base(null)
+        public MockDocumentViewModel() : base()
         { }
-        public MockDocumentViewModel(IViewModelBehavior behavior) : base(behavior) { }
-        public MockDocumentViewModel(IViewModelBehavior behavior,IDocument document) : base(behavior)
+        public MockDocumentViewModel(IDocument document) : base()
         {
             HostUri = document.HostUri;
             PathUri = document.PathUri;

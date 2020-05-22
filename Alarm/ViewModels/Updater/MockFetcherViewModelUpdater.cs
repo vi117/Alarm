@@ -23,15 +23,18 @@ namespace Alarm.ViewModels.Updater
             {
                 foreach (var doc in args.Documents)
                 {
-                    fetcherView.Documents.Add(new MockDocumentViewModel(fetcherView.Root)
+                    lock (fetcherView.Documents.colLock)
                     {
-                        Title = doc.Title,
-                        Summary = doc.Summary,
-                        Date = doc.Date,
-                        HostUri = doc.HostUri,
-                        PathUri = doc.PathUri,
-                        GUID = doc.GUID,
-                    });
+                        fetcherView.Documents.Add(new MockDocumentViewModel()
+                        {
+                            Title = doc.Title,
+                            Summary = doc.Summary,
+                            Date = doc.Date,
+                            HostUri = doc.HostUri,
+                            PathUri = doc.PathUri,
+                            GUID = doc.GUID,
+                        });
+                    }
                 }
             }
         }

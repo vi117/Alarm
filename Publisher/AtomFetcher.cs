@@ -8,6 +8,9 @@ namespace Model {
 	public class AtomFetcher : Fetcher {
 		private string uri;
 
+		//serialize ¿ëµµs
+		public AtomFetcher() { }
+
 		public AtomFetcher(string uri) {
 			this.uri = uri;
 		}

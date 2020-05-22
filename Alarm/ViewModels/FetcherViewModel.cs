@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Alarm.ViewModels.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,11 @@ namespace Alarm.ViewModels
         public Page ShowingPage { get; set; }
 
         public abstract CollectionViewModel<DocumentViewModel> Documents { get; set; }
+
+        public FetcherViewModel()
+        {
+            Parent = null;
+        }
 
         public bool IsSelected
         {

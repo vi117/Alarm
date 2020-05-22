@@ -71,21 +71,19 @@
                 <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="5*" MinWidth="10"/>
             </Grid.ColumnDefinitions>
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <TreeView ItemsSource="{Binding Path=TreeView}"
+            <TreeView ItemsSource="{Binding Path=TreeView}"
                           x:Name="NavTreeView">
-                    <ie:Interaction.Triggers>
-                        <ie:EventTrigger EventName="SelectedItemChanged">
-                            <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="SelectedItemChanged">
+                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
                                                     CommandParameter="{Binding ElementName=NavTreeView,Path=SelectedItem}"/>
-                        </ie:EventTrigger>
-                        <ie:EventTrigger EventName="MouseDoubleClick">
-                            <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
+                    </ie:EventTrigger>
+                    <ie:EventTrigger EventName="MouseDoubleClick">
+                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
                                                     CommandParameter="{Binding ElementName=NavTreeView,Path=SelectedItem}"/>
-                        </ie:EventTrigger>
-                    </ie:Interaction.Triggers>
-                </TreeView>
-            </ScrollViewer>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
+            </TreeView>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
             <Frame Grid.Column="2" x:Name="PageFrame" NavigationUIVisibility="Hidden"
                    Content="{Binding Path=DisplayPage, Mode=TwoWay}"
