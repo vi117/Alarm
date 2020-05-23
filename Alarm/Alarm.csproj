@@ -178,11 +178,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\DB\DBCategoryViewModel.cs" />
+    <Compile Include="ViewModels\DB\DBCollectionViewModel.cs" />
+    <Compile Include="ViewModels\DB\DBViewModel.cs" />
     <Compile Include="ViewModels\DB\ViewModelLoader.cs" />
     <Compile Include="ViewModels\DocumentViewModel.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\FetcherViewModel.cs" />
     <Compile Include="ViewModels\Interface\IViewModelBase.cs" />
+    <Compile Include="ViewModels\Mock\MockViewModel.cs" />
     <Compile Include="ViewModels\Updater\MockFetcherViewModelUpdater.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="View\AddFetcherWindow.xaml.cs">
@@ -301,6 +305,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

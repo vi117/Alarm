@@ -90,7 +90,7 @@ namespace Alarm.View
         {
             InitializeComponent();
             publisher = new DocumentPublisher();
-            viewModel = new ViewModel();
+            viewModel = new MockViewModel();
             DataContext = viewModel;
             BindCommand();
         }
