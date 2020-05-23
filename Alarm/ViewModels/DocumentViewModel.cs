@@ -16,7 +16,7 @@ namespace Alarm.ViewModels
         public abstract string GUID { get; set; }
         public string Uri
         {
-            get => HostUri + "/" + PathUri;
+            get => HostUri + PathUri;
             set
             {
                 var uri = new Uri(value);
