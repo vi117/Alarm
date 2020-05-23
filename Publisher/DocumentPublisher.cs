@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Model.Interface;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace Model
 {
-    class FetcherFilter
+    class FetcherFilter : INotifyPublished
     {
         private Fetcher fetcher;
         private HashSet<string> GUIDSet;
@@ -57,10 +59,10 @@ namespace Model
     }
     public delegate void PublishedEventHandler(object sender, PublishedEventArg arg);
 
-    public class DocumentPublisher
+    public class DocumentPublisher : INotifyPublished
     {
         private List<Timer> timers;
-
+        const int ImmediateTime = 100;
         public event PublishedEventHandler OnPublished;
 
         public DocumentPublisher()
@@ -79,7 +81,15 @@ namespace Model
                 AutoReset = true,
                 Interval = fetcher.Interval.TotalMilliseconds
             };
-            t.Elapsed += FetcherFilter.GetHandler(fetcher, (o,e)=> { OnPublished?.Invoke(o, e); });
+            var ImmediateT = new Timer
+            {
+                AutoReset = false,
+                Interval = ImmediateTime
+            };
+            var action = FetcherFilter.GetHandler(fetcher, (o, e) => { OnPublished?.Invoke(o, e); });
+            t.Elapsed += action;
+            ImmediateT.Elapsed += action;
+            ImmediateT.Start();
             timers.Add(t);
             t.Start();
         }
@@ -90,7 +100,15 @@ namespace Model
                 AutoReset = true,
                 Interval = fetcher.Interval.TotalMilliseconds
             };
-            t.Elapsed += FetcherFilter.GetHandler(fetcher, eventHandler + ((o, e) => { OnPublished?.Invoke(o, e); }));
+            var ImmediateT = new Timer
+            {
+                AutoReset = false,
+                Interval = ImmediateTime
+            };
+            var action = FetcherFilter.GetHandler(fetcher, eventHandler + ((o, e) => { OnPublished?.Invoke(o, e); }));
+            ImmediateT.Elapsed += action;
+            ImmediateT.Start();
+            t.Elapsed += action;
             timers.Add(t);
             t.Start();
         }

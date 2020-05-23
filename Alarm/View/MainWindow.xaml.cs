@@ -45,7 +45,7 @@ namespace Alarm.View
                     if (b.HasValue && b.Value)
                     {
                         var fetcher = window.GetFetcher();
-                        fetcher.Interval = TimeSpan.FromSeconds(1);
+                        fetcher.Interval = TimeSpan.FromSeconds(30);
                         publisher.AddFetcher(fetcher);
                         var item = NavTreeView.SelectedItem;
                         if (item == null)
