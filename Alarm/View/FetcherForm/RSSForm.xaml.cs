@@ -1,6 +1,8 @@
-﻿using Publisher;
+﻿using Alarm.ViewModels;
+using Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ViewModel;
 
 namespace Alarm.View.FetcherForm
 {
@@ -26,9 +29,15 @@ namespace Alarm.View.FetcherForm
             InitializeComponent();
         }
 
-        override public Publisher.Fetcher GetFetcher()
+        override public Model.Fetcher GetFetcher()
         {
             return new RSSFetcher(URLContent.Text);
+        }
+        override public FetcherViewModel GetFetcherViewModel()
+        {
+            return new MockFetcherViewModel() {
+                Title = FetcherTitle.Text
+            };
         }
         private bool UrlValid(string url)
         {

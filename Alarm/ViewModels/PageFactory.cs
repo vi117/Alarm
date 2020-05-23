@@ -10,29 +10,34 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
-
+using ViewModel;
+namespace Alarm.ViewModels.Interface { }
 namespace Alarm.ViewModels
 {
-    public interface IPageShow
+    class PageFactory : ViewModel.IPageFactory
     {
-        string ShowingPageName
+        public object Generate(IPageShow modelExpressed)
         {
-            get;
-        }
-        Page ShowingPage
-        {
-            get; set;
-        }
-        Page CreatePageShowing();
-    }
-    class PageFactory
-    {
-        public static Page Generate(IPageShow modelExpressed)
-        {
-            var page = modelExpressed.CreatePageShowing();
+            var pageName = modelExpressed.ShowingPageName;
+            Page page = null;
+            switch (pageName) {
+                case "ContentView":
+                    page = new View.ContentView();
+                    break;
+                case "ContentListView":
+                    page = new View.ContentListView();
+                    break;
+                case "CategoryView":
+                    page = new View.CategoryView();
+                    break;
+                default:
+                    page = new View.EmptyPage();
+                    break;
+            }
             page.DataContext = modelExpressed;
             modelExpressed.ShowingPage = page;
             return page;
         }
+        public static PageFactory Factory { get; } = new PageFactory();
     }
 }

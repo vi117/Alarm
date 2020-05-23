@@ -4,12 +4,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Publisher
+namespace Model
 {
     /// <summary>
     /// Base of all fetcher class
     /// Property setter must exist.
     /// </summary>
+    [Serializable]
     abstract public class Fetcher
     {
         private TimeSpan interval;

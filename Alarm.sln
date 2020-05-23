@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alarm", "Alarm\Alarm.csproj
 		{DBD6C19B-C48C-4E60-A80C-CC944F86D27D} = {DBD6C19B-C48C-4E60-A80C-CC944F86D27D}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Publisher", "Publisher\Publisher.csproj", "{DBD6C19B-C48C-4E60-A80C-CC944F86D27D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Publisher\Model.csproj", "{DBD6C19B-C48C-4E60-A80C-CC944F86D27D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleView", "ConsoleView\ConsoleView.csproj", "{1624F286-EECC-467C-8291-D95A9478E7CA}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -18,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummaryDocument", "SummaryDocument\SummaryDocument.csproj", "{D03E84E5-5560-42EF-AAE0-E01CFF8D3782}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextRankTest", "TextRank\TextRankTest.csproj", "{1E1F7623-BC11-4BE7-BFF2-48D034AF3084}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{48CD1A49-9D54-45D1-B94F-F991417E9250}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{1E1F7623-BC11-4BE7-BFF2-48D034AF3084}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E1F7623-BC11-4BE7-BFF2-48D034AF3084}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E1F7623-BC11-4BE7-BFF2-48D034AF3084}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48CD1A49-9D54-45D1-B94F-F991417E9250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48CD1A49-9D54-45D1-B94F-F991417E9250}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48CD1A49-9D54-45D1-B94F-F991417E9250}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48CD1A49-9D54-45D1-B94F-F991417E9250}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

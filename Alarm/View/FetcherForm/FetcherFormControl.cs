@@ -1,10 +1,12 @@
-﻿using Publisher;
+﻿using Alarm.ViewModels;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using ViewModel;
 
 namespace Alarm.View.FetcherForm
 {
@@ -14,5 +16,6 @@ namespace Alarm.View.FetcherForm
     public class FetcherFormControl : UserControl, IFetcherView
     {
         virtual public Fetcher GetFetcher() { throw new NotImplementedException(); }
+        virtual public FetcherViewModel GetFetcherViewModel() { throw new NotImplementedException(); }
     }
 }

@@ -6,7 +6,8 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:ie="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Alarm.View"
-        xmlns:view ="clr-namespace:Alarm.ViewModels"
+        xmlns:view ="clr-namespace:ViewModel;assembly=ViewModel"
+        xmlns:cmd ="clr-namespace:Alarm.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
         Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100">
@@ -16,7 +17,7 @@
             ItemsSource="{Binding Path=SiteModels}">
             <TextBlock Text="{Binding Path=Title}"/>
         </HierarchicalDataTemplate>
-        <DataTemplate DataType="{x:Type view:SiteViewModel}">
+        <DataTemplate DataType="{x:Type view:FetcherViewModel}">
             <TextBlock Text="{Binding Path=Title}"></TextBlock>
         </DataTemplate>
         <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
@@ -46,7 +47,7 @@
             <Button Content="&#xE710;" Grid.Column="0">
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
-                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.ShowAddFetcherWindowCommand}"/>
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.ShowAddFetcherWindowCommand}"/>
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </Button>
@@ -57,7 +58,7 @@
             <Button Content="&#xE713;" Grid.Column="5">
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
-                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.ShowSettingWindowCommand}"/>
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.ShowSettingWindowCommand}"/>
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </Button>
@@ -70,21 +71,19 @@
                 <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="5*" MinWidth="10"/>
             </Grid.ColumnDefinitions>
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <TreeView ItemsSource="{Binding Path=TreeView}"
-                          x:Name="TreeView">
-                    <ie:Interaction.Triggers>
-                        <ie:EventTrigger EventName="SelectedItemChanged">
-                            <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
-                                                    CommandParameter="{Binding ElementName=TreeView,Path=SelectedItem}"></ie:InvokeCommandAction>
-                        </ie:EventTrigger>
-                        <ie:EventTrigger EventName="MouseDoubleClick">
-                            <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
-                                                    CommandParameter="{Binding ElementName=TreeView,Path=SelectedItem}"></ie:InvokeCommandAction>
-                        </ie:EventTrigger>
-                    </ie:Interaction.Triggers>
-                </TreeView>
-            </ScrollViewer>
+            <TreeView ItemsSource="{Binding Path=TreeView}"
+                          x:Name="NavTreeView">
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="SelectedItemChanged">
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.NavigateCommand}"
+                                                    CommandParameter="{Binding ElementName=NavTreeView,Path=SelectedItem}"/>
+                    </ie:EventTrigger>
+                    <ie:EventTrigger EventName="MouseDoubleClick">
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.NavigateCommand}"
+                                                    CommandParameter="{Binding ElementName=NavTreeView,Path=SelectedItem}"/>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
+            </TreeView>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
             <Frame Grid.Column="2" x:Name="PageFrame" NavigationUIVisibility="Hidden"
                    Content="{Binding Path=DisplayPage, Mode=TwoWay}"

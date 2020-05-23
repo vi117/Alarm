@@ -4,8 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Alarm.View"
-      xmlns:view ="clr-namespace:Alarm.ViewModels"
-      xmlns:pp="clr-namespace:Publisher;assembly=Publisher"
+      xmlns:view ="clr-namespace:ViewModel;assembly=ViewModel"
+      xmlns:cmd ="clr-namespace:Alarm.ViewModels"
       xmlns:ie="http://schemas.microsoft.com/expression/2010/interactivity"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -20,7 +20,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock FontSize="20" Text="{Binding Path=Title}"></TextBlock>
-                <TextBlock Text="{Binding Path=Summary}" Grid.Row="1"></TextBlock>
+                <TextBlock Text="{Binding Path=Summary}" Grid.Row="1" TextWrapping="Wrap"></TextBlock>
             </Grid>
         </DataTemplate>
         <Style TargetType="ListBoxItem">
@@ -28,15 +28,14 @@
         </Style>
     </Page.Resources>
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ListBox x:Name="ListBox" ItemTemplate="{StaticResource DocumentTemplate}" ItemsSource="{Binding Path=Documents}">
-                <ie:Interaction.Triggers>
-                    <ie:EventTrigger EventName="MouseDoubleClick">
-                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
+        <ListBox x:Name="ListBox" ItemTemplate="{StaticResource DocumentTemplate}" ItemsSource="{Binding Path=Documents}" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <ie:Interaction.Triggers>
+                <ie:EventTrigger EventName="MouseDoubleClick">
+                    <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.NavigateCommand}"
                                                     CommandParameter="{Binding ElementName=ListBox,Path=SelectedItem}"></ie:InvokeCommandAction>
-                    </ie:EventTrigger>
-                </ie:Interaction.Triggers>
-            </ListBox>
-        </ScrollViewer>
+                </ie:EventTrigger>
+            </ie:Interaction.Triggers>
+        </ListBox>
     </Grid>
 </Page>

@@ -1,9 +1,9 @@
-﻿<local:SiteViewModel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<local:MockFetcherViewModel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Alarm.ViewModels">
-    <local:SiteViewModel.Documents>
-        <local:DocumentViewModel Title="News1" Summary="News1"/>
-        <local:DocumentViewModel Title="News2" Summary="News2"/>
-        <local:DocumentViewModel Title="News3" Summary="News3"/>
-    </local:SiteViewModel.Documents>
-</local:SiteViewModel>
+                    xmlns:local="clr-namespace:ViewModel;assembly=ViewModel">
+    <local:MockFetcherViewModel.DesignerDocuments>
+        <local:MockDocumentViewModel Title="News1" Summary="News1"/>
+        <local:MockDocumentViewModel Title="News2" Summary="News2"/>
+        <local:MockDocumentViewModel Title="News3" Summary="News3"/>
+    </local:MockFetcherViewModel.DesignerDocuments>
+</local:MockFetcherViewModel>

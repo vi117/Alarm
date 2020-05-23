@@ -1,5 +1,6 @@
 ﻿using Alarm.View.FetcherForm;
-using Publisher;
+using Alarm.ViewModels;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ViewModel;
 
 namespace Alarm.View
 {
@@ -41,6 +43,13 @@ namespace Alarm.View
                 return null;
             else
                 return fetcherView.GetFetcher();
+        }
+        public FetcherViewModel GetFetcherViewModel()
+        {
+            if (fetcherView == null)
+                return null;
+            else
+                return fetcherView.GetFetcherViewModel();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
