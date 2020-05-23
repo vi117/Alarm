@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Alarm.ViewModels;
 using CefSharp;
 using CefSharp.Wpf;
 
@@ -21,6 +22,7 @@ namespace Alarm
         {
             AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
             InitializeCefSharp();
+            WPFPlatform.Register();
         }
         public void InitializeCefSharp(){
             var settings = new CefSettings();

@@ -1,12 +1,13 @@
-﻿using Alarm.ViewModels.Interface;
-using System.Windows.Controls;
+﻿using ViewModel.Interface;
+using System.Collections.Specialized;
 
-namespace Alarm.ViewModels
+
+namespace ViewModel
 {
     public abstract class CategoryViewModel : ViewModelBase, IPageShow
     {
         public string ShowingPageName => "CategoryView";
-        public Page ShowingPage { get; set; }
+        public object ShowingPage { get; set; }
         private bool isSelected = false;
         private bool isExpanded = false;
 
@@ -35,12 +36,7 @@ namespace Alarm.ViewModels
                 }
             }
         }
-        public abstract CollectionViewModel<FetcherViewModel> SiteModels { get; set; }
+        public abstract ICollectionViewModel<FetcherViewModel> SiteModels { get; }
         public abstract string Title { get; set; }
-
-        public Page CreatePageShowing()
-        {
-            return new View.CategoryView();
-        }
     }
 }

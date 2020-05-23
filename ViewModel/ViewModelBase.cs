@@ -1,7 +1,7 @@
-﻿using Alarm.ViewModels.Interface;
+﻿using ViewModel.Interface;
 using System.ComponentModel;
 
-namespace Alarm.ViewModels
+namespace ViewModel
 {
     public abstract class ViewModelBase : IViewModelBase
     {

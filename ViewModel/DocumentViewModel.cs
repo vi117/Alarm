@@ -1,10 +1,9 @@
-﻿using Alarm.ViewModels.Interface;
+﻿using ViewModel.Interface;
 using Model.Interface;
 using System;
 using System.Linq;
-using System.Windows.Controls;
 
-namespace Alarm.ViewModels
+namespace ViewModel
 {
     public abstract class DocumentViewModel : ViewModelBase, IPageShow, IDocument
     {
@@ -40,11 +39,6 @@ namespace Alarm.ViewModels
         }
 
         public string ShowingPageName => "ContentView";
-        public Page ShowingPage { get; set; }
-
-        public Page CreatePageShowing()
-        {
-            return new View.ContentView();
-        }
+        public object ShowingPage { get; set; }
     }
 }

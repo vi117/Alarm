@@ -178,17 +178,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\DB\DBCategoryViewModel.cs" />
-    <Compile Include="ViewModels\DB\DBCollectionViewModel.cs" />
-    <Compile Include="ViewModels\DB\DBViewModel.cs" />
-    <Compile Include="ViewModels\DB\ViewModelLoader.cs" />
-    <Compile Include="ViewModels\DocumentViewModel.cs" />
-    <Compile Include="ViewModels\CategoryViewModel.cs" />
-    <Compile Include="ViewModels\FetcherViewModel.cs" />
-    <Compile Include="ViewModels\Interface\IViewModelBase.cs" />
-    <Compile Include="ViewModels\Mock\MockViewModel.cs" />
-    <Compile Include="ViewModels\Updater\MockFetcherViewModelUpdater.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\PlatformService.cs" />
     <Compile Include="View\AddFetcherWindow.xaml.cs">
       <DependentUpon>AddFetcherWindow.xaml</DependentUpon>
     </Compile>
@@ -219,13 +209,7 @@
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AppCommand.cs" />
-    <Compile Include="ViewModels\Mock\MockCategoryViewModel.cs" />
-    <Compile Include="ViewModels\CollectionViewModel.cs" />
-    <Compile Include="ViewModels\Mock\MockDocumentViewModel.cs" />
-    <Compile Include="ViewModels\Interface\IViewModelBehavior.cs" />
-    <Compile Include="ViewModels\Mock\MockFetcherViewModel.cs" />
     <Compile Include="ViewModels\PageFactory.cs" />
-    <Compile Include="ViewModels\ViewModel.cs" />
     <Page Include="Themes\Colors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -305,7 +289,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -319,6 +302,10 @@
     <ProjectReference Include="..\Publisher\Model.csproj">
       <Project>{dbd6c19b-c48c-4e60-a80c-cc944f86d27d}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModel\ViewModel.csproj">
+      <Project>{48CD1A49-9D54-45D1-B94F-F991417E9250}</Project>
+      <Name>ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

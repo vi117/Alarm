@@ -1,13 +1,14 @@
-﻿using System;
+﻿using ViewModel.Interface;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Forms;
 
-namespace Alarm.ViewModels
+
+namespace ViewModel
 {
     public class MockCategoryViewModel : CategoryViewModel
     {
@@ -39,14 +40,15 @@ namespace Alarm.ViewModels
                 OnPropertyChanged(nameof(Title));
             }
         }
-        public override CollectionViewModel<FetcherViewModel> SiteModels
+        public CollectionViewModel<FetcherViewModel> DesignerSiteModels
         {
             get => siteModels;
-            set
-            {
-                siteModels = value;
-                OnPropertyChanged(nameof(SiteModels));
-            }
+        }
+        public override
+            ICollectionViewModel<FetcherViewModel> 
+            SiteModels
+        {
+            get => siteModels;
         }
     }
 }

@@ -1,17 +1,16 @@
-﻿using Model;
+﻿using ViewModel.Interface;
+using Model;
+using Model.DB;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Alarm.ViewModels
+namespace ViewModel
 {
-    class MockViewModel : ViewModel
+    public class MockViewModel : ViewModel
     {
         private CollectionViewModel<CategoryViewModel> treeView;
         public MockViewModel()
         {
+            var context = new AppDBContext();
             {
                 treeView = new CollectionViewModel<CategoryViewModel>(this);
                 {
@@ -50,14 +49,13 @@ namespace Alarm.ViewModels
                 }
             }
         }
-        public override CollectionViewModel<CategoryViewModel> TreeView
+        public CollectionViewModel<CategoryViewModel> DesignerTreeView
         {
             get => treeView;
-            set
-            {
-                treeView = value;
-                OnPropertyChanged(nameof(TreeView));
-            }
+        }
+        public override ICollectionViewModel<CategoryViewModel> TreeView
+        {
+            get => treeView;
         }
     }
 }

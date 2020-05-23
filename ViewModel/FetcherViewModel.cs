@@ -1,12 +1,11 @@
-﻿using Alarm.ViewModels.Interface;
+﻿using ViewModel.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
-namespace Alarm.ViewModels
+namespace ViewModel
 {
     public abstract class FetcherViewModel : ViewModelBase, IPageShow
     {
@@ -14,9 +13,9 @@ namespace Alarm.ViewModels
         private bool isExpanded;
 
         public string ShowingPageName => "ContentListView";
-        public Page ShowingPage { get; set; }
+        public object ShowingPage { get; set; }
 
-        public abstract CollectionViewModel<DocumentViewModel> Documents { get; set; }
+        public abstract ICollectionViewModel<DocumentViewModel> Documents { get; }
 
         public FetcherViewModel()
         {
@@ -49,11 +48,5 @@ namespace Alarm.ViewModels
         }
 
         public abstract string Title { get; set; }
-        public int FetcherHashId { get; set; }
-
-        public Page CreatePageShowing()
-        {
-            return new View.ContentListView();
-        }
     }
 }

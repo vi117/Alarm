@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ViewModel.Interface;
+using Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
-namespace Alarm.ViewModels
+namespace ViewModel
 {
     public class MockFetcherViewModel : FetcherViewModel
     {
@@ -34,14 +35,13 @@ namespace Alarm.ViewModels
                 OnPropertyChanged(nameof(Title));
             }
         }
-        public override CollectionViewModel<DocumentViewModel> Documents
+        public CollectionViewModel<DocumentViewModel> DesignerDocuments
         {
             get => documents;
-            set
-            {
-                documents = value;
-                OnPropertyChanged(nameof(Documents));
-            }
+        }
+        public override ICollectionViewModel<DocumentViewModel> Documents
+        {
+            get => documents;
         }
 
 

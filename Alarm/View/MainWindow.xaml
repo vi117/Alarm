@@ -6,8 +6,8 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:ie="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Alarm.View"
-        xmlns:view ="clr-namespace:Alarm.ViewModels"
-        xmlns:int ="clr-namespace:Alarm.ViewModels.Interface"
+        xmlns:view ="clr-namespace:ViewModel;assembly=ViewModel"
+        xmlns:cmd ="clr-namespace:Alarm.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
         Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100">
@@ -47,7 +47,7 @@
             <Button Content="&#xE710;" Grid.Column="0">
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
-                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.ShowAddFetcherWindowCommand}"/>
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.ShowAddFetcherWindowCommand}"/>
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </Button>
@@ -58,7 +58,7 @@
             <Button Content="&#xE713;" Grid.Column="5">
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
-                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.ShowSettingWindowCommand}"/>
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.ShowSettingWindowCommand}"/>
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </Button>
@@ -75,11 +75,11 @@
                           x:Name="NavTreeView">
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="SelectedItemChanged">
-                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.NavigateCommand}"
                                                     CommandParameter="{Binding ElementName=NavTreeView,Path=SelectedItem}"/>
                     </ie:EventTrigger>
                     <ie:EventTrigger EventName="MouseDoubleClick">
-                        <ie:InvokeCommandAction Command="{x:Static view:AppCommand.NavigateCommand}"
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.NavigateCommand}"
                                                     CommandParameter="{Binding ElementName=NavTreeView,Path=SelectedItem}"/>
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model;
-using System.Windows.Controls;
 using Model.Interface;
-using Alarm.ViewModels.Interface;
+using ViewModel.Interface;
 
-namespace Alarm.ViewModels
+namespace ViewModel
 {
     public class MockDocumentViewModel : DocumentViewModel
     {

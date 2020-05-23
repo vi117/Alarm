@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Alarm.ViewModels.Interface
+namespace ViewModel.Interface
 {
     public interface IViewModelBase : INotifyPropertyChanged
     {

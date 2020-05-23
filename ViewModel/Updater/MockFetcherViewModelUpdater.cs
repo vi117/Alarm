@@ -5,7 +5,7 @@ using Model;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Alarm.ViewModels.Updater
+namespace ViewModel.Updater
 {
     /// <summary>
     /// Updater for binding FetcherViewModel with Fetcher. 
@@ -23,7 +23,7 @@ namespace Alarm.ViewModels.Updater
             {
                 foreach (var doc in args.Documents)
                 {
-                    lock (fetcherView.Documents.colLock)
+                    //lock (fetcherView.Documents.colLock)
                     {
                         fetcherView.Documents.Add(new MockDocumentViewModel()
                         {

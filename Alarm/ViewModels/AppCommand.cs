@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Alarm.ViewModels
 {
-    public class AppCommand
+    static public class AppCommand
     {
         static AppCommand()
         {

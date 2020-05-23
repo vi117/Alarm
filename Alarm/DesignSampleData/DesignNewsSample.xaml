@@ -1,9 +1,9 @@
 ﻿<local:MockFetcherViewModel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Alarm.ViewModels">
-    <local:MockFetcherViewModel.Documents>
+                    xmlns:local="clr-namespace:ViewModel;assembly=ViewModel">
+    <local:MockFetcherViewModel.DesignerDocuments>
         <local:MockDocumentViewModel Title="News1" Summary="News1"/>
         <local:MockDocumentViewModel Title="News2" Summary="News2"/>
         <local:MockDocumentViewModel Title="News3" Summary="News3"/>
-    </local:MockFetcherViewModel.Documents>
+    </local:MockFetcherViewModel.DesignerDocuments>
 </local:MockFetcherViewModel>
