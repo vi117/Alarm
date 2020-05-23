@@ -25,7 +25,7 @@ namespace Model
         public string PathUri { get => pathUri; set => pathUri = value; }
         public string Uri
         {
-            get => hostUri + "/" + pathUri;
+            get => hostUri + pathUri;
             set
             {
                 var uri = new Uri(value);
