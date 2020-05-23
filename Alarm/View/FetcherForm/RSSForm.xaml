@@ -28,7 +28,7 @@
         <ComboBox Grid.Row="2" Grid.Column="1">
             <ComboBoxItem Content="1 minute"/>
             <ComboBoxItem Content="5 minutes"/>
-            <ComboBoxItem Content="30 minutes"/>
+            <ComboBoxItem Content="30 minutes" IsSelected="True"/>
             <ComboBoxItem Content="1 hour"/>
             <ComboBoxItem Content="3 hours"/>
          </ComboBox>

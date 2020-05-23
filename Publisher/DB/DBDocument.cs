@@ -103,7 +103,7 @@ namespace Model.DB
         
         public bool IsRead { get; set; }
 
-        public DBFetcher DBCategory { get; set; }
+        public DBFetcher DBFetcher{ get; set; }
     }
 
 }

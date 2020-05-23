@@ -13,6 +13,7 @@ namespace ViewModel
         public abstract string Summary { get; set; }
         public abstract DateTime Date { get; set; }
         public abstract string GUID { get; set; }
+        public abstract bool IsRead { get; set; }
         public string Uri
         {
             get => HostUri + PathUri;
