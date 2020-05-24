@@ -29,7 +29,7 @@ namespace Alarm.View
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            var doc = DataContext as ViewModel.MockDocumentViewModel;
+            var doc = DataContext as ViewModel.DocumentViewModel;
             Trace.WriteLine("Go to " + doc.Uri);
             CBrowser.Address = doc.Uri;
         }

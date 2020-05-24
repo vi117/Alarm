@@ -20,14 +20,22 @@ namespace ViewModel.DB
             private Dictionary<string,CategoryViewModel> categoriesCache;
             private ViewModelBase parent;
 
-            public TreeViewCollection(ViewModelBase parent) {
+            public TreeViewCollection(LoadContext loadContext, ViewModelBase parent) {
                 this.parent = parent;
-                using (var context = new AppDBContext()){
-                    categoriesCache =
-                        context.Categorys.ToList()
-                        .Select((x) => (CategoryViewModel)new DBCategoryViewModel(x))
+                categoriesCache =
+                        loadContext.DBContext.Categorys.ToList()
+                        .Select((x) => (CategoryViewModel)new DBCategoryViewModel(loadContext, x))
                         .OrderBy((x) => x.Title)
                         .ToDictionary((x) => x.Title);
+                if(categoriesCache.Count == 0)
+                {
+                    Add(new DBCategoryViewModel
+                            (
+                                loadContext,
+                                new DBCategory() { Title = "Default" }
+                            )
+                        );
+                    loadContext.DBContext.SaveChanges();
                 }
             }
 
@@ -37,6 +45,8 @@ namespace ViewModel.DB
                 if (elem is DBCategoryViewModel dB)
                 {
                     categoriesCache.Add(dB.Title, dB);
+                    PlatformSevice.Instance.CollectionChangedInvoke
+                        (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 }
                 else throw new NotImplementedException();
             }
@@ -55,6 +65,8 @@ namespace ViewModel.DB
                         context.Categorys.Remove(dB.GetDBCategory(context));
                     }
                 }
+                PlatformSevice.Instance.CollectionChangedInvoke
+                    (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 return categoriesCache.Remove(elem.Title);
             }
 
@@ -65,9 +77,9 @@ namespace ViewModel.DB
         }
         private TreeViewCollection categories;
 
-        public DBViewModel()
+        public DBViewModel(LoadContext loadContext)
         {
-            categories = new TreeViewCollection(this);
+            categories = new TreeViewCollection(loadContext, this);
         }
 
         public override ICollectionViewModel<CategoryViewModel> TreeView { 

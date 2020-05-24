@@ -12,7 +12,7 @@ using System.Net.Cache;
 
 namespace ViewModel.DB
 {
-    class DBCategoryViewModel : CategoryViewModel
+    public class DBCategoryViewModel : CategoryViewModel
     {
         public class SiteModelCollection : ICollectionViewModel<FetcherViewModel>
         {
@@ -21,24 +21,33 @@ namespace ViewModel.DB
             List<FetcherViewModel> cache;
             int categoryId;
             ViewModelBase parent;
+            DocumentPublisher publisher;
 
-            public SiteModelCollection(DBCategory dBCategory, ViewModelBase parent)
+            public SiteModelCollection(LoadContext context,DBCategory dBCategory, ViewModelBase parent)
             {
                 this.parent = parent;
                 categoryId = dBCategory.DBCategoryId;
-                cache = dBCategory.Fetchers.ToList()
-                    .Select((x) => (FetcherViewModel)new DBFetcherViewModel(x.DBFetcherId))
+                cache = context.DBContext.Fetchers.Where((x)=>x.DBCategoryId == categoryId).ToList()
+                    .Select((x) => (FetcherViewModel)new DBFetcherViewModel(context,x.DBFetcherId))
                     .ToList();
+                publisher = context.Publisher;
             }
             public void Emplace(string title, Fetcher fetcher)
             {
-                var elem = new DBFetcherViewModel(title, fetcher, categoryId);
-                cache.Add(elem);
+                using (var dbcontext = new AppDBContext()) {
+                    var context = new LoadContext() { DBContext = dbcontext, Publisher = publisher };
+                    var elem = new DBFetcherViewModel(context, title, fetcher, categoryId);
+                    cache.Add(elem);
+                }
+                PlatformSevice.Instance.CollectionChangedInvoke
+                    (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
             public void Add(FetcherViewModel elem)
             {
                 elem.Parent = parent;
                 cache.Add(elem);
+                PlatformSevice.Instance.CollectionChangedInvoke
+                    (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
 
             public IEnumerator<FetcherViewModel> GetEnumerator()
@@ -56,6 +65,8 @@ namespace ViewModel.DB
                             .Fetchers.Remove(fetcherViewModel.GetFetcher(context));
                     }
                 }
+                PlatformSevice.Instance.CollectionChangedInvoke
+                    (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 return cache.Remove(elem);
             }
 
@@ -70,27 +81,28 @@ namespace ViewModel.DB
         /// if <c>category</c> not in db, create and add it, else find and initialize it.
         /// </summary>
         /// <param name="category"></param>
-        public DBCategoryViewModel(DBCategory category)
+        public DBCategoryViewModel(LoadContext context, DBCategory category)
         {
-            using(var context=new AppDBContext())
+            if (!context.DBContext.Categorys.Contains(category))
             {
-                if (!context.Categorys.Contains(category))
-                {
-                    context.Add(category);
-                    Title = category.Title;
-                    context.SaveChanges();
-                    categoryId = category.DBCategoryId;
-                }
-                else
-                {
-                    Title = category.Title;
-                    categoryId = category.DBCategoryId;
-                }
+                context.DBContext.Add(category);
+                Title = category.Title;
+                context.DBContext.SaveChanges();
+                categoryId = category.DBCategoryId;
             }
+            else
+            {
+                Title = category.Title;
+                categoryId = category.DBCategoryId;
+            }
+            siteModels = new SiteModelCollection(context,category, this);
         }
+        public DBCategoryViewModel()
+        {
+        }
+        
         public override string Title {
-            get;
-            set;
+            get; set;
         }
         public DBCategory GetDBCategory(AppDBContext context) {
             return context.Categorys.Find(categoryId);

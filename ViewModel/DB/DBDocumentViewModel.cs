@@ -1,6 +1,7 @@
 ﻿using Model.DB;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace ViewModel.DB
 {
     class DBDocumentViewModel : DocumentViewModel
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private int documentId;
 
         bool isRead;
@@ -54,6 +56,7 @@ namespace ViewModel.DB
                         isRead = true;
                         context.SaveChanges();
                     }
+                    OnPropertyChanged(nameof(IsRead));
                 }
             }
         }
