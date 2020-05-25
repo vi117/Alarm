@@ -15,13 +15,12 @@ namespace ViewModel
         public string ShowingPageName => "ContentListView";
         public object ShowingPage { get; set; }
 
-        public abstract ICollectionViewModel<DocumentViewModel> Documents { get; }
-
         public FetcherViewModel()
         {
             Parent = null;
         }
 
+        public abstract string Title { get; set; }
         public bool IsSelected
         {
             get => isSelected;
@@ -46,7 +45,6 @@ namespace ViewModel
                 }
             }
         }
-
-        public abstract string Title { get; set; }
+        public abstract ICollectionViewModel<DocumentViewModel> Documents { get; }
     }
 }

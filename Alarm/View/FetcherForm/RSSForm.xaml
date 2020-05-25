@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Label Content="Fetcher Title" FontSize="16"/>
         <local:LineInput Grid.Column="1" BackgroundText="Fetcher Title" FontSize="16" x:Name="FetcherTitle"
@@ -23,5 +24,13 @@
         <local:LineInput Grid.Row="1" Grid.Column="1" BackgroundText="URLContent" FontSize="16" x:Name="URLContent"
                          BackgroundTextFill="Gray" Validation="UrlValid">
         </local:LineInput>
+        <Label Content="Frequency" FontSize="16" Grid.Row="2"/>
+        <ComboBox Grid.Row="2" Grid.Column="1">
+            <ComboBoxItem Content="1 minute"/>
+            <ComboBoxItem Content="5 minutes"/>
+            <ComboBoxItem Content="30 minutes" IsSelected="True"/>
+            <ComboBoxItem Content="1 hour"/>
+            <ComboBoxItem Content="3 hours"/>
+         </ComboBox>
     </Grid>
 </local:FetcherFormControl>

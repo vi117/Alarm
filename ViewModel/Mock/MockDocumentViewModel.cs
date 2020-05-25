@@ -18,6 +18,7 @@ namespace ViewModel
         public override string Summary { get; set; }
         public override DateTime Date { get; set; }
         public override string GUID { get; set; }
+        public override bool IsRead { get; set; } = false;
 
         public MockDocumentViewModel() : base()
         { }
@@ -30,7 +31,5 @@ namespace ViewModel
             Summary = document.Summary;
             Title = document.Title;
         }
-
-        public bool IsRead { get; set; } = false;
     }
 }

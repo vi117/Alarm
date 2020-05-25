@@ -1,9 +1,12 @@
 ﻿using Alarm.ViewModels;
 using Model;
+using Model.DB;
 using System;
 using System.Diagnostics;
+using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModel;
+using ViewModel.DB;
 using ViewModel.Updater;
 using MessageBox = System.Windows.MessageBox;
 
@@ -25,7 +28,8 @@ namespace Alarm.View
         {
             CommandBindings.Add(new CommandBinding(AppCommand.NavigateCommand,
                 (sender, eventArgs) => {
-                    viewModel.Navigate(eventArgs.Parameter as IPageShow, PageFactory.Factory);
+                    if(eventArgs.Parameter != null)
+                        viewModel.Navigate(eventArgs.Parameter as IPageShow, PageFactory.Factory);
                     eventArgs.Handled = true;
                 },
                 (s, e) => { e.CanExecute = true; }
@@ -45,20 +49,16 @@ namespace Alarm.View
                     if (b.HasValue && b.Value)
                     {
                         var fetcher = window.GetFetcher();
-                        fetcher.Interval = TimeSpan.FromSeconds(1);
-                        publisher.AddFetcher(fetcher);
+                        fetcher.Interval = TimeSpan.FromSeconds(30);
                         var item = NavTreeView.SelectedItem;
                         if (item == null)
                         {
                             MessageBox.Show("Select Category First");
                         }
-                        else if (item.GetType().IsSubclassOf(typeof(CategoryViewModel)))
+                        else if (item is DBCategoryViewModel c)
                         {
-                            var c = item as CategoryViewModel;
                             var fetcherView = window.GetFetcherViewModel();
-                            c.SiteModels.Add(fetcherView);
-                            var updater = new MockFetcherViewModelUpdater(fetcher, fetcherView);
-                            publisher.RegisterUpdater(updater);
+                            c.SitesModelDetail.Emplace(fetcherView.Title, fetcher);
                         }
                         else
                         {
@@ -75,7 +75,7 @@ namespace Alarm.View
         {
             InitializeComponent();
             publisher = new DocumentPublisher();
-            viewModel = new MockViewModel();
+            viewModel = ViewModel.DB.ViewModelLoader.LoadViewModel(publisher);
             DataContext = viewModel;
             BindCommand();
         }

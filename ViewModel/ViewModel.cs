@@ -2,9 +2,6 @@
 
 namespace ViewModel
 {
-    /// <summary>
-    /// ViewModel of All
-    /// </summary>
     abstract public class ViewModel : ViewModelBase, IViewModelBehavior
     {
         private object displayPage;
@@ -12,6 +9,8 @@ namespace ViewModel
         {
             Parent = null;
         }
+
+        #region Property
         abstract public ICollectionViewModel<CategoryViewModel> TreeView { get; }
 
         public object DisplayPage
@@ -26,6 +25,8 @@ namespace ViewModel
                 }
             }
         }
+        #endregion
+
         //Navigate page
         public void Navigate(IPageShow model , IPageFactory pageFactory)
         {

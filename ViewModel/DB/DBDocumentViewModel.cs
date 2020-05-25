@@ -1,6 +1,8 @@
 ﻿using Model.DB;
+using Model.Interface;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,17 +11,58 @@ namespace ViewModel.DB
 {
     class DBDocumentViewModel : DocumentViewModel
     {
-        private DBDocument document;
+        private int documentId;
 
-        public DBDocumentViewModel(DBDocument document) {
-            this.document = document;
+        bool isRead;
+
+        public DBDocumentViewModel(DBDocument dBDocument)
+        {
+            documentId = dBDocument.DBDocumentId;
+            this.SetAll(dBDocument);
+            isRead = dBDocument.IsRead;
+        }
+        public int DocumentId { get => documentId; }
+        public override string Title {
+            get; set;
+        }
+        public override string HostUri {
+            get; set;
+        }
+        public override string PathUri { 
+            get; set; 
+        }
+        public override string Summary { 
+            get; set; 
+        }
+        public override DateTime Date { 
+            get; set; 
+        }
+        public override string GUID {
+            get; set;
+        }
+        public override bool IsRead { 
+            get => isRead;
+            set{
+                if(value && !isRead)
+                {
+                    using(var context = new AppDBContext())
+                    {
+                        context.Documents.Find(documentId).IsRead = true;
+                        isRead = true;
+                        context.SaveChanges();
+                    }
+                    OnPropertyChanged(nameof(IsRead));
+                }
+            }
         }
 
-        public override string Title { get => document.Title; set => throw new NotImplementedException(); }
-        public override string HostUri { get => document.HostUri; set => throw new NotImplementedException(); }
-        public override string PathUri { get => document.PathUri; set => throw new NotImplementedException(); }
-        public override string Summary { get => document.Summary; set => throw new NotImplementedException(); }
-        public override DateTime Date { get => document.Date; set => throw new NotImplementedException(); }
-        public override string GUID { get => document.GUID; set => throw new NotImplementedException(); }
+        public override object ShowingPage { 
+            get => base.ShowingPage;
+            set { 
+                //If it show the page, set IsRead to true.
+                base.ShowingPage = value;
+                IsRead = true;
+            }
+        }
     }
 }

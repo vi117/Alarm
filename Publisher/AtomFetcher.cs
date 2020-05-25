@@ -8,7 +8,7 @@ namespace Model {
 	public class AtomFetcher : Fetcher {
 		private string uri;
 
-		//serialize ¿ëµµs
+		//serialize
 		public AtomFetcher() { }
 
 		public AtomFetcher(string uri) {

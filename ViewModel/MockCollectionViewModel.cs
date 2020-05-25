@@ -9,22 +9,22 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
-    public class CollectionViewModel<T> : ObservableCollection<T> , ICollectionViewModel<T> where T : IViewModelBase
+    public class MockCollectionViewModel<T> : ObservableCollection<T> , ICollectionViewModel<T> where T : IViewModelBase
     {
         public IViewModelBase Parent { get; set; }
         public readonly object colLock = new object();
-        //for designer mode
-        public CollectionViewModel()
+        //for designer mode. do not invoke.
+        public MockCollectionViewModel()
         {
             Parent = null;
             PlatformSevice.Instance.EnableCollectionSynchronization(this, colLock);
         }
-        public CollectionViewModel(IViewModelBase parent)
+        public MockCollectionViewModel(IViewModelBase parent)
         {
             this.Parent = parent;
             PlatformSevice.Instance.EnableCollectionSynchronization(this, colLock);
         }
-        public CollectionViewModel(List<T> ts) : base(ts) { this.Parent = null; }
+        public MockCollectionViewModel(List<T> ts) : base(ts) { this.Parent = null; }
 
         protected override void InsertItem(int index, T item)
         {

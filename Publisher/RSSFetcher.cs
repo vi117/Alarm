@@ -17,7 +17,7 @@ namespace Model
         private string url;
         public string URL { get => url; set => url = value; }
         //xml serialize 용
-        public RSSFetcher() { }
+        public RSSFetcher() : base() { }
         public RSSFetcher(string url) : base() => this.url = url;
         public override Task<List<Document>> Fetch()
         {

@@ -7,34 +7,210 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Model;
+using Terminal.Gui;
+using ViewModel;
 
 namespace ConsoleView
 {
-    public class MockFetcher : Fetcher
-    {
-        public override Task<List<Document>> Fetch()
-        {
-            var docs = new List<Document>();
-            var doc = new Document();
-            doc.Title = "Mock";
-            doc.Summary = "Mock";
-            docs.Add(doc);
-            return Task.FromResult(docs);
-        }
-    }
     class Program
     {
+        static ViewModel.ViewModel viewModel;
+        static DocumentPublisher publisher;
+
+        class TreeViewRender : View
+        {
+            int seletedY;
+            int total;
+            public TreeViewRender(int x, int y, int w, int h) : base(new Rect(x, y, w, h))
+            {
+                CanFocus = true;
+                seletedY = -1;
+                total = viewModel.TreeView.Count();
+                viewModel.PropertyChanged += (o, e) => { SetNeedsDisplay(); };
+                foreach(var c in viewModel.TreeView)
+                {
+                    c.PropertyChanged += (o, e) => SetNeedsDisplay();
+                }
+            }
+            public override void PositionCursor()
+            {
+                if (seletedY < 0)
+                {
+                    seletedY = 0;
+                    Move(0, seletedY);
+                    SetNeedsDisplay();
+                }
+                Move(0, seletedY);
+            }
+            public override void Redraw(Rect region)
+            {
+                Driver.SetAttribute(ColorScheme.Normal);
+                Move(region.Top, region.Left);
+                int i = 0;
+                foreach (var c in viewModel.TreeView)
+                {
+                    DrawOne(region, i, c.Title);
+                    if (c.IsExpanded)
+                    {
+                        i++;
+                        foreach (var f in c.SiteModels)
+                        {
+                            DrawOne(region, i, f.Title, true);
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+            }
+            private void DrawOne(Rect region,int i,string name,bool f = false) {
+                if (i == seletedY) Driver.SetAttribute(ColorScheme.Focus);
+                Move(region.Left, region.Top + i);
+                Driver.AddStr(name);
+                if (i == seletedY) Driver.SetAttribute(ColorScheme.Normal);
+            }
+            public override bool ProcessHotKey(KeyEvent keyEvent)
+            {
+                if (keyEvent.Key == Key.CursorUp && HasFocus)
+                {
+                    if (seletedY == 0) return false;
+                    CursorUp();
+                    return true;
+                }
+                else if(keyEvent.Key == Key.CursorDown && HasFocus)
+                {
+                    if (seletedY >= total-1) return false;
+                    CursorDown();
+                    return true;
+                }
+                else if(keyEvent.Key == Key.CursorLeft && HasFocus)
+                {
+                    CursorLeft();
+                    return true;
+                }
+                else if (keyEvent.Key == Key.CursorRight && HasFocus)
+                {
+                    CursorRight();
+                    return true;
+                }
+                return base.ProcessHotKey(keyEvent);
+            }
+            private void CursorUp()
+            {
+                seletedY -= 1;
+                Move(0, seletedY);
+                SetNeedsDisplay();
+            }
+            private void CursorDown()
+            {
+                seletedY += 1;
+                Move(0, seletedY);
+                SetNeedsDisplay();
+            }
+            private void CursorLeft()
+            {
+                var item = SelectedItem;
+                if(item is CategoryViewModel categoryView)
+                {
+                    if (categoryView.IsExpanded)
+                    {
+                        categoryView.IsExpanded = false;
+                        total -= categoryView.SiteModels.Count();
+                        //SetNeedsDisplay();
+                    }
+                }
+            }
+            private void CursorRight()
+            {
+                var item = SelectedItem;
+                if (item is CategoryViewModel categoryView)
+                {
+                    if (!categoryView.IsExpanded)
+                    {
+                        categoryView.IsExpanded = true;
+                        total += categoryView.SiteModels.Count();
+                        //SetNeedsDisplay();
+                    }
+                }
+            }
+            private object SelectedItem {
+                get
+                {
+                    if (seletedY < 0) return null;
+                    int i = 0;
+                    foreach(var c in viewModel.TreeView)
+                    {
+                        if (i == seletedY) return c;
+                        if (c.IsExpanded)
+                        {
+                            if (c.SiteModels.Count() + i < seletedY)
+                            {
+                                i += c.SiteModels.Count();
+                            }
+                            else
+                            {
+                                foreach(var f in c.SiteModels)
+                                {
+                                    i++;
+                                    if(i == seletedY)
+                                        return f;
+                                }
+                            }
+                        }
+                        i++;
+                    }
+                    throw new IndexOutOfRangeException();
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
-            Model.DB.AppDBContext.Test();
-            RSSFetcher obj = new RSSFetcher(@"https://media.daum.net/syndication/economic.rss");
-           /* var infos = obj.GetType().GetProperties();
-            foreach (var info in infos)
+            PlatformSevice.Instance = new DefaultPlatformService();
+            publisher = new DocumentPublisher();
+            viewModel = /*new MockViewModel();*/ViewModel.DB.ViewModelLoader.LoadViewModel(publisher);
+
+            Application.Init();
+            var top = Application.Top;
+            var menu = new MenuBar(
+                new MenuBarItem[]{
+                    new MenuBarItem(
+                       "File",
+                        new MenuItem[]{
+                            new MenuItem("Quit","",()=>{top.Running = false; })
+                        }
+                    )
+                }
+            );
+            top.Add(menu);
+            var win = new Window("Alarm") {
+                X = 0,
+                Y = 1,
+                Width = Dim.Fill(),
+                Height = Dim.Fill()
+            };
             {
-                Console.WriteLine($"{info.CanWrite},{info.CanRead},{info.PropertyType},{info.Name}");
-                object v = info.GetGetMethod().Invoke(obj,null);
-                Console.WriteLine($"Value : {v}");
-            }*/
+                int pos = 1;
+                Func<string, int> addButton = (name) =>
+                {
+                    win.Add(new Button(pos, 0, name));
+                    pos += name.Length + 4;
+                    return 0;
+                };
+                addButton("Add");
+                addButton("Reload");
+                addButton("Translate");
+                addButton("Delete");
+                addButton("Edit");
+                addButton("Setting");
+            }
+            win.Add(new TreeViewRender(1,1,50,50));
+            top.Add(win);
+            Application.Run();
+            /*Model.DB.AppDBContext.Test();
+            RSSFetcher obj = new RSSFetcher(@"https://media.daum.net/syndication/economic.rss");
             
             var q = new Queue<Document>();
             DocumentPublisher publisher = new DocumentPublisher();
@@ -45,10 +221,6 @@ namespace ConsoleView
                     q.Enqueue(doc);
                 }
             };
-
-            //publisher.AddFetcher(new RSSFetcher(@"http://www.aving.net/rss/life.xml"));
-            //error
-            //publisher.AddFetcher(new RSSFetcher(@"http://www.ilemonde.com/rss/allArticle.xml"));
             while (true)
             {
                 while (true)
@@ -61,8 +233,7 @@ namespace ConsoleView
                     else break;
                 }
                 Thread.Sleep(100);
-            }
-            //Console.ReadLine();
+            }*/
         }
     }
 }

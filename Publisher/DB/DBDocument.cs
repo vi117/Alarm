@@ -21,16 +21,15 @@ namespace Model.DB
         {
             if (!_created)
             {
-                Database.EnsureDeleted();
+                //Database.EnsureDeleted();
                 Database.EnsureCreated();
                 _created = true;
             }
         }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite("Data Source=doc.db");
+            options.UseSqlite("Data Source=doc.db");    
         }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder){}
         public static void Test()
         {
             using (var ctx = new AppDBContext())
@@ -45,7 +44,7 @@ namespace Model.DB
                 {
                     Title = "AAA"
                 };
-                fetcher.SetFetcher(new RSSFetcher("https://www.naver.com"));
+                fetcher.SetFetcher(new RSSFetcher("https://www.naver.com") { Interval = new TimeSpan(0,1,0)});
                 category.Fetchers.Add(fetcher);
                 ctx.SaveChanges();
                 var fs = ctx.Categorys.ToList();
@@ -53,6 +52,7 @@ namespace Model.DB
                 {
                     Console.WriteLine($"{f.DBCategoryId} : {f.Title} , {f.Fetchers.GetType().FullName}");
                     Console.WriteLine($"{f.Fetchers.First().FetcherXml}");
+                    break;
                 }
             }
         }
@@ -63,14 +63,17 @@ namespace Model.DB
         public int DBCategoryId { get; set; }
         [Required]
         public string Title { get; set; }
-        public virtual ICollection<DBFetcher> Fetchers{ get; set; } = new List<DBFetcher>(); /*{ get; set; }*/
+        public List<DBFetcher> Fetchers{ get; set; } = new List<DBFetcher>(); /*{ get; set; }*/
     }
     public class DBFetcher {
         public int DBFetcherId { get; set; }
         [Required]
         public string Title {get; set;}
         public string FetcherXml { get; set; }
-        public virtual ICollection<DBDocument> Documents { get; set; } = new List<DBDocument>(); /*{ get; set; }*/
+        public virtual List<DBDocument> Documents { get; set; } = new List<DBDocument>(); /*{ get; set; }*/
+
+        public int DBCategoryId { get; set; }
+        public DBCategory DBCategory { get; set; }
 
         public void SetFetcher(Fetcher fetcher)
         {
@@ -103,7 +106,8 @@ namespace Model.DB
         
         public bool IsRead { get; set; }
 
-        public DBFetcher DBCategory { get; set; }
+        public int DBFetcherId { get; set; }
+        virtual public DBFetcher DBFetcher{ get; set; }
     }
 
 }
