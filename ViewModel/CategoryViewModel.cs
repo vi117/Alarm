@@ -12,6 +12,7 @@ namespace ViewModel
         private bool isExpanded = false;
 
 
+        public abstract string Title { get; set; }
         public bool IsSelected
         {
             get => isSelected;
@@ -37,6 +38,5 @@ namespace ViewModel
             }
         }
         public abstract ICollectionViewModel<FetcherViewModel> SiteModels { get; }
-        public abstract string Title { get; set; }
     }
 }

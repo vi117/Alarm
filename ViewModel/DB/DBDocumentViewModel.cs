@@ -1,4 +1,5 @@
 ﻿using Model.DB;
+using Model.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +11,6 @@ namespace ViewModel.DB
 {
     class DBDocumentViewModel : DocumentViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         private int documentId;
 
         bool isRead;
@@ -18,12 +18,7 @@ namespace ViewModel.DB
         public DBDocumentViewModel(DBDocument dBDocument)
         {
             documentId = dBDocument.DBDocumentId;
-            Title = dBDocument.Title;
-            HostUri = dBDocument.HostUri;
-            PathUri = dBDocument.PathUri;
-            Summary = dBDocument.Summary;
-            Date = dBDocument.Date;
-            GUID = dBDocument.GUID;
+            this.SetAll(dBDocument);
             isRead = dBDocument.IsRead;
         }
         public int DocumentId { get => documentId; }
@@ -58,6 +53,15 @@ namespace ViewModel.DB
                     }
                     OnPropertyChanged(nameof(IsRead));
                 }
+            }
+        }
+
+        public override object ShowingPage { 
+            get => base.ShowingPage;
+            set { 
+                //If it show the page, set IsRead to true.
+                base.ShowingPage = value;
+                IsRead = true;
             }
         }
     }

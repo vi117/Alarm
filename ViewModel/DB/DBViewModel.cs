@@ -20,6 +20,11 @@ namespace ViewModel.DB
             private Dictionary<string,CategoryViewModel> categoriesCache;
             private ViewModelBase parent;
 
+            /// <summary>
+            /// For Initializing Process.
+            /// Shell not be using constructor except loading.
+            /// </summary>
+            /// <param name="parent"></param>
             public TreeViewCollection(LoadContext loadContext, ViewModelBase parent) {
                 this.parent = parent;
                 categoriesCache =

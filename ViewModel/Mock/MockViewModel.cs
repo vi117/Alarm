@@ -7,12 +7,11 @@ namespace ViewModel
 {
     public class MockViewModel : ViewModel
     {
-        private CollectionViewModel<CategoryViewModel> treeView;
+        private MockCollectionViewModel<CategoryViewModel> treeView;
         public MockViewModel()
         {
-            var context = new AppDBContext();
             {
-                treeView = new CollectionViewModel<CategoryViewModel>(this);
+                treeView = new MockCollectionViewModel<CategoryViewModel>(this);
                 {
                     var sc = new MockCategoryViewModel("Science");
                     var siteA = new MockFetcherViewModel("A");
@@ -49,7 +48,7 @@ namespace ViewModel
                 }
             }
         }
-        public CollectionViewModel<CategoryViewModel> DesignerTreeView
+        public MockCollectionViewModel<CategoryViewModel> DesignerTreeView
         {
             get => treeView;
         }

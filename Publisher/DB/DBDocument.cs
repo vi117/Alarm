@@ -63,7 +63,7 @@ namespace Model.DB
         public int DBCategoryId { get; set; }
         [Required]
         public string Title { get; set; }
-        public virtual List<DBFetcher> Fetchers{ get; set; } = new List<DBFetcher>(); /*{ get; set; }*/
+        public List<DBFetcher> Fetchers{ get; set; } = new List<DBFetcher>(); /*{ get; set; }*/
     }
     public class DBFetcher {
         public int DBFetcherId { get; set; }
@@ -73,7 +73,7 @@ namespace Model.DB
         public virtual List<DBDocument> Documents { get; set; } = new List<DBDocument>(); /*{ get; set; }*/
 
         public int DBCategoryId { get; set; }
-        virtual public DBCategory DBCategory { get; set; }
+        public DBCategory DBCategory { get; set; }
 
         public void SetFetcher(Fetcher fetcher)
         {

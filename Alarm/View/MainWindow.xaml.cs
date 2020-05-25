@@ -3,6 +3,7 @@ using Model;
 using Model.DB;
 using System;
 using System.Diagnostics;
+using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModel;
 using ViewModel.DB;
@@ -75,7 +76,6 @@ namespace Alarm.View
             InitializeComponent();
             publisher = new DocumentPublisher();
             viewModel = ViewModel.DB.ViewModelLoader.LoadViewModel(publisher);
-            //viewModel.TreeView.Add(new DBCategoryViewModel());
             DataContext = viewModel;
             BindCommand();
         }

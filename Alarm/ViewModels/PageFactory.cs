@@ -16,13 +16,18 @@ namespace Alarm.ViewModels
 {
     class PageFactory : ViewModel.IPageFactory
     {
+        //content view 는 무거워서 재활용한다. 싱글톤임.
+        static View.ContentView contentView = null;
+
+
         public object Generate(IPageShow modelExpressed)
         {
             var pageName = modelExpressed.ShowingPageName;
             Page page = null;
             switch (pageName) {
                 case "ContentView":
-                    page = new View.ContentView();
+                    if (contentView == null) contentView = new View.ContentView();
+                    page = contentView;
                     break;
                 case "ContentListView":
                     page = new View.ContentListView();

@@ -9,13 +9,19 @@ namespace ViewModel
     public interface Platform
     {
         void EnableCollectionSynchronization(IEnumerable collection, object lockObject);
+        /// <summary>
+        /// Fire the <c>CollectionChangedEvent</c> for multitask environment.
+        /// Must use it when fire the event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventHandler"></param>
+        /// <param name="e"></param>
         void CollectionChangedInvoke(object sender, NotifyCollectionChangedEventHandler eventHandler, NotifyCollectionChangedEventArgs e);
     }
     public static class PlatformSevice { 
-        private static Platform instance = null;
+        private static Platform instance = new DefaultPlatformService();
         public static Platform Instance { 
             get {
-                if (instance == null) throw new InvalidOperationException("platform not ready");
                 return instance;
             }
             set => instance = value; 

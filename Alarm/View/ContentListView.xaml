@@ -13,14 +13,21 @@
       d:DataContext="{d:DesignData Source=/DesignSampleData/DesignNewsSample.xaml}"
       >
     <Page.Resources>
+        <Style TargetType="TextBlock" x:Key="NewsForm">
+            <Style.Triggers>
+                <DataTrigger Binding ="{Binding Path=IsRead}" Value="true">
+                    <Setter Property="Opacity" Value="0.5"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock FontSize="20" Text="{Binding Path=Title}"></TextBlock>
-                <TextBlock Text="{Binding Path=Summary}" Grid.Row="1" TextWrapping="Wrap"></TextBlock>
+                <TextBlock FontSize="20" Text="{Binding Path=Title}" Style="{StaticResource NewsForm}"/>
+                <TextBlock Text="{Binding Path=Summary}" Grid.Row="1" TextWrapping="Wrap" Style="{StaticResource NewsForm}"/>
             </Grid>
         </DataTemplate>
         <Style TargetType="ListBoxItem">

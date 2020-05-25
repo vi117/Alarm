@@ -11,18 +11,18 @@ namespace ViewModel
     public class MockFetcherViewModel : FetcherViewModel
     {
         private string title;
-        private CollectionViewModel<DocumentViewModel> documents;
+        private MockCollectionViewModel<DocumentViewModel> documents;
 
         public MockFetcherViewModel()
         {
-            documents = new CollectionViewModel<DocumentViewModel>(this);
+            documents = new MockCollectionViewModel<DocumentViewModel>(this);
             IsSelected = false;
             IsExpanded = false;
         }
         public MockFetcherViewModel(string title)
         {
             this.title = title;
-            documents = new CollectionViewModel<DocumentViewModel>(this);
+            documents = new MockCollectionViewModel<DocumentViewModel>(this);
             IsSelected = false;
             IsExpanded = false;
         }
@@ -35,7 +35,7 @@ namespace ViewModel
                 OnPropertyChanged(nameof(Title));
             }
         }
-        public CollectionViewModel<DocumentViewModel> DesignerDocuments
+        public MockCollectionViewModel<DocumentViewModel> DesignerDocuments
         {
             get => documents;
         }

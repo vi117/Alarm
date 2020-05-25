@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using Model;
 using System.Net.Cache;
+using Microsoft.EntityFrameworkCore;
 
 namespace ViewModel.DB
 {
@@ -22,11 +23,17 @@ namespace ViewModel.DB
             int categoryId;
             ViewModelBase parent;
             DocumentPublisher publisher;
-
+            /// <summary>
+            /// For Initializing Process.
+            /// Shell not be using constructor except loading.
+            /// </summary>
+            /// 
+            /// <param name="dBCategory">Id를 가지고 있는 개체여야 한다.</param>
+            /// 
             public SiteModelCollection(LoadContext context,DBCategory dBCategory, ViewModelBase parent)
             {
                 this.parent = parent;
-                categoryId = dBCategory.DBCategoryId;
+                categoryId = dBCategory.DBCategoryId;            
                 cache = context.DBContext.Fetchers.Where((x)=>x.DBCategoryId == categoryId).ToList()
                     .Select((x) => (FetcherViewModel)new DBFetcherViewModel(context,x.DBFetcherId))
                     .ToList();

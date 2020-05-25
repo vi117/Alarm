@@ -6,14 +6,30 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Collections;
+using System.Collections.ObjectModel;
 
 namespace ViewModel
 {
     public class MockCategoryViewModel : CategoryViewModel
     {
         private string title;
-        private CollectionViewModel<FetcherViewModel> siteModels;
+        private MockCollectionViewModel<FetcherViewModel> siteModels;
+
+        //xaml 의 이해할 수 없는 오류로 인해 조치함.
+        public class DesignerHelper : ObservableCollection<MockFetcherViewModel>
+        {
+            MockCollectionViewModel<FetcherViewModel> target;
+            public DesignerHelper(MockCollectionViewModel<FetcherViewModel> t)
+            {
+                target = t;
+            }
+            protected override void InsertItem(int index, MockFetcherViewModel item)
+            {
+                base.InsertItem(index, item);
+                target.Insert(index, item);
+            }
+        }
 
         /// <summary>
         /// Method for Only Designer Mode.
@@ -22,12 +38,12 @@ namespace ViewModel
         public MockCategoryViewModel()
         {
             this.title = "No Named Category";
-            siteModels = new CollectionViewModel<FetcherViewModel>(this);
+            siteModels = new MockCollectionViewModel<FetcherViewModel>(this);
         }
         public MockCategoryViewModel(string title)
         {
             this.title = title;
-            siteModels = new CollectionViewModel<FetcherViewModel>(this);
+            siteModels = new MockCollectionViewModel<FetcherViewModel>(this);
         }
         public override string Title
         {
@@ -40,9 +56,9 @@ namespace ViewModel
                 OnPropertyChanged(nameof(Title));
             }
         }
-        public CollectionViewModel<FetcherViewModel> DesignerSiteModels
+        public DesignerHelper DesignerSiteModels
         {
-            get => siteModels;
+            get => new DesignerHelper(siteModels);
         }
         public override
             ICollectionViewModel<FetcherViewModel> 

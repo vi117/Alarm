@@ -13,4 +13,16 @@ namespace Model.Interface
         DateTime Date { get; set; }
         string GUID { get; set; }
     }
+    public static class IDocumentExtension
+    {
+        public static void SetAll(this IDocument doc,IDocument other)
+        {
+            doc.Title = other.Title;
+            doc.HostUri = other.HostUri;
+            doc.PathUri = other.PathUri;
+            doc.Summary = other.Summary;
+            doc.Date = other.Date;
+            doc.GUID = other.GUID;
+        }
+    }
 }

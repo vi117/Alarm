@@ -9,6 +9,8 @@ using Model;
 using System.Collections.Specialized;
 using System.Collections;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ViewModel.DB
 {
@@ -31,8 +33,11 @@ namespace ViewModel.DB
             {
                 using (var context = new AppDBContext())
                 {
-                    var fetcher = context.Fetchers.Find(fetcherId);
-                    if (fetcher.Documents.Where((x) => x.GUID == elem.GUID).Count() == 0)
+                    if ((from s in context.Documents 
+                         where s.DBFetcherId == fetcherId && s.GUID == elem.GUID 
+                         select s
+                         ).Count() == 0
+                         )
                     {
                         var doc = new DBDocument()
                         {
@@ -44,62 +49,52 @@ namespace ViewModel.DB
                             PathUri = elem.PathUri,
                             IsRead = elem.IsRead,
                         };
-                        fetcher = context.Fetchers.Find(fetcherId);
+                        var fetcher = context.Fetchers.Find(fetcherId);
                         fetcher.Documents.Add(doc);
-                        //context.Documents.Add(doc);
                         context.SaveChanges();
                     }
                 }
-                PlatformSevice.Instance.CollectionChangedInvoke
-                    (this, CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                InvokeCollectionChanged();
             }
-
+            private IEnumerator<DocumentViewModel> getEnumerator()
+            {
+                List<DBDocumentViewModel> ret;
+                using (var context = new AppDBContext())
+                {
+                    ret = (from doc in context.Documents
+                           where doc.DBFetcherId == fetcherId
+                           select new DBDocumentViewModel(doc)).ToList();
+                }
+                return ret.GetEnumerator();
+            }
             public IEnumerator<DocumentViewModel> GetEnumerator()
             {
-                using(var context = new AppDBContext())
-                {
-                    var fetcher = context.Fetchers.Find(fetcherId);
-
-                    return fetcher.Documents
-                        .Select((x) => new DBDocumentViewModel(x))
-                        .GetEnumerator();
-                }
+                return getEnumerator();
+            }
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return getEnumerator();
             }
 
             public bool Remove(DocumentViewModel elem)
             {
                 using (var context= new AppDBContext())
                 {
-                    var fetcher = GetDBFetcher(context);
-                    var selected = fetcher.Documents.Where((x) => x.GUID == elem.GUID).ToList();
-                    if (selected.Count == 0) return false;
+                    var selected = (from s in context.Documents 
+                                    where s.GUID == elem.GUID 
+                                    select s);
+                    if (selected.Count() == 0) return false;
                     foreach (var s in selected)
                     {
-                        fetcher.Documents.Remove(s);
+                        context.Documents.Remove(s);
                     }
                     context.SaveChanges();
                 }
-                PlatformSevice.Instance.CollectionChangedInvoke
-                    (this, CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                InvokeCollectionChanged();
                 return true;
             }
 
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                List<DBDocumentViewModel> ret;
-                using (var context = new AppDBContext())
-                {
-                    /*var fetcher = context.Fetchers.Find(fetcherId);
-                    ret = fetcher.Documents.ToList()
-                        .Select((x) => new DBDocumentViewModel(x))
-                        .ToList();*/
-                    ret = context.Documents.Where((x) => x.DBFetcher.DBFetcherId == fetcherId).ToList()
-                        .Select((x) => new DBDocumentViewModel(x))
-                        .ToList();
-                }
-                return ret.GetEnumerator();
-            }
-            internal void Invoke()
+            private void InvokeCollectionChanged()
             {
                 PlatformSevice.Instance.CollectionChangedInvoke
                     (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
