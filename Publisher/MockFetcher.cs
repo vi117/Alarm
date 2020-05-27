@@ -9,10 +9,10 @@ namespace Model
     {
         public MockFetcher() { }
         
-        public override Task<List<Document>> Fetch()
+        public override Task<List<PubDocument>> Fetch()
         {
-            var docs = new List<Document>();
-            var doc = new Document();
+            var docs = new List<PubDocument>();
+            var doc = new PubDocument();
             doc.Title = "Mock";
             doc.Summary = "Mock";
             doc.Uri = "http://127.0.0.1";

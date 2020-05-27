@@ -1,13 +1,17 @@
 ﻿using Alarm.ViewModels;
+using ControlzEx.Standard;
 using Model;
 using Model.DB;
 using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModel;
 using ViewModel.DB;
 using ViewModel.Updater;
+using Alarm.Helper;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Alarm.View
@@ -24,6 +28,26 @@ namespace Alarm.View
         {
             get => viewModel;
         }
+        void AddFetcherWindow(CategoryViewModel categoryView)
+        {
+            AddFetcherWindow window = new AddFetcherWindow();
+            bool? b = window.ShowDialog();
+            if (b.HasValue && b.Value)
+            {
+                var fetcher = window.GetFetcher();
+                categoryView.Emplace(window.GetTitle(), fetcher);
+            }
+        }
+        void AddCategoryView()
+        {
+            var window = new CategoryDialog();
+            bool? b = window.ShowDialog();
+            if (b == true)
+            {
+                viewModel.EmplaceCategory(window.getTitleName());
+            }
+        }
+
         void BindCommand()
         {
             CommandBindings.Add(new CommandBinding(AppCommand.NavigateCommand,
@@ -44,27 +68,16 @@ namespace Alarm.View
             ));
             CommandBindings.Add(new CommandBinding(AppCommand.ShowAddFetcherWindowCommand,
                 (sender, eventArgs) => {
-                AddFetcherWindow window = new AddFetcherWindow();
-                bool? b = window.ShowDialog();
-                    if (b.HasValue && b.Value)
-                    {
-                        var fetcher = window.GetFetcher();
-                        fetcher.Interval = TimeSpan.FromSeconds(30);
-                        var item = NavTreeView.SelectedItem;
-                        if (item == null)
-                        {
-                            MessageBox.Show("Select Category First");
-                        }
-                        else if (item is DBCategoryViewModel c)
-                        {
-                            var fetcherView = window.GetFetcherViewModel();
-                            c.SitesModelDetail.Emplace(fetcherView.Title, fetcher);
-                        }
-                        else
-                        {
-                            Trace.WriteLine("Not impletemet");
-                            throw new NotImplementedException();
-                        }
+                    switch (NavTreeView.SelectedItem) {
+                        case FetcherViewModel s:
+                            AddFetcherWindow(s.Parent as CategoryViewModel);
+                            break;
+                        case CategoryViewModel c when c.SiteModels.Count() == 0:
+                            AddFetcherWindow(c);
+                            break;
+                        default:
+                            AddCategoryView();
+                            break;
                     }
                     eventArgs.Handled = true;
                 },
@@ -79,5 +92,77 @@ namespace Alarm.View
             DataContext = viewModel;
             BindCommand();
         }
+
+
+
+        Point startPoint;
+        private void NavTreeView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            startPoint = e.GetPosition(null);
+        }
+        private void NavTreeView_MouseMove(object sender, MouseEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                var mousePos = e.GetPosition(null);
+                var diff = startPoint - mousePos;
+                if(Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance
+                    ||Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
+                {
+                    var treeView = sender as TreeView;
+                    var treeViewItem = treeView.ItemContainerGenerator.ContainerFromItem
+                        (treeView.SelectedItem) as TreeViewItem;
+                    //category 항목은 drag & drop을 적용안하기에 나감.
+                    if (treeViewItem != null) return;
+                    //category 밑 fetcher 항목에서 찾는다.
+                    foreach (var subItem in treeView.Items)
+                    {
+                        treeViewItem = treeView.ItemContainerGenerator.ContainerFromItem(subItem)
+                            as TreeViewItem;
+                        treeViewItem = treeViewItem?.ItemContainerGenerator.ContainerFromItem(treeView.SelectedItem)
+                            as TreeViewItem;
+                        if (treeViewItem != null) break;
+                    }
+                    if (treeViewItem == null) return;
+                    var fetcherViewModel = treeView.SelectedItem as FetcherViewModel;
+                    if (fetcherViewModel == null) return;
+                    var dragData = new DataObject("FetcherViewModel",fetcherViewModel);
+                    //treeViewItem 게 밑바닥으로 깔려야하는 데 왜 안될까?
+                    DragDrop.DoDragDrop(treeViewItem, dragData, DragDropEffects.Move);
+                }
+            }
+        }
+        private void NavTreeView_DragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(typeof(FetcherViewModel)))
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
+        private void NavTreeView_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("FetcherViewModel"))
+            {
+                var fetcherViewModel = e.Data.GetData("FetcherViewModel") as FetcherViewModel;
+                var treeView = sender as TreeView;
+                CategoryViewModel category = null;
+                foreach (var subItem in treeView.Items)
+                {
+                    category = subItem as CategoryViewModel;
+                    var treeViewItem = treeView.ItemContainerGenerator.ContainerFromItem(subItem) as TreeViewItem;
+                    if (treeViewItem.RenderSize.IsInRelative(e.GetPosition(treeViewItem)))
+                    {
+                        break;
+                    }
+                }
+                if (category == null) throw new ApplicationException("Search fail.");
+                if(fetcherViewModel.Parent != category)
+                {
+                    fetcherViewModel.ChangeOwner(category);
+                }
+                e.Handled = true;
+            }
+        }
+
     }
 }

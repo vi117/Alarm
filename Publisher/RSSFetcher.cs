@@ -19,12 +19,12 @@ namespace Model
         //xml serialize 용
         public RSSFetcher() : base() { }
         public RSSFetcher(string url) : base() => this.url = url;
-        public override Task<List<Document>> Fetch()
+        public override Task<List<PubDocument>> Fetch()
         {
             var cur_doc = GetRSS();
             return Task.FromResult(cur_doc);
         }
-        public List<Document> GetRSS()
+        public List<PubDocument> GetRSS()
         {
             try
             {
@@ -48,7 +48,7 @@ namespace Model
             catch(XmlException e)
             {
                 Trace.WriteLine(e.Message);
-                return new List<Document>();
+                return new List<PubDocument>();
             }
         }
     }

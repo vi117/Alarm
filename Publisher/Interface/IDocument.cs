@@ -12,6 +12,7 @@ namespace Model.Interface
         string Summary { get; set; }
         DateTime Date { get; set; }
         string GUID { get; set; }
+        bool IsRead { get; set; }
     }
     public static class IDocumentExtension
     {

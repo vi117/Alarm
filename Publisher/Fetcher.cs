@@ -35,6 +35,6 @@ namespace Model
         ///     It must be not NULL!
         /// </summary>
         /// <returns>The documents fetched.It must be not NULL!</returns>
-        public abstract Task<List<Document>> Fetch();
+        public abstract Task<List<PubDocument>> Fetch();
     }
 }

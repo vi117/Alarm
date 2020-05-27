@@ -16,6 +16,6 @@ namespace Alarm.View.FetcherForm
     public class FetcherFormControl : UserControl, IFetcherView
     {
         virtual public Fetcher GetFetcher() { throw new NotImplementedException(); }
-        virtual public FetcherViewModel GetFetcherViewModel() { throw new NotImplementedException(); }
+        virtual public string GetTitle() { throw new NotImplementedException(); }
     }
 }

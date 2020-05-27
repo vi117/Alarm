@@ -178,9 +178,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\SizeExtension.cs" />
     <Compile Include="ViewModels\PlatformService.cs" />
     <Compile Include="View\AddFetcherWindow.xaml.cs">
       <DependentUpon>AddFetcherWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CategoryDialog.xaml.cs">
+      <DependentUpon>CategoryDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\FetcherForm\AtomForm.xaml.cs">
       <DependentUpon>AtomForm.xaml</DependentUpon>
@@ -191,6 +195,9 @@
     </Compile>
     <Compile Include="View\FetcherForm\RSSForm.xaml.cs">
       <DependentUpon>RSSForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FetcherForm\TimeComboBox.xaml.cs">
+      <DependentUpon>TimeComboBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IFetcherView.cs" />
     <Compile Include="View\CategoryView.xaml.cs">
@@ -215,6 +222,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddFetcherWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CategoryDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -251,6 +262,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\FetcherForm\RSSForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FetcherForm\TimeComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -26,14 +26,13 @@ namespace Alarm.View
     public partial class AddFetcherWindow : MahApps.Metro.Controls.MetroWindow
     {
         FetcherForm.FetcherFormControl fetcherView;
-        Dictionary<string, FetcherFormControl> keyValuePairs;
-        public AddFetcherWindow()
-        {
-            InitializeComponent();
-            keyValuePairs = new Dictionary<string, FetcherFormControl>() {
+        static Dictionary<string, FetcherFormControl> keyValuePairs= new Dictionary<string, FetcherFormControl>() {
                 ["RSS"] = new RSSForm(),
                 ["Atom"] = new AtomForm()
             };
+        public AddFetcherWindow()
+        {
+            InitializeComponent();
             fetcherView = null;
         }
 
@@ -44,12 +43,9 @@ namespace Alarm.View
             else
                 return fetcherView.GetFetcher();
         }
-        public FetcherViewModel GetFetcherViewModel()
+        public string GetTitle()
         {
-            if (fetcherView == null)
-                return null;
-            else
-                return fetcherView.GetFetcherViewModel();
+            return fetcherView?.GetTitle();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)

@@ -31,13 +31,11 @@ namespace Alarm.View.FetcherForm
 
         override public Model.Fetcher GetFetcher()
         {
-            return new RSSFetcher(URLContent.Text);
+            return new RSSFetcher(URLContent.Text) { Interval = IntervalBox.SelectedTime };
         }
-        override public FetcherViewModel GetFetcherViewModel()
+        override public string GetTitle()
         {
-            return new MockFetcherViewModel() {
-                Title = FetcherTitle.Text
-            };
+            return FetcherTitle.Text;
         }
         private bool UrlValid(string url)
         {

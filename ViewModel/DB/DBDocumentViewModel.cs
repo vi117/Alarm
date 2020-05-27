@@ -14,12 +14,17 @@ namespace ViewModel.DB
         private int documentId;
 
         bool isRead;
-
+        //
         public DBDocumentViewModel(DBDocument dBDocument)
         {
             documentId = dBDocument.DBDocumentId;
             this.SetAll(dBDocument);
             isRead = dBDocument.IsRead;
+        }
+        public DBDocumentViewModel(IDocument document)
+        {
+            this.SetAll(document);
+            isRead = false;
         }
         public int DocumentId { get => documentId; }
         public override string Title {
@@ -56,7 +61,7 @@ namespace ViewModel.DB
             }
         }
 
-        public override object ShowingPage { 
+        public override object ShowingPage {
             get => base.ShowingPage;
             set { 
                 //If it show the page, set IsRead to true.

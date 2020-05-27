@@ -1,6 +1,6 @@
 ﻿using ViewModel.Interface;
 using System.Collections.Specialized;
-
+using Model;
 
 namespace ViewModel
 {
@@ -11,6 +11,8 @@ namespace ViewModel
         private bool isSelected = false;
         private bool isExpanded = false;
 
+        abstract public void Emplace(string title,Fetcher fetcher);
+        
 
         public abstract string Title { get; set; }
         public bool IsSelected

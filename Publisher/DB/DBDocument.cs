@@ -73,7 +73,9 @@ namespace Model.DB
         public virtual List<DBDocument> Documents { get; set; } = new List<DBDocument>(); /*{ get; set; }*/
 
         public int DBCategoryId { get; set; }
-        public DBCategory DBCategory { get; set; }
+        virtual public DBCategory DBCategory { get; set; }
+
+        public void ChangeOwner(DBCategory dBCategory) { this.DBCategory = dBCategory;}
 
         public void SetFetcher(Fetcher fetcher)
         {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.Interface;
 
 namespace ViewModel
 {
@@ -59,6 +60,18 @@ namespace ViewModel
         {
             documents.Add(document);
             OnPropertyChanged(nameof(Documents));
+        }
+
+        public override void ChangeOwner(CategoryViewModel newViewModel)
+        {
+            var old = Parent as MockCategoryViewModel;
+            old.SiteModelsDetail.Remove(this);
+            ((MockCategoryViewModel)newViewModel).SiteModelsDetail.Add(this);
+        }
+
+        public override void AddDocument(IDocument document)
+        {
+            documents.Add(new MockDocumentViewModel(document));
         }
     }
 }

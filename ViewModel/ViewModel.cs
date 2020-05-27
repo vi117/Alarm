@@ -10,6 +10,8 @@ namespace ViewModel
             Parent = null;
         }
 
+        public abstract void EmplaceCategory(string title);
+
         #region Property
         abstract public ICollectionViewModel<CategoryViewModel> TreeView { get; }
 

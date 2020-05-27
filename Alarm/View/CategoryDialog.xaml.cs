@@ -1,4 +1,4 @@
-﻿using Model;
+﻿using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,27 +11,28 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Alarm.View.FetcherForm
+namespace Alarm.View
 {
     /// <summary>
-    /// AtomForm.xaml에 대한 상호 작용 논리
+    /// CategoryDialog.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class AtomForm : FetcherFormControl
+    public partial class CategoryDialog : MetroWindow
     {
-        public AtomForm()
+        public CategoryDialog()
         {
             InitializeComponent();
         }
-        override public Fetcher GetFetcher()
+        public string getTitleName()
         {
-            return new AtomFetcher(URLContent.Text) { Interval = IntervalBox.SelectedTime };
+            return TitleTextBox.Text;
         }
-        private bool UrlValid(string url)
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            return Uri.IsWellFormedUriString(url, UriKind.Absolute);
+            DialogResult = getTitleName() != String.Empty;
+            e.Handled = true;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CefSharp;
+using CefSharp.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,9 +24,11 @@ namespace Alarm.View
     /// </summary>
     public partial class ContentView : Page
     {
+        static ChromiumWebBrowser CBrowser = new ChromiumWebBrowser();
         public ContentView()
         {
             InitializeComponent();
+            Box1.Children.Add(CBrowser);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -32,6 +36,12 @@ namespace Alarm.View
             var doc = DataContext as ViewModel.DocumentViewModel;
             Trace.WriteLine("Go to " + doc.Uri);
             CBrowser.Address = doc.Uri;
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            CBrowser.Address = "about:blank";
+            Trace.WriteLine("Unload");
         }
     }
 }

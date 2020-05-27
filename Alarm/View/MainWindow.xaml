@@ -72,7 +72,12 @@
                 <ColumnDefinition Width="5*" MinWidth="10"/>
             </Grid.ColumnDefinitions>
             <TreeView ItemsSource="{Binding Path=TreeView}"
-                          x:Name="NavTreeView">
+                      x:Name="NavTreeView" AllowDrop="True"
+                      PreviewMouseLeftButtonDown="NavTreeView_PreviewMouseLeftButtonDown"
+                      MouseMove="NavTreeView_MouseMove"
+                      DragEnter="NavTreeView_DragEnter"
+                      Drop="NavTreeView_Drop"
+                      >
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="SelectedItemChanged">
                         <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.NavigateCommand}"

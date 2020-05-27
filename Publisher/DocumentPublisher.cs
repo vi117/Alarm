@@ -23,9 +23,9 @@ namespace Model
 
         public async void OnElapsed(object obj, ElapsedEventArgs args)
         {
-            Queue<Document> documents = new Queue<Document>();
+            Queue<PubDocument> documents = new Queue<PubDocument>();
             var docList = await fetcher.Fetch();
-            foreach (Document doc in docList)
+            foreach (PubDocument doc in docList)
             {
                 if (!GUIDSet.Contains(doc.GUID))
                 {
@@ -48,14 +48,14 @@ namespace Model
         }
     }
     public class PublishedEventArg : EventArgs {
-        private Queue<Document> documents;
+        private Queue<PubDocument> documents;
 
-        public PublishedEventArg(Queue<Document> documents)
+        public PublishedEventArg(Queue<PubDocument> documents)
         {
             Documents = documents;
         }
 
-        public Queue<Document> Documents { get => documents; set => documents = value; }
+        public Queue<PubDocument> Documents { get => documents; set => documents = value; }
     }
     public delegate void PublishedEventHandler(object sender, PublishedEventArg arg);
 
@@ -112,6 +112,10 @@ namespace Model
             timers.Add(t);
             t.Start();
         }
+        public void RemoveFetcher(Fetcher fetcher)
+        {
+
+        }
         /*public void Start()
         {
             foreach(var t in timers)
@@ -122,7 +126,7 @@ namespace Model
         /// <summary>
         /// refresh timers.
         /// </summary>
-        public void Refresh()
+        public void RefreshAll()
         {
             foreach(var t in timers)
             {

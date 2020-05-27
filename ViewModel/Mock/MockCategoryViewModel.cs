@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.ObjectModel;
+using Model;
 
 namespace ViewModel
 {
@@ -60,11 +61,21 @@ namespace ViewModel
         {
             get => new DesignerHelper(siteModels);
         }
+        public MockCollectionViewModel<FetcherViewModel> SiteModelsDetail
+        {
+            get => siteModels;
+        }
         public override
             ICollectionViewModel<FetcherViewModel> 
             SiteModels
         {
             get => siteModels;
+        }
+
+        public override void Emplace(string title,Fetcher fetcher)
+        {
+            siteModels.Add(new MockFetcherViewModel() { Title = title });
+            //Todo : register fetcher on Publisher
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Model {
 
 		public string Uri { get => uri; set => uri = value; }
 
-		public override Task<List<Document>> Fetch() {
+		public override Task<List<PubDocument>> Fetch() {
 			var reader = XmlReader.Create(uri);
 			var feed = SyndicationFeed.Load(reader); // use SyndicationFeed to load atom feed
 			reader.Close();

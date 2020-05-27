@@ -9,9 +9,9 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ContentView"
       Loaded="Page_Loaded"
+      Unloaded="Page_Unloaded"
       >
 
-    <DockPanel>
-        <cef:ChromiumWebBrowser DockPanel.Dock="Top" x:Name="CBrowser"></cef:ChromiumWebBrowser>
+    <DockPanel x:Name="Box1">
     </DockPanel>
 </Page>

@@ -11,6 +11,7 @@ using System.Collections;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using Model.Interface;
 
 namespace ViewModel.DB
 {
@@ -63,6 +64,7 @@ namespace ViewModel.DB
                 {
                     ret = (from doc in context.Documents
                            where doc.DBFetcherId == fetcherId
+                           orderby doc.Date descending
                            select new DBDocumentViewModel(doc)).ToList();
                 }
                 return ret.GetEnumerator();
@@ -105,24 +107,39 @@ namespace ViewModel.DB
         private int fetcherId;
         private DocumentCollection documents;
 
-        public DBFetcherViewModel(LoadContext context, string title, Fetcher fetcher, int categoryId)
+        /// <summary>
+        /// create new fetcher view model and add db.
+        /// </summary>
+        /// <param name="publisher"></param>
+        /// <param name="title"></param>
+        /// <param name="fetcher"></param>
+        /// <param name="categoryId"></param>
+        public DBFetcherViewModel(DocumentPublisher publisher, string title, Fetcher fetcher, int categoryId)
         {
-            Title = title;
-            var f = new DBFetcher()
+            using (var context = new AppDBContext())
             {
-                Title = title
-            };
-            f.SetFetcher(fetcher);
-            var category = context.DBContext.Categorys.Find(categoryId);
-            category.Fetchers.Add(f);
-            context.DBContext.SaveChanges();
-            fetcherId = f.DBFetcherId;
-            cateogryId = categoryId;
-            documents = new DocumentCollection(fetcherId);
-            context.Publisher.AddFetcher(fetcher, OnPublished);
+                Title = title;
+                var f = new DBFetcher()
+                {
+                    Title = title
+                };
+                f.SetFetcher(fetcher);
+                var category = context.Categorys.Find(categoryId);
+                category.Fetchers.Add(f);
+                context.SaveChanges();
+                fetcherId = f.DBFetcherId;
+                this.cateogryId = categoryId;
+                documents = new DocumentCollection(fetcherId);
+                publisher.AddFetcher(fetcher, OnPublished);
+            }
         }
-        public DBFetcherViewModel(LoadContext context, int fetcherId)
+
+        /// <summary>
+        /// Load From DB
+        /// </summary>
+        public DBFetcherViewModel(LoadContext context, int fetcherId, ViewModelBase parent)
         {
+            Parent = parent;
             var dbfetcher = context.DBContext.Fetchers.Find(fetcherId);
             Title = dbfetcher.Title;
             var fetcher = dbfetcher.GetFetcher();
@@ -135,30 +152,50 @@ namespace ViewModel.DB
         }
         private void OnPublished(object sender, PublishedEventArg args)
         {
-            //using (var dBContext = new AppDBContext())
+            foreach (var doc in args.Documents)
             {
-                foreach (var doc in args.Documents)
+                var dbDoc = new DBDocument()
                 {
-                    var dbDoc = new DBDocument()
-                    {
-                        Title = doc.Title,
-                        Summary = doc.Summary,
-                        Date = doc.Date,
-                        HostUri = doc.HostUri,
-                        PathUri = doc.PathUri,
-                        GUID = doc.GUID,
-                        IsRead = false
-                    };
-                    //dBContext.Fetchers.Find(fetcherId).Documents.Add(dbDoc);
-                    Documents.Add(new DBDocumentViewModel(dbDoc));
-                    //dBContext.SaveChanges();
-                }
+                    Title = doc.Title,
+                    Summary = doc.Summary,
+                    Date = doc.Date,
+                    HostUri = doc.HostUri,
+                    PathUri = doc.PathUri,
+                    GUID = doc.GUID,
+                    IsRead = false
+                };
+                AddDocument(new DBDocumentViewModel(dbDoc));
             }
         }
-        public DBFetcher GetFetcher(AppDBContext context)
+        private void AddDocument(DBDocumentViewModel dbDoc)
+        {
+            documents.Add(dbDoc);
+        }
+        public override void AddDocument(IDocument document)
+        {
+            documents.Add(new DBDocumentViewModel(document));
+        }
+        public DBFetcher GetDBFetcher(AppDBContext context)
         {
             return context.Fetchers.Find(fetcherId);
         }
+
+        public override void ChangeOwner(CategoryViewModel newViewModel)
+        {
+            if(newViewModel is DBCategoryViewModel dbCategory)
+            {
+                using (var context = new AppDBContext())
+                {
+                    var old_owner_model = Parent as DBCategoryViewModel;
+                    var new_owner = dbCategory.GetDBCategory(context);
+                    GetDBFetcher(context).ChangeOwner(new_owner);
+                    old_owner_model.SitesModelDetail.CacheRemove(this);
+                    dbCategory.SitesModelDetail.CacheAdd(this);
+                    context.SaveChanges();
+                }
+            }
+        }
+
 
         public override ICollectionViewModel<DocumentViewModel> Documents { 
             get => documents; 
