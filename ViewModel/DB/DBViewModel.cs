@@ -66,10 +66,15 @@ namespace ViewModel.DB
                 PlatformSevice.Instance.CollectionChangedInvoke
                         (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
-
+            private IEnumerator<CategoryViewModel> getEnumerator()
+            {
+                return (from kv in categoriesCache
+                        orderby kv.Key
+                        select kv.Value).GetEnumerator();
+            }
             public IEnumerator<CategoryViewModel> GetEnumerator()
             {
-                return categoriesCache.Values.GetEnumerator();
+                return getEnumerator();
             }
 
             public bool Remove(CategoryViewModel elem)
@@ -79,16 +84,18 @@ namespace ViewModel.DB
                     using (var context = new AppDBContext())
                     {
                         context.Categorys.Remove(dB.GetDBCategory(context));
+                        context.SaveChanges();
                     }
                 }
+                bool ret = categoriesCache.Remove(elem.Title);
                 PlatformSevice.Instance.CollectionChangedInvoke
                     (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                return categoriesCache.Remove(elem.Title);
+                return ret;
             }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return categoriesCache.Values.GetEnumerator();
+                return getEnumerator();
             }
         }
         private TreeViewCollection categories;
@@ -96,6 +103,11 @@ namespace ViewModel.DB
         public override void EmplaceCategory(string title)
         {
             categories.Emplace(title);
+        }
+
+        public override bool RemoveCategory(CategoryViewModel categoryViewModel)
+        {
+            return categories.Remove(categoryViewModel);
         }
 
         //Load Only

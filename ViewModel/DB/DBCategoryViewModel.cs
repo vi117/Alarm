@@ -117,6 +117,22 @@ namespace ViewModel.DB
             siteModels.Emplace(title, fetcher);
         }
 
+        public override bool Remove(FetcherViewModel fetcherViewModel)
+        {
+            bool ret = siteModels.CacheRemove(fetcherViewModel);
+            if (fetcherViewModel is DBFetcherViewModel dbFetcherViewModel)
+            {
+                using (var context = new AppDBContext())
+                {
+                    var dbfetcher = dbFetcherViewModel.GetDBFetcher(context);
+                    var dbCategory = GetDBCategory(context);
+                    dbCategory.Fetchers.Remove(dbfetcher);
+                    context.SaveChanges();
+                }
+            }
+            return ret;
+        }
+
         public SiteModelCollection SitesModelDetail => siteModels;
         public override ICollectionViewModel<FetcherViewModel> SiteModels {
             get => siteModels;

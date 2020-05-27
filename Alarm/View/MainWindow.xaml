@@ -53,7 +53,13 @@
             </Button>
             <Button Content="&#xE72c;" Grid.Column="1"/>
             <Button Content="&#xE97e;" Grid.Column="2"/>
-            <Button Content="&#xE74d;" Grid.Column="3"/>
+            <Button Content="&#xE74d;" Grid.Column="3">
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="Click">
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.RemoveSelectedCommand}"/>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
+            </Button>
             <Button Content="&#xE70f;" Grid.Column="4"/>
             <Button Content="&#xE713;" Grid.Column="5">
                 <ie:Interaction.Triggers>

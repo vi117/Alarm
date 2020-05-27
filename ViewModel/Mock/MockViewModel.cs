@@ -61,5 +61,10 @@ namespace ViewModel
         {
             treeView.Add(new MockCategoryViewModel(title));
         }
+
+        public override bool RemoveCategory(CategoryViewModel categoryViewModel)
+        {
+            return treeView.Remove(categoryViewModel);
+        }
     }
 }

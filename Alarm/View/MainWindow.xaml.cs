@@ -47,7 +47,15 @@ namespace Alarm.View
                 viewModel.EmplaceCategory(window.getTitleName());
             }
         }
-
+        bool IsDialogShowing(Type type)
+        {
+            foreach(var window in App.Current.Windows)
+            {
+                if (window.GetType().IsAssignableFrom(type))
+                    return true;
+            }
+            return false;
+        }
         void BindCommand()
         {
             CommandBindings.Add(new CommandBinding(AppCommand.NavigateCommand,
@@ -64,7 +72,7 @@ namespace Alarm.View
                     window.ShowDialog();
                     eventArgs.Handled = true;
                 },
-                (s, e) => { e.CanExecute = true; }
+                (s, e) => { e.CanExecute = !IsDialogShowing(typeof(SettingWindow)); }
             ));
             CommandBindings.Add(new CommandBinding(AppCommand.ShowAddFetcherWindowCommand,
                 (sender, eventArgs) => {
@@ -81,8 +89,30 @@ namespace Alarm.View
                     }
                     eventArgs.Handled = true;
                 },
-                (s, e) => { e.CanExecute = true; }
+                (s, e) => {
+                    e.CanExecute = !IsDialogShowing(typeof(AddFetcherWindow))
+                && !IsDialogShowing(typeof(CategoryDialog));
+                }
             ));
+            CommandBindings.Add(new CommandBinding(AppCommand.RemoveSelectedCommand,
+                (sender, eventArgs) =>
+                {
+                    switch (NavTreeView.SelectedItem)
+                    {
+                        case CategoryViewModel category:
+                            (category.Parent as ViewModel.ViewModel).RemoveCategory(category);
+                            break;
+                        case FetcherViewModel fetcher:
+                            (fetcher.Parent as CategoryViewModel).Remove(fetcher);
+                            break;
+                        case null:
+                            break;
+                        default:
+                            throw new InvalidOperationException("Unreachable!");
+                    }
+                    eventArgs.Handled = true;
+                }, (s, e) => e.CanExecute = true
+                ));
         }
         public MainWindow()
         {
