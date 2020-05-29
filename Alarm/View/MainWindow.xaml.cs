@@ -155,6 +155,22 @@ namespace Alarm.View
                     eventArgs.Handled = true;
                 }, (s, e) => e.CanExecute = true
                 ));
+            CommandBindings.Add(new CommandBinding(AppCommand.ShowEditFetcherWindowCommand,
+                (sender, eventArgs) => {
+                    switch (NavTreeView.SelectedItem)
+                    {
+                        case CategoryViewModel category:
+                            category.RefreshAll();
+                            break;
+                        case FetcherViewModel fetcher:
+                            fetcher.Refresh();
+                            break;
+                        case null:
+                            break;
+                        default:
+                            throw new InvalidOperationException("Unreachable!");
+                    }
+                });
         }
         public MainWindow()
         {

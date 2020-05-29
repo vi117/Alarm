@@ -45,9 +45,7 @@ namespace Model
         public abstract Task<List<PubDocument>> Fetch();
 
         public event PublishedEventHandler OnPublished;
-
-        //args may be null.
-        public async void OnElapsed(object obj, ElapsedEventArgs args)
+        public async void CallWhenPublished()
         {
             Queue<PubDocument> documents = new Queue<PubDocument>();
             var docList = await this.Fetch();
@@ -65,6 +63,11 @@ namespace Model
 
             OnPublished?.Invoke(this, new PublishedEventArg(documents));
         }
+        //args may be null.
+        public void OnElapsed(object obj, ElapsedEventArgs args)
+        {
+            CallWhenPublished();
+        }
         /// <summary>
         /// Timer Start.
         /// </summary>
@@ -76,13 +79,18 @@ namespace Model
                 Interval = Interval.TotalMilliseconds
             };
             timer.Elapsed += OnElapsed;
-            var t = new Task(() => { OnElapsed(timer, null); });
+            var t = new Task(() => { CallWhenPublished(); });
             t.Start();
             timer.Start();
         }
         public void Stop()
         {
             timer.Stop();
+        }
+        public void Refresh()
+        {
+            var t = new Task(() => { CallWhenPublished(); });
+            t.Start();
         }
     }
 }

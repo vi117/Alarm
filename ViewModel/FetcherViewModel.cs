@@ -24,7 +24,10 @@ namespace ViewModel
 
         abstract public void AddDocument(IDocument document);
         abstract public void ChangeOwner(CategoryViewModel newViewModel);
-
+        public void Refresh()
+        {
+            Fetcher.Refresh();
+        }
         public abstract string Title { get; set; }
         public bool IsSelected
         {
