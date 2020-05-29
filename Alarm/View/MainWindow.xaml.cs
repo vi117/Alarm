@@ -155,7 +155,7 @@ namespace Alarm.View
                     eventArgs.Handled = true;
                 }, (s, e) => e.CanExecute = true
                 ));
-            CommandBindings.Add(new CommandBinding(AppCommand.ShowEditFetcherWindowCommand,
+            CommandBindings.Add(new CommandBinding(AppCommand.RefreshFetcherCommand,
                 (sender, eventArgs) => {
                     switch (NavTreeView.SelectedItem)
                     {
@@ -170,7 +170,7 @@ namespace Alarm.View
                         default:
                             throw new InvalidOperationException("Unreachable!");
                     }
-                });
+                }));
         }
         public MainWindow()
         {

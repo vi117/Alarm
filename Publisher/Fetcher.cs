@@ -45,7 +45,7 @@ namespace Model
         public abstract Task<List<PubDocument>> Fetch();
 
         public event PublishedEventHandler OnPublished;
-        public async void CallWhenPublished()
+        private async void CallWhenPublished()
         {
             Queue<PubDocument> documents = new Queue<PubDocument>();
             var docList = await this.Fetch();
