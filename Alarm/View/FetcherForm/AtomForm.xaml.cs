@@ -25,9 +25,17 @@ namespace Alarm.View.FetcherForm
         {
             InitializeComponent();
         }
+        public AtomForm(AtomFetcher atomFetcher)
+        {
+            URLContent.Text = atomFetcher.Uri;
+        }
         override public Fetcher GetFetcher()
         {
             return new AtomFetcher(URLContent.Text) { Interval = IntervalBox.SelectedTime };
+        }
+        public override string FetcherName {
+            get => FetcherTitle.Text;
+            set => FetcherTitle.Text = value;
         }
         private bool UrlValid(string url)
         {

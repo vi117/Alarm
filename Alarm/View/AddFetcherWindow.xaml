@@ -27,8 +27,6 @@
             </Grid.ColumnDefinitions>
             <Label Content="Fetcher Type" FontSize="16"/>
             <ComboBox Grid.Column="1" x:Name="ContentTypeComboBox" SelectionChanged="ComboBox_SelectionChanged">
-                <ComboBoxItem Content="Atom"></ComboBoxItem>
-                <ComboBoxItem Content="RSS"></ComboBoxItem>
             </ComboBox>
         </Grid>
         <Separator DockPanel.Dock="Top"/>

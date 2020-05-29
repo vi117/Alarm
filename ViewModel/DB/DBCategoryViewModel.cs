@@ -22,7 +22,6 @@ namespace ViewModel.DB
             List<FetcherViewModel> cache;
             int categoryId;
             ViewModelBase parent;
-            DocumentPublisher publisher;
             /// <summary>
             /// For Initializing Process.
             /// Shell not be using constructor except loading.
@@ -37,18 +36,16 @@ namespace ViewModel.DB
                 cache = context.DBContext.Fetchers.Where((x)=>x.DBCategoryId == categoryId).ToList()
                     .Select((x) => (FetcherViewModel)new DBFetcherViewModel(context,x.DBFetcherId,parent))
                     .ToList();
-                publisher = context.Publisher;
             }
-            public SiteModelCollection(DocumentPublisher publisher, DBCategory category, ViewModelBase parent)
+            public SiteModelCollection(DBCategory category, ViewModelBase parent)
             {
                 this.parent = parent;
-                this.publisher = publisher;
                 categoryId = category.DBCategoryId;
                 cache = new List<FetcherViewModel>();
             }
             public void Emplace(string title, Fetcher fetcher)
             {
-                var elem = new DBFetcherViewModel(publisher, title, fetcher, categoryId);
+                var elem = new DBFetcherViewModel(title, fetcher, categoryId);
                 elem.Parent = parent;
                 cache.Add(elem);
                 PlatformSevice.Instance.CollectionChangedInvoke
@@ -81,6 +78,7 @@ namespace ViewModel.DB
             }
         }
         private int categoryId;
+        private string cachedTitle;
         private SiteModelCollection siteModels;
         /// <summary>
         /// Load only.
@@ -89,24 +87,34 @@ namespace ViewModel.DB
         public DBCategoryViewModel(LoadContext context, DBCategory category,ViewModelBase parent)
         {
             this.Parent = parent;
-            Title = category.Title;
+            cachedTitle = category.Title;
             categoryId = category.DBCategoryId;
             siteModels = new SiteModelCollection(context,category, this);
         }
 
-        public DBCategoryViewModel(string title, DocumentPublisher publisher)
+        public DBCategoryViewModel(string title)
         {
-            Title = title;
+            cachedTitle = title;
             using (var context = new AppDBContext()) {
                 var dbCategory = new DBCategory() { Title = title };
                 context.Categorys.Add(dbCategory);
                 context.SaveChanges();
-                siteModels = new SiteModelCollection(publisher, dbCategory, this);
+                siteModels = new SiteModelCollection(dbCategory, this);
             }
         }
         
         public override string Title {
-            get; set;
+            get => cachedTitle;
+            set
+            {
+                using(var context =new AppDBContext())
+                {
+                    GetDBCategory(context).Title = value;
+                    context.SaveChanges();
+                }
+                cachedTitle = value;
+                OnPropertyChanged(nameof(Title));
+            }
         }
         public DBCategory GetDBCategory(AppDBContext context) {
             return context.Categorys.Find(categoryId);

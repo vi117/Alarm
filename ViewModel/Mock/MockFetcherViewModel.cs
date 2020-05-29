@@ -13,15 +13,15 @@ namespace ViewModel
     {
         private string title;
         private MockCollectionViewModel<DocumentViewModel> documents;
+        private Fetcher fetcher;
 
-        public MockFetcherViewModel()
+        public MockFetcherViewModel():this(""){}
+
+        public MockFetcherViewModel(string title):this(title,new MockFetcher()){}
+
+        public MockFetcherViewModel(string title,Fetcher fetcher)
         {
-            documents = new MockCollectionViewModel<DocumentViewModel>(this);
-            IsSelected = false;
-            IsExpanded = false;
-        }
-        public MockFetcherViewModel(string title)
-        {
+            this.fetcher = fetcher;
             this.title = title;
             documents = new MockCollectionViewModel<DocumentViewModel>(this);
             IsSelected = false;
@@ -44,7 +44,10 @@ namespace ViewModel
         {
             get => documents;
         }
-
+        public override Fetcher Fetcher { 
+            get => fetcher;
+            set => fetcher = value; 
+        }
 
         public void RemoveFirstDocument()
         {

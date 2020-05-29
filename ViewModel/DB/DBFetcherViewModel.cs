@@ -34,8 +34,8 @@ namespace ViewModel.DB
             {
                 using (var context = new AppDBContext())
                 {
-                    if ((from s in context.Documents 
-                         where s.DBFetcherId == fetcherId && s.GUID == elem.GUID 
+                    if ((from s in context.Documents
+                         where s.DBFetcherId == fetcherId && s.GUID == elem.GUID
                          select s
                          ).Count() == 0
                          )
@@ -80,10 +80,10 @@ namespace ViewModel.DB
 
             public bool Remove(DocumentViewModel elem)
             {
-                using (var context= new AppDBContext())
+                using (var context = new AppDBContext())
                 {
-                    var selected = (from s in context.Documents 
-                                    where s.GUID == elem.GUID 
+                    var selected = (from s in context.Documents
+                                    where s.GUID == elem.GUID
                                     select s);
                     if (selected.Count() == 0) return false;
                     foreach (var s in selected)
@@ -105,7 +105,9 @@ namespace ViewModel.DB
 
         private int cateogryId;
         private int fetcherId;
+        private string cachedTitle;
         private DocumentCollection documents;
+        private Fetcher fetcher;
 
         /// <summary>
         /// create new fetcher view model and add db.
@@ -114,11 +116,12 @@ namespace ViewModel.DB
         /// <param name="title"></param>
         /// <param name="fetcher"></param>
         /// <param name="categoryId"></param>
-        public DBFetcherViewModel(DocumentPublisher publisher, string title, Fetcher fetcher, int categoryId)
+        public DBFetcherViewModel(string title, Fetcher fetcher, int categoryId)
         {
+            this.fetcher = fetcher;
             using (var context = new AppDBContext())
             {
-                Title = title;
+                cachedTitle = title;
                 var f = new DBFetcher()
                 {
                     Title = title
@@ -130,7 +133,8 @@ namespace ViewModel.DB
                 fetcherId = f.DBFetcherId;
                 this.cateogryId = categoryId;
                 documents = new DocumentCollection(fetcherId);
-                publisher.AddFetcher(fetcher, OnPublished);
+                fetcher.OnPublished += OnPublished;
+                fetcher.Start();
             }
         }
 
@@ -141,13 +145,11 @@ namespace ViewModel.DB
         {
             Parent = parent;
             var dbfetcher = context.DBContext.Fetchers.Find(fetcherId);
-            Title = dbfetcher.Title;
-            var fetcher = dbfetcher.GetFetcher();
+            cachedTitle = dbfetcher.Title;
+            fetcher = dbfetcher.GetFetcher();
             this.fetcherId = fetcherId;
-            context.Publisher.AddFetcher(
-                fetcher,
-                OnPublished
-            );
+            fetcher.OnPublished += OnPublished;
+            fetcher.Start();
             documents = new DocumentCollection(fetcherId);
         }
         private void OnPublished(object sender, PublishedEventArg args)
@@ -182,7 +184,7 @@ namespace ViewModel.DB
 
         public override void ChangeOwner(CategoryViewModel newViewModel)
         {
-            if(newViewModel is DBCategoryViewModel dbCategory)
+            if (newViewModel is DBCategoryViewModel dbCategory)
             {
                 using (var context = new AppDBContext())
                 {
@@ -197,11 +199,40 @@ namespace ViewModel.DB
         }
 
 
-        public override ICollectionViewModel<DocumentViewModel> Documents { 
-            get => documents; 
+        public override ICollectionViewModel<DocumentViewModel> Documents
+        {
+            get => documents;
         }
-        public override string Title {
-            get; set;
+        public override string Title
+        {
+            get => cachedTitle;
+            set
+            {
+                using (var context = new AppDBContext())
+                {
+                    GetDBFetcher(context).Title = value;
+                    context.SaveChanges();
+                }
+                cachedTitle = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+        public override Fetcher Fetcher
+        {
+            get => fetcher;
+            set
+            {
+                fetcher.OnPublished -= OnPublished;
+                fetcher.Stop();
+                using(var context = new AppDBContext())
+                {
+                    GetDBFetcher(context).SetFetcher(value);
+                    context.SaveChanges();
+                }
+                fetcher = value;
+                fetcher.OnPublished += OnPublished;
+                fetcher.Start();
+            }
         }
     }
 }

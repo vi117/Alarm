@@ -23,13 +23,13 @@ namespace Alarm.View.FetcherForm
     {
         static readonly DependencyProperty BackgroundTextProperty =
             DependencyProperty.Register(
-                nameof(BackgroundTextProperty),
+                "BackgroundText",
                 typeof(string),
                 typeof(LineInput),
                 new PropertyMetadata("default", BackgroundTextChanged));
         static readonly DependencyProperty BackgroundTextFillProperty =
             DependencyProperty.Register(
-                nameof(BackgroundTextFillProperty),
+               "BackgroundTextFill",
                 typeof(Brush),
                 typeof(LineInput),
                 new PropertyMetadata(Brushes.Gray, BackgroundTextFillChanged));
@@ -42,6 +42,22 @@ namespace Alarm.View.FetcherForm
                typeof(VerityHandler),
                typeof(LineInput),
                new PropertyMetadata(new VerityHandler((s) => true)));
+        static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register(
+                "Text",
+                typeof(string),
+                typeof(LineInput),
+            new PropertyMetadata("", (o, e) =>
+            {
+                var form = o as LineInput;
+                form.InputBox.Text = (string)e.NewValue;
+                if (form.InputBox.Text == string.Empty)
+                {
+                    form.InputBox.Text = form.BackgroundText;
+                    form.InputBox.Foreground = form.BackgroundTextFill;
+                }
+                else form.InputBox.Foreground = form.Foreground;
+            }));
 
         static private void BackgroundTextChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
@@ -95,8 +111,8 @@ namespace Alarm.View.FetcherForm
         }
 
         public string Text {
-            get => InputBox.Text;
-            set => InputBox.Text = value;
+            get => GetValue(TextProperty) as string;
+            set => SetValue(TextProperty, value);
         }
 
         private void InputBox_GotFocus(object sender, RoutedEventArgs e)
@@ -135,6 +151,7 @@ namespace Alarm.View.FetcherForm
             var box = sender as TextBox;
             if (box.Text != BackgroundText)
             {
+                Text = box.Text;
                 if (Validation.Invoke(box.Text))
                 {
                     ValidateStoryBoard.Begin();

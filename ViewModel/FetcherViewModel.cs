@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.Interface;
+using Model;
 
 namespace ViewModel
 {
@@ -49,6 +50,7 @@ namespace ViewModel
                 }
             }
         }
+        public abstract Fetcher Fetcher { get; set; }
         public abstract ICollectionViewModel<DocumentViewModel> Documents { get; }
     }
 }

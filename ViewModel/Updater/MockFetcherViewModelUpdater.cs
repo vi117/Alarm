@@ -27,16 +27,5 @@ namespace ViewModel.Updater
                 }
             }
         }
-        public void RegisterPublisher(DocumentPublisher publisher)
-        {
-            publisher.OnPublished += OnPublished;
-        }
-    }
-    static public class MockModelUpdaterExtension
-    {
-        public static void RegisterUpdater(this DocumentPublisher publisher, MockFetcherViewModelUpdater updater)
-        {
-            updater.RegisterPublisher(publisher);
-        }
     }
 }

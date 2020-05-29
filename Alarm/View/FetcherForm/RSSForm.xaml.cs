@@ -28,14 +28,19 @@ namespace Alarm.View.FetcherForm
         {
             InitializeComponent();
         }
-
+        public void SetFetcher(RSSFetcher fetcher)
+        {
+            URLContent.Text = fetcher.URL;
+            IntervalBox.SelectedTime = fetcher.Interval;
+        }
         override public Model.Fetcher GetFetcher()
         {
             return new RSSFetcher(URLContent.Text) { Interval = IntervalBox.SelectedTime };
         }
-        override public string GetTitle()
+        override public string FetcherName
         {
-            return FetcherTitle.Text;
+            get => FetcherTitle.Text;
+            set => FetcherTitle.Text = value;
         }
         private bool UrlValid(string url)
         {

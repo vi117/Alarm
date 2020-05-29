@@ -26,8 +26,8 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock FontSize="20" Text="{Binding Path=Title}" Style="{StaticResource NewsForm}"/>
-                <TextBlock Text="{Binding Path=Summary}" Grid.Row="1" TextWrapping="Wrap" Style="{StaticResource NewsForm}"/>
+                <TextBlock FontSize="20" Text="{Binding Path=Title, Mode=OneWay}" Style="{StaticResource NewsForm}"/>
+                <TextBlock Text="{Binding Path=Summary, Mode=OneWay}" Grid.Row="1" TextWrapping="Wrap" Style="{StaticResource NewsForm}"/>
             </Grid>
         </DataTemplate>
         <Style TargetType="ListBoxItem">

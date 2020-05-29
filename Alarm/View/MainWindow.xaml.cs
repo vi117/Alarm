@@ -13,6 +13,8 @@ using ViewModel.DB;
 using ViewModel.Updater;
 using Alarm.Helper;
 using MessageBox = System.Windows.MessageBox;
+using System.Windows.Interactivity;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Alarm.View
 {
@@ -22,7 +24,6 @@ namespace Alarm.View
     public partial class MainWindow : MahApps.Metro.Controls.MetroWindow
     {
         static private ViewModel.ViewModel viewModel;
-        static private DocumentPublisher publisher;
 
         public ViewModel.ViewModel WindowViewModel
         {
@@ -35,21 +36,38 @@ namespace Alarm.View
             if (b.HasValue && b.Value)
             {
                 var fetcher = window.GetFetcher();
-                categoryView.Emplace(window.GetTitle(), fetcher);
+                categoryView.Emplace(window.GetFetcherTitle(), fetcher);
             }
         }
-        void AddCategoryView()
+        async void AddCategoryView()
         {
-            var window = new CategoryDialog();
-            bool? b = window.ShowDialog();
-            if (b == true)
+            var t = await DialogManager.ShowInputAsync(this, "Add Category", "Write the category's name");
+            if (t != null && t != string.Empty)
             {
-                viewModel.EmplaceCategory(window.getTitleName());
+                viewModel.EmplaceCategory(t);
+            }
+        }
+        void EditFetcherView(FetcherViewModel fetcher)
+        {
+            AddFetcherWindow window = new AddFetcherWindow(fetcher.Title,fetcher.Fetcher);
+            bool? b = window.ShowDialog();
+            if (b.HasValue && b.Value)
+            {
+                fetcher.Title = window.GetFetcherTitle();
+                fetcher.Fetcher = window.GetFetcher();
+            }
+        }
+        async void EditCategoryView(CategoryViewModel category)
+        {
+            var t = await DialogManager.ShowInputAsync(this, "Edit Category", "Write the new name of category");
+            if (t != null && t != string.Empty)
+            {
+                category.Title = t;
             }
         }
         bool IsDialogShowing(Type type)
         {
-            foreach(var window in App.Current.Windows)
+            foreach (var window in App.Current.Windows)
             {
                 if (window.GetType().IsAssignableFrom(type))
                     return true;
@@ -59,15 +77,17 @@ namespace Alarm.View
         void BindCommand()
         {
             CommandBindings.Add(new CommandBinding(AppCommand.NavigateCommand,
-                (sender, eventArgs) => {
-                    if(eventArgs.Parameter != null)
+                (sender, eventArgs) =>
+                {
+                    if (eventArgs.Parameter != null)
                         viewModel.Navigate(eventArgs.Parameter as IPageShow, PageFactory.Factory);
                     eventArgs.Handled = true;
                 },
                 (s, e) => { e.CanExecute = true; }
             ));
             CommandBindings.Add(new CommandBinding(AppCommand.ShowSettingWindowCommand,
-                (sender, eventArgs) => {
+                (sender, eventArgs) =>
+                {
                     SettingWindow window = new SettingWindow();
                     window.ShowDialog();
                     eventArgs.Handled = true;
@@ -75,8 +95,10 @@ namespace Alarm.View
                 (s, e) => { e.CanExecute = !IsDialogShowing(typeof(SettingWindow)); }
             ));
             CommandBindings.Add(new CommandBinding(AppCommand.ShowAddFetcherWindowCommand,
-                (sender, eventArgs) => {
-                    switch (NavTreeView.SelectedItem) {
+                (sender, eventArgs) =>
+                {
+                    switch (NavTreeView.SelectedItem)
+                    {
                         case FetcherViewModel s:
                             AddFetcherWindow(s.Parent as CategoryViewModel);
                             break;
@@ -89,7 +111,8 @@ namespace Alarm.View
                     }
                     eventArgs.Handled = true;
                 },
-                (s, e) => {
+                (s, e) =>
+                {
                     e.CanExecute = !IsDialogShowing(typeof(AddFetcherWindow))
                 && !IsDialogShowing(typeof(CategoryDialog));
                 }
@@ -113,12 +136,30 @@ namespace Alarm.View
                     eventArgs.Handled = true;
                 }, (s, e) => e.CanExecute = true
                 ));
+            CommandBindings.Add(new CommandBinding(AppCommand.ShowEditFetcherWindowCommand,
+                (sender, eventArgs) =>
+                {
+                    switch (NavTreeView.SelectedItem)
+                    {
+                        case CategoryViewModel category:
+                            EditCategoryView(category);
+                            break;
+                        case FetcherViewModel fetcher:
+                            EditFetcherView(fetcher);
+                            break;
+                        case null:
+                            break;
+                        default:
+                            throw new InvalidOperationException("Unreachable!");
+                    }
+                    eventArgs.Handled = true;
+                }, (s, e) => e.CanExecute = true
+                ));
         }
         public MainWindow()
         {
             InitializeComponent();
-            publisher = new DocumentPublisher();
-            viewModel = ViewModel.DB.ViewModelLoader.LoadViewModel(publisher);
+            viewModel = ViewModel.DB.ViewModelLoader.LoadViewModel();
             DataContext = viewModel;
             BindCommand();
         }
@@ -130,18 +171,30 @@ namespace Alarm.View
         {
             startPoint = e.GetPosition(null);
         }
+        private bool IsParent(DependencyObject obj, DependencyObject p)
+        {
+            var col = obj.GetSelfAndAncestors();
+            foreach (var it in col)
+            {
+                if (it == p)
+                    return true;
+            }
+            return false;
+        }
         private void NavTreeView_MouseMove(object sender, MouseEventArgs e)
         {
-            if(e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var mousePos = e.GetPosition(null);
                 var diff = startPoint - mousePos;
-                if(Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance
-                    ||Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
+                if (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance
+                    || Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
                 {
                     var treeView = sender as TreeView;
                     var treeViewItem = treeView.ItemContainerGenerator.ContainerFromItem
                         (treeView.SelectedItem) as TreeViewItem;
+
+
                     //category 항목은 drag & drop을 적용안하기에 나감.
                     if (treeViewItem != null) return;
                     //category 밑 fetcher 항목에서 찾는다.
@@ -154,9 +207,13 @@ namespace Alarm.View
                         if (treeViewItem != null) break;
                     }
                     if (treeViewItem == null) return;
+                    var dependencyObject = (DependencyObject)e.OriginalSource;
+                    var col = dependencyObject.GetSelfAndAncestors().Where((x) => x == treeViewItem).Count();
+                    if (col == 0) return;
+
                     var fetcherViewModel = treeView.SelectedItem as FetcherViewModel;
                     if (fetcherViewModel == null) return;
-                    var dragData = new DataObject("FetcherViewModel",fetcherViewModel);
+                    var dragData = new DataObject("FetcherViewModel", fetcherViewModel);
                     //treeViewItem 게 밑바닥으로 깔려야하는 데 왜 안될까?
                     DragDrop.DoDragDrop(treeViewItem, dragData, DragDropEffects.Move);
                 }
@@ -186,7 +243,7 @@ namespace Alarm.View
                     }
                 }
                 if (category == null) throw new ApplicationException("Search fail.");
-                if(fetcherViewModel.Parent != category)
+                if (fetcherViewModel.Parent != category)
                 {
                     fetcherViewModel.ChangeOwner(category);
                 }

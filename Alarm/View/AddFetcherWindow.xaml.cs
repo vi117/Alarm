@@ -26,14 +26,28 @@ namespace Alarm.View
     public partial class AddFetcherWindow : MahApps.Metro.Controls.MetroWindow
     {
         FetcherForm.FetcherFormControl fetcherView;
-        static Dictionary<string, FetcherFormControl> keyValuePairs= new Dictionary<string, FetcherFormControl>() {
+        Dictionary<string, FetcherFormControl> keyValuePairs= new Dictionary<string, FetcherFormControl>() {
                 ["RSS"] = new RSSForm(),
                 ["Atom"] = new AtomForm()
             };
+        public AddFetcherWindow(string title,Fetcher fetcher):this()
+        {
+            Title = "Edit Fetcher Window";
+            switch (fetcher)
+            {
+                case RSSFetcher f:
+                    ((RSSForm)keyValuePairs["RSS"]).FetcherName = title;
+                    ((RSSForm)keyValuePairs["RSS"]).SetFetcher(f);
+                    ContentTypeComboBox.SelectedIndex = 0;
+                    //SetUserControl(keyValuePairs["RSS"]);
+                    break;
+            }
+        }
         public AddFetcherWindow()
         {
             InitializeComponent();
             fetcherView = null;
+            ContentTypeComboBox.ItemsSource = keyValuePairs.Keys.ToList();
         }
 
         public Fetcher GetFetcher()
@@ -43,9 +57,9 @@ namespace Alarm.View
             else
                 return fetcherView.GetFetcher();
         }
-        public string GetTitle()
+        public string GetFetcherTitle()
         {
-            return fetcherView?.GetTitle();
+            return fetcherView?.FetcherName;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -80,9 +94,8 @@ namespace Alarm.View
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
-            var item = comboBox.SelectedItem as ComboBoxItem;
-            var query = item.Content.ToString();
-            SetUserControl(keyValuePairs[query]);
+            var item = comboBox.SelectedItem as string;
+            SetUserControl(keyValuePairs[item]);
         }
     }
 }

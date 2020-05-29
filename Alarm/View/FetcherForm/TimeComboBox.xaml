@@ -5,7 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Alarm.View.FetcherForm"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="500">
-    <ComboBox Grid.Row="2" Grid.Column="1" x:Name="IntervalBox">
-    </ComboBox>
+             d:DesignHeight="50" d:DesignWidth="500"
+             x:Name="UCC">
+    <Grid>
+        <ComboBox Grid.Row="2" Grid.Column="1" x:Name="IntervalBox" SelectionChanged="IntervalBox_SelectionChanged"/>
+        <Label Content="{Binding ElementName=UCC,Path=DefaultText}" IsHitTestVisible="False" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="DefaultLabel"/>
+    </Grid>
 </UserControl>

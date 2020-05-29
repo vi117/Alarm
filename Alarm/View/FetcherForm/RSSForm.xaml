@@ -22,7 +22,8 @@
         </local:LineInput>
         <Label Content="URL" FontSize="16" Grid.Row="1"/>
         <local:LineInput Grid.Row="1" Grid.Column="1" BackgroundText="URLContent" FontSize="16" x:Name="URLContent"
-                         BackgroundTextFill="Gray" Validation="UrlValid">
+                         BackgroundTextFill="Gray" Validation="UrlValid"
+                         >
         </local:LineInput>
         <Label Content="Frequency" FontSize="16" Grid.Row="2"/>
         <local:TimeComboBox Grid.Row="2" Grid.Column="1" x:Name="IntervalBox"/>

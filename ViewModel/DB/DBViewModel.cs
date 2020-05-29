@@ -20,7 +20,6 @@ namespace ViewModel.DB
 
             private Dictionary<string,CategoryViewModel> categoriesCache;
             private ViewModelBase parent;
-            private DocumentPublisher documentPublisher;
             /// <summary>
             /// For Initializing Process.
             /// Shell not be using constructor except loading.
@@ -28,7 +27,6 @@ namespace ViewModel.DB
             /// <param name="parent"></param>
             public TreeViewCollection(LoadContext loadContext, ViewModelBase parent) {
                 this.parent = parent;
-                this.documentPublisher = loadContext.Publisher;
                 categoriesCache =
                         loadContext.DBContext.Categorys.ToList()
                         .Select((x) => (CategoryViewModel)new DBCategoryViewModel(loadContext, x, parent))
@@ -60,7 +58,7 @@ namespace ViewModel.DB
             }
             public void Emplace(string title)
             {
-                var dBCategoryView = new DBCategoryViewModel(title,documentPublisher);
+                var dBCategoryView = new DBCategoryViewModel(title);
                 categoriesCache.Add(title, dBCategoryView);
                 dBCategoryView.Parent = parent;
                 PlatformSevice.Instance.CollectionChangedInvoke
