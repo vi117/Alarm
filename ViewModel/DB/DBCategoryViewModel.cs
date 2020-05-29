@@ -119,6 +119,7 @@ namespace ViewModel.DB
         public DBCategory GetDBCategory(AppDBContext context) {
             return context.Categorys.Find(categoryId);
         }
+        public int DBCategoryId => categoryId;
 
         public override void Emplace(string title, Fetcher fetcher)
         {

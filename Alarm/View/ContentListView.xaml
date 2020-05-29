@@ -36,7 +36,7 @@
     </Page.Resources>
     <Grid>
         <ListBox x:Name="ListBox" ItemTemplate="{StaticResource DocumentTemplate}" ItemsSource="{Binding Path=Documents}" 
-                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Standard">
             <ie:Interaction.Triggers>
                 <ie:EventTrigger EventName="MouseDoubleClick">
                     <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.NavigateCommand}"

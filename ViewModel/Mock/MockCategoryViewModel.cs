@@ -75,7 +75,6 @@ namespace ViewModel
         public override void Emplace(string title,Fetcher fetcher)
         {
             siteModels.Add(new MockFetcherViewModel() { Title = title });
-            //Todo : register fetcher on Publisher
         }
 
         public override bool Remove(FetcherViewModel fetcherViewModel)

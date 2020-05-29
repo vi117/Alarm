@@ -259,12 +259,13 @@ namespace Alarm.View
                     }
                 }
                 if (category == null) throw new ApplicationException("Search fail.");
+                Trace.WriteLine("Change Owner Start");
                 if (fetcherViewModel.Parent != category)
                 {
                     fetcherViewModel.ChangeOwner(category);
                 }
-                e.Handled = true;
             }
+            e.Handled = true;
         }
 
     }

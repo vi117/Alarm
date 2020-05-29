@@ -80,8 +80,8 @@ namespace Model
             };
             timer.Elapsed += OnElapsed;
             var t = new Task(() => { CallWhenPublished(); });
-            t.Start();
             timer.Start();
+            t.Start();
         }
         public void Stop()
         {

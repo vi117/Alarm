@@ -12,6 +12,7 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Model.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace ViewModel.DB
 {
@@ -59,15 +60,14 @@ namespace ViewModel.DB
             }
             private IEnumerator<DocumentViewModel> getEnumerator()
             {
-                List<DBDocumentViewModel> ret;
                 using (var context = new AppDBContext())
                 {
-                    ret = (from doc in context.Documents
-                           where doc.DBFetcherId == fetcherId
-                           orderby doc.Date descending
-                           select new DBDocumentViewModel(doc)).ToList();
+                    var ret = (from doc in context.Documents
+                               where doc.DBFetcherId == fetcherId
+                               orderby doc.Date descending
+                               select new DBDocumentViewModel(doc));
+                    return ret.ToList().GetEnumerator();
                 }
-                return ret.GetEnumerator();
             }
             public IEnumerator<DocumentViewModel> GetEnumerator()
             {
@@ -186,15 +186,19 @@ namespace ViewModel.DB
         {
             if (newViewModel is DBCategoryViewModel dbCategory)
             {
+                var old_owner_model = Parent as DBCategoryViewModel;
                 using (var context = new AppDBContext())
                 {
-                    var old_owner_model = Parent as DBCategoryViewModel;
-                    var new_owner = dbCategory.GetDBCategory(context);
-                    GetDBFetcher(context).ChangeOwner(new_owner);
-                    old_owner_model.SitesModelDetail.CacheRemove(this);
-                    dbCategory.SitesModelDetail.CacheAdd(this);
+                    var dbf = new DBFetcher();
+                    dbf.DBFetcherId = fetcherId;
+                    context.Attach(dbf);
+                    dbf.DBCategoryId = dbCategory.DBCategoryId;
+                    //For speed
+                    context.ChangeTracker.AutoDetectChangesEnabled = false;
                     context.SaveChanges();
                 }
+                old_owner_model.SitesModelDetail.CacheRemove(this);
+                dbCategory.SitesModelDetail.CacheAdd(this);
             }
         }
 
