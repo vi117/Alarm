@@ -9,6 +9,7 @@ using System.Collections.Specialized;
 using System.Collections;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace ViewModel.DB
 {
@@ -28,20 +29,13 @@ namespace ViewModel.DB
             public TreeViewCollection(LoadContext loadContext, ViewModelBase parent) {
                 this.parent = parent;
                 categoriesCache =
-                        loadContext.DBContext.Categorys.ToList()
+                        loadContext.DBContext.Categorys.AsNoTracking().ToArray()
                         .Select((x) => (CategoryViewModel)new DBCategoryViewModel(loadContext, x, parent))
                         .OrderBy((x) => x.Title)
                         .ToDictionary((x) => x.Title);
                 if(categoriesCache.Count == 0)
                 {
-                    Add(new DBCategoryViewModel
-                            (
-                                loadContext,
-                                new DBCategory() { Title = "Default" },
-                                parent
-                            )
-                        );
-                    loadContext.DBContext.SaveChanges();
+                    Emplace("Default");
                 }
             }
 

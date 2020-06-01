@@ -15,7 +15,6 @@ namespace ConsoleView
     class Program
     {
         static ViewModel.ViewModel viewModel;
-        static DocumentPublisher publisher;
 
         class TreeViewRender : View
         {
@@ -169,8 +168,7 @@ namespace ConsoleView
         static void Main(string[] args)
         {
             PlatformSevice.Instance = new DefaultPlatformService();
-            publisher = new DocumentPublisher();
-            viewModel = /*new MockViewModel();*/ViewModel.DB.ViewModelLoader.LoadViewModel(publisher);
+            viewModel = /*new MockViewModel();*/ViewModel.DB.ViewModelLoader.LoadViewModel();
 
             Application.Init();
             var top = Application.Top;

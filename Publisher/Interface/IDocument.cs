@@ -24,6 +24,7 @@ namespace Model.Interface
             doc.Summary = other.Summary;
             doc.Date = other.Date;
             doc.GUID = other.GUID;
+            doc.IsRead = other.IsRead;
         }
     }
 }

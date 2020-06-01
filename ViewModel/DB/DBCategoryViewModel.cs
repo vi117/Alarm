@@ -17,6 +17,7 @@ namespace ViewModel.DB
     {
         public class SiteModelCollection : ICollectionViewModel<FetcherViewModel>
         {
+
             public event NotifyCollectionChangedEventHandler CollectionChanged;
 
             List<FetcherViewModel> cache;
@@ -33,7 +34,7 @@ namespace ViewModel.DB
             {
                 this.parent = parent;
                 categoryId = dBCategory.DBCategoryId;            
-                cache = context.DBContext.Fetchers.Where((x)=>x.DBCategoryId == categoryId).ToList()
+                cache = context.DBContext.Fetchers.AsNoTracking().Where((x)=>x.DBCategoryId == categoryId).ToArray()
                     .Select((x) => (FetcherViewModel)new DBFetcherViewModel(context,x.DBFetcherId,parent))
                     .ToList();
             }

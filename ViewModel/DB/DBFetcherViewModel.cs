@@ -13,16 +13,45 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Model.Interface;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using System.Diagnostics;
 
 namespace ViewModel.DB
 {
     class DBFetcherViewModel : FetcherViewModel
     {
-        class DocumentCollection : ICollectionViewModel<DocumentViewModel>
+        class DocumentCollection : IListViewModel<DocumentViewModel>
         {
             public event NotifyCollectionChangedEventHandler CollectionChanged;
 
             private int fetcherId;
+
+            public int Count
+            {
+                get
+                {
+                    using (var context = new AppDBContext())
+                    {
+                        return context.Documents.AsNoTracking().Where(x => x.DBFetcherId == fetcherId).Count();
+                    }
+                }
+            }
+
+            public bool IsReadOnly => true;
+
+            public DocumentViewModel this[int index]
+            {
+                get
+                {
+                    using (var context = new AppDBContext ())
+                    {
+                        var dbDoc = context.Documents.AsNoTracking().Where(x => x.DBFetcherId == fetcherId).ElementAt(index);
+                        return new DBDocumentViewModel(dbDoc);
+                    }
+                }
+                set => throw new InvalidOperationException("read only");
+            }
+
             public DocumentCollection(int id)
             {
                 fetcherId = id;
@@ -54,19 +83,45 @@ namespace ViewModel.DB
                         var fetcher = context.Fetchers.Find(fetcherId);
                         fetcher.Documents.Add(doc);
                         context.SaveChanges();
+                        InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, doc));
                     }
                 }
-                InvokeCollectionChanged();
+            }
+            public void AddRange(IDocument[] dbs)
+            {
+                var list = new List<DocumentViewModel>();
+                using(var context = new AppDBContext())
+                {
+                    var documents = dbs.Select(x => {
+                        var ret = new DBDocument();
+                        ret.SetAll(x);
+                        return ret;
+                    }).ToArray();
+                    var fetcher = context.Fetchers.Find(fetcherId);
+                    foreach (var i in documents)
+                    {
+                        var remainder = from d in context.Documents
+                                        where d.DBFetcherId == fetcherId && i.GUID == d.GUID
+                                        select d;
+                        if (remainder.ToList().Count() == 0)
+                        {
+                            fetcher.Documents.Add(i);
+                            list.Add(new DBDocumentViewModel(i));
+                        }
+                    }
+                    context.SaveChanges();
+                InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, list));
+                }
             }
             private IEnumerator<DocumentViewModel> getEnumerator()
             {
                 using (var context = new AppDBContext())
                 {
-                    var ret = (from doc in context.Documents
+                    var ret = from doc in context.Documents.AsNoTracking()
                                where doc.DBFetcherId == fetcherId
                                orderby doc.Date descending
-                               select new DBDocumentViewModel(doc));
-                    return ret.ToList().GetEnumerator();
+                               select doc;
+                    return ret.ToList().Select(x=>new DBDocumentViewModel(x)).GetEnumerator();
                 }
             }
             public IEnumerator<DocumentViewModel> GetEnumerator()
@@ -80,26 +135,77 @@ namespace ViewModel.DB
 
             public bool Remove(DocumentViewModel elem)
             {
-                using (var context = new AppDBContext())
+                if (elem is DBDocumentViewModel doc)
                 {
-                    var selected = (from s in context.Documents
-                                    where s.GUID == elem.GUID
-                                    select s);
-                    if (selected.Count() == 0) return false;
-                    foreach (var s in selected)
+                    using (var context = new AppDBContext())
                     {
-                        context.Documents.Remove(s);
+                        var selected = (from s in context.Documents
+                                        where s.DBFetcherId == doc.FetcherId && s.GUID == doc.GUID
+                                        select s);
+                        context.Documents.RemoveRange(selected);
+                        context.SaveChanges();
                     }
-                    context.SaveChanges();
+                InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,doc));
                 }
-                InvokeCollectionChanged();
                 return true;
             }
 
-            private void InvokeCollectionChanged()
+            private void InvokeCollectionChanged(NotifyCollectionChangedEventArgs eventArgs)
             {
                 PlatformSevice.Instance.CollectionChangedInvoke
-                    (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                    (this, this.CollectionChanged, eventArgs);
+            }
+
+            public int IndexOf(DocumentViewModel item)
+            {
+                if (item is DBDocumentViewModel doc) {
+                    using (var context = new AppDBContext())
+                    {
+                        var ddd = context.Documents.Find(doc.DocumentId);
+                        return (from d in context.Documents.AsNoTracking()
+                         where d.DBFetcherId == doc.FetcherId
+                         select d).ToList().IndexOf(ddd);
+                    }
+                }
+                return -1;
+            }
+
+            public void Insert(int index, DocumentViewModel item)
+            {
+                throw new InvalidOperationException();
+            }
+
+            public void RemoveAt(int index)
+            {
+                throw new InvalidOperationException();
+            }
+
+            public void Clear()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public bool Contains(DocumentViewModel item)
+            {
+                if (item is DBDocumentViewModel doc)
+                {
+                    using (var context = new AppDBContext())
+                    {
+                        return (from d in context.Documents.AsNoTracking()
+                                where d.DBDocumentId == doc.DocumentId
+                                select d).Count() != 0;
+                    }
+                }
+                return false;
+            }
+
+            public void CopyTo(DocumentViewModel[] array, int arrayIndex)
+            {
+                using (var context = new AppDBContext())
+                {
+                    var documents = context.Documents.AsNoTracking().Where(x => x.DBFetcherId == fetcherId).Skip(arrayIndex).Take(array.Length).ToArray();
+                    documents.CopyTo(array, arrayIndex);
+                }
             }
         }
 
@@ -154,24 +260,15 @@ namespace ViewModel.DB
         }
         private void OnPublished(object sender, PublishedEventArg args)
         {
-            foreach (var doc in args.Documents)
-            {
-                var dbDoc = new DBDocument()
-                {
-                    Title = doc.Title,
-                    Summary = doc.Summary,
-                    Date = doc.Date,
-                    HostUri = doc.HostUri,
-                    PathUri = doc.PathUri,
-                    GUID = doc.GUID,
-                    IsRead = false
-                };
-                AddDocument(new DBDocumentViewModel(dbDoc));
-            }
+            AddDocument(args.Documents.ToArray());
         }
         private void AddDocument(DBDocumentViewModel dbDoc)
         {
             documents.Add(dbDoc);
+        }
+        private void AddDocument(IDocument[] dBDocumentViews)
+        {
+            documents.AddRange(dBDocumentViews);
         }
         public override void AddDocument(IDocument document)
         {
@@ -202,11 +299,6 @@ namespace ViewModel.DB
             }
         }
 
-
-        public override ICollectionViewModel<DocumentViewModel> Documents
-        {
-            get => documents;
-        }
         public override string Title
         {
             get => cachedTitle;
@@ -228,7 +320,7 @@ namespace ViewModel.DB
             {
                 fetcher.OnPublished -= OnPublished;
                 fetcher.Stop();
-                using(var context = new AppDBContext())
+                using (var context = new AppDBContext())
                 {
                     GetDBFetcher(context).SetFetcher(value);
                     context.SaveChanges();
@@ -238,5 +330,7 @@ namespace ViewModel.DB
                 fetcher.Start();
             }
         }
+
+        public override IListViewModel<DocumentViewModel> Documents => documents;
     }
 }

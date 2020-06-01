@@ -113,8 +113,7 @@ namespace Alarm.View
                 },
                 (s, e) =>
                 {
-                    e.CanExecute = !IsDialogShowing(typeof(AddFetcherWindow))
-                && !IsDialogShowing(typeof(CategoryDialog));
+                    e.CanExecute = !IsDialogShowing(typeof(AddFetcherWindow));
                 }
             ));
             CommandBindings.Add(new CommandBinding(AppCommand.RemoveSelectedCommand,
@@ -174,8 +173,8 @@ namespace Alarm.View
         }
         public MainWindow()
         {
+            viewModel = ViewModelLoader.LoadViewModel();
             InitializeComponent();
-            viewModel = ViewModel.DB.ViewModelLoader.LoadViewModel();
             DataContext = viewModel;
             BindCommand();
         }

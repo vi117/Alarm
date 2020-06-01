@@ -14,7 +14,7 @@ namespace Model.DB
 {
     public class AppDBContext : DbContext
     {
-        static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+        //static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Warning));
 
         public DbSet<DBCategory> Categorys { get; set; }
         public DbSet<DBFetcher> Fetchers { get; set; }
@@ -31,7 +31,9 @@ namespace Model.DB
         }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseLoggerFactory(MyLoggerFactory).UseSqlite("Data Source=doc.db");    
+            options
+                //.UseLoggerFactory(MyLoggerFactory)
+                .UseSqlite("Data Source=doc.db");    
         }
         public static void Test()
         {

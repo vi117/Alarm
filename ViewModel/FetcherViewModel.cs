@@ -54,6 +54,6 @@ namespace ViewModel
             }
         }
         public abstract Fetcher Fetcher { get; set; }
-        public abstract ICollectionViewModel<DocumentViewModel> Documents { get; }
+        public abstract IListViewModel<DocumentViewModel> Documents { get; }
     }
 }

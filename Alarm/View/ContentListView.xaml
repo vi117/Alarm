@@ -7,10 +7,16 @@
       xmlns:view ="clr-namespace:ViewModel;assembly=ViewModel"
       xmlns:cmd ="clr-namespace:Alarm.ViewModels"
       xmlns:ie="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:html="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ContentListView"
       d:DataContext="{d:DesignData Source=/DesignSampleData/DesignNewsSample.xaml}"
+      x:Name="ContentListViewPage"
+      HorizontalAlignment="Stretch"
+      Loaded="ContentListViewPage_Loaded"
+      SizeChanged="ContentListViewPage_SizeChanged"
+      Margin="0"
       >
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="NewsForm">
@@ -21,13 +27,14 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}" >
-            <Grid>
+            <Grid HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock FontSize="20" Text="{Binding Path=Title, Mode=OneWay}" Style="{StaticResource NewsForm}"/>
-                <TextBlock Text="{Binding Path=Summary, Mode=OneWay}" Grid.Row="1" TextWrapping="Wrap" Style="{StaticResource NewsForm}"/>
+                <html:HtmlPanel Grid.Row="1" Text="{Binding Path=Summary, Mode=OneWay}"/>
+                <!-- <TextBlock Text="{Binding Path=Summary, Mode=OneWay}" Grid.Row="1" TextWrapping="Wrap" Style="{StaticResource NewsForm}"/> -->
             </Grid>
         </DataTemplate>
         <Style TargetType="ListBoxItem">
@@ -36,7 +43,7 @@
     </Page.Resources>
     <Grid>
         <ListBox x:Name="ListBox" ItemTemplate="{StaticResource DocumentTemplate}" ItemsSource="{Binding Path=Documents}" 
-                 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Standard">
+                 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Standard" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ie:Interaction.Triggers>
                 <ie:EventTrigger EventName="MouseDoubleClick">
                     <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.NavigateCommand}"

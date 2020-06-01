@@ -12,21 +12,31 @@ namespace ViewModel.DB
     class DBDocumentViewModel : DocumentViewModel
     {
         private int documentId;
+        private int fetcherId;
 
         bool isRead;
-        //
+        /// <summary>
+        /// Read
+        /// </summary>
         public DBDocumentViewModel(DBDocument dBDocument)
         {
             documentId = dBDocument.DBDocumentId;
+            fetcherId = dBDocument.DBFetcherId;
             this.SetAll(dBDocument);
             isRead = dBDocument.IsRead;
         }
+        /// <summary>
+        /// Only for inserting document.
+        /// </summary>
         public DBDocumentViewModel(IDocument document)
         {
+            documentId = 0;
+            fetcherId = 0;
             this.SetAll(document);
             isRead = false;
         }
-        public int DocumentId { get => documentId; }
+        public int DocumentId => documentId;
+        public int FetcherId => fetcherId;
         public override string Title {
             get; set;
         }

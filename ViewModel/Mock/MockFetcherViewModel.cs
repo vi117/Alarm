@@ -6,13 +6,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.Interface;
+using System.Collections.ObjectModel;
 
 namespace ViewModel
 {
     public class MockFetcherViewModel : FetcherViewModel
     {
+        //알수 없는 에러로 인해.
+        public class DesignHelper : ObservableCollection<MockDocumentViewModel>
+        {
+            MockListViewModel<DocumentViewModel> documentViews;
+            public DesignHelper(MockListViewModel<DocumentViewModel> d) {
+                documentViews = d;
+            }
+            protected override void InsertItem(int index, MockDocumentViewModel item)
+            {
+                base.InsertItem(index, item);
+                documentViews.Add(item);
+            }
+        }
         private string title;
-        private MockCollectionViewModel<DocumentViewModel> documents;
+        private MockListViewModel<DocumentViewModel> documents;
         private Fetcher fetcher;
 
         public MockFetcherViewModel():this(""){}
@@ -23,7 +37,7 @@ namespace ViewModel
         {
             this.fetcher = fetcher;
             this.title = title;
-            documents = new MockCollectionViewModel<DocumentViewModel>(this);
+            documents = new MockListViewModel<DocumentViewModel>(this);
             IsSelected = false;
             IsExpanded = false;
         }
@@ -36,14 +50,9 @@ namespace ViewModel
                 OnPropertyChanged(nameof(Title));
             }
         }
-        public MockCollectionViewModel<DocumentViewModel> DesignerDocuments
-        {
-            get => documents;
-        }
-        public override ICollectionViewModel<DocumentViewModel> Documents
-        {
-            get => documents;
-        }
+        public DesignHelper DesignerDocuments => new DesignHelper(documents);
+        
+        public override IListViewModel<DocumentViewModel> Documents => documents;
         public override Fetcher Fetcher { 
             get => fetcher;
             set => fetcher = value; 

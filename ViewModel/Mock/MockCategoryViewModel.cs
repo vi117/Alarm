@@ -15,6 +15,7 @@ namespace ViewModel
     public class MockCategoryViewModel : CategoryViewModel
     {
         private string title;
+        
         private MockCollectionViewModel<FetcherViewModel> siteModels;
 
         //xaml 의 이해할 수 없는 오류로 인해 조치함.
