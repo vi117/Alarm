@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
@@ -42,26 +43,20 @@ namespace Model
         ///     It must be not NULL!
         /// </summary>
         /// <returns>The documents fetched.It must be not NULL!</returns>
-        public abstract Task<List<PubDocument>> Fetch();
+        public abstract Task<PublishedEventArg> Fetch();
 
         public event PublishedEventHandler OnPublished;
         private async void CallWhenPublished()
         {
             Queue<PubDocument> documents = new Queue<PubDocument>();
             var docList = await this.Fetch();
-            foreach (PubDocument doc in docList)
+            if (docList.Documents.Count != 0)
             {
-                if (!GUIDSet.Contains(doc.GUID))
-                {
-                    lock (documents)
-                    {
-                        documents.Enqueue(doc);
-                    }
-                    GUIDSet.Add(doc.GUID);
-                }
+                docList.Documents = new Queue<PubDocument>(
+                    docList.Documents.Where(x => !GUIDSet.Contains(x.GUID))
+                    );
             }
-
-            OnPublished?.Invoke(this, new PublishedEventArg(documents));
+            OnPublished?.Invoke(this, docList);
         }
         //args may be null.
         public void OnElapsed(object obj, ElapsedEventArgs args)

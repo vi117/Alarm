@@ -9,7 +9,7 @@ namespace Model
     {
         public MockFetcher() { }
         
-        public override Task<List<PubDocument>> Fetch()
+        public override Task<PublishedEventArg> Fetch()
         {
             var docs = new List<PubDocument>();
             var doc = new PubDocument();
@@ -19,7 +19,7 @@ namespace Model
             doc.GUID = "5";
             doc.Date = DateTime.Now;
             docs.Add(doc);
-            return Task.FromResult(docs);
+            return Task.FromResult(new PublishedEventArg(docs));
         }
     }
 }

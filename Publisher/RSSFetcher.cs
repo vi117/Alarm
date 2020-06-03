@@ -8,6 +8,8 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
 using System.Diagnostics;
+using System.ServiceModel.Syndication;
+using System.IO;
 
 namespace Model
 {
@@ -19,28 +21,25 @@ namespace Model
         //xml serialize 용
         public RSSFetcher() : base() { }
         public RSSFetcher(string url) : base() => this.url = url;
-        public override Task<List<PubDocument>> Fetch()
+        public override Task<PublishedEventArg> Fetch()
         {
-            var cur_doc = GetRSS();
-            return Task.FromResult(cur_doc);
+            return Task.FromResult(GetRSS());
         }
-        public List<PubDocument> GetRSS()
+        public PublishedEventArg GetRSS()
         {
             try
             {
-                var root = XElement.Load(url);
+                var reader = XmlReader.Create(url);
+                var root = SyndicationFeed.Load(reader);
+                reader.Close();
 
-                if (root.Name != "rss")
-                {
-                    //Error
-                }
-                var items = root.Elements("channel").Descendants("item");
+                var items = root.Items;
                 var doclist = from item in items
-                              let title = item.Element("title").Value
-                              let description = (item.Element("description")?.Value) ?? throw new Exception()
-                              let guid = (item.Element("guid")?.Value) ?? title
-                              let pubData = item.Element("pubDate")?.Value
-                              let wholeUri = item.Element("link")?.Value ?? throw new Exception()
+                              let title = item.Title.Text
+                              let description = item.Summary.Text
+                              let guid = item.Id
+                              let pubData = item.LastUpdatedTime.DateTime
+                              let wholeUri = item.Links.First().Uri.ToString()
                               select DocumentBuilder.Doc()
                                 .Title(title)
                                 .Summary(description)
@@ -48,18 +47,22 @@ namespace Model
                                 .pubDate(pubData)
                                 .URL(wholeUri)
                                 .Build();
-                return doclist.ToList();
+                return new PublishedEventArg(doclist);
             }
-            catch(XmlException e)
+            catch (XmlException e)
             {
                 Trace.WriteLine(e.Message);
-                return new List<PubDocument>();
+                return new PublishedEventArg(PublishedStatusCode.InvaildFormatError,"XML Format error");
             }
-            catch (Exception e)
+            catch(FileNotFoundException e)
+            {
+                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Connection failed" + e.Message);
+            }
+            /*catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
-                return new List<PubDocument>();
-            }
+                return new PublishedEventArg(PublishedStatusCode.UnknownError, e.Message);
+            }*/
         }
     }
 }

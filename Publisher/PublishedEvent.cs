@@ -8,12 +8,31 @@ using System.Timers;
 
 namespace Model
 {
+    public enum PublishedStatusCode
+    {
+        OK,
+        ConnectionFailError,
+        InvaildArgumentError,
+        InvaildFormatError,
+        UnknownError
+    }
     public class PublishedEventArg : EventArgs {
         private Queue<PubDocument> documents;
+        public PublishedStatusCode Code { get; private set; }
+        public string DetailErrorMessage { get; private set; }
 
         public PublishedEventArg(Queue<PubDocument> documents)
         {
             Documents = documents;
+            Code = PublishedStatusCode.OK;
+        }
+        public PublishedEventArg(IEnumerable<PubDocument> documents):this(new Queue<PubDocument>(documents))
+        {}
+        public PublishedEventArg(PublishedStatusCode code,string message)
+        {
+            Code = code;
+            DetailErrorMessage = message;
+            Documents = new Queue<PubDocument>();
         }
 
         public Queue<PubDocument> Documents { get => documents; set => documents = value; }
