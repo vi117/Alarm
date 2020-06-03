@@ -209,11 +209,13 @@ namespace ViewModel.DB
             }
         }
 
-        private int cateogryId;
-        private int fetcherId;
+        private readonly int cateogryId;
+        private readonly int fetcherId;
         private string cachedTitle;
         private DocumentCollection documents;
         private Fetcher fetcher;
+        private PublishedStatusCode statusCode;
+        private string statusMessage;
 
         /// <summary>
         /// create new fetcher view model and add db.
@@ -260,7 +262,12 @@ namespace ViewModel.DB
         }
         private void OnPublished(object sender, PublishedEventArg args)
         {
-            AddDocument(args.Documents.ToArray());
+            StatusCode = args.Code;
+            StatusMessage = args.DetailErrorMessage;
+            if (args.Code == PublishedStatusCode.OK)
+            {
+                AddDocument(args.Documents.ToArray());
+            }
         }
         private void AddDocument(DBDocumentViewModel dbDoc)
         {
@@ -332,5 +339,27 @@ namespace ViewModel.DB
         }
 
         public override IListViewModel<DocumentViewModel> Documents => documents;
+
+        public override PublishedStatusCode StatusCode { 
+            get => statusCode; 
+            set {
+                if (statusCode != value)
+                {
+                    statusCode = value;
+                    OnPropertyChanged(nameof(StatusCode));
+                }
+            } 
+        }
+        public override string StatusMessage { 
+            get => statusMessage;
+            set
+            {
+                if (statusMessage != value)
+                {
+                    statusMessage = value;
+                    OnPropertyChanged(nameof(StatusMessage));
+                }
+            }
+        }
     }
 }

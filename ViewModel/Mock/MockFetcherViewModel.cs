@@ -28,6 +28,8 @@ namespace ViewModel
         private string title;
         private MockListViewModel<DocumentViewModel> documents;
         private Fetcher fetcher;
+        private PublishedStatusCode statusCode = PublishedStatusCode.OK;
+        private string statusMessage = "OK";
 
         public MockFetcherViewModel():this(""){}
 
@@ -57,6 +59,9 @@ namespace ViewModel
             get => fetcher;
             set => fetcher = value; 
         }
+
+        public override PublishedStatusCode StatusCode { get => statusCode; set => statusCode = value; }
+        public override string StatusMessage { get => statusMessage; set => statusMessage = value; }
 
         public void RemoveFirstDocument()
         {

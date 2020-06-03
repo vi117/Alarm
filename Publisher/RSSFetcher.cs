@@ -52,11 +52,11 @@ namespace Model
             catch (XmlException e)
             {
                 Trace.WriteLine(e.Message);
-                return new PublishedEventArg(PublishedStatusCode.InvaildFormatError,"XML Format error");
+                return new PublishedEventArg(PublishedStatusCode.InvaildFormatError,"XML Format error : "+ e.Message);
             }
             catch(FileNotFoundException e)
             {
-                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Connection failed" + e.Message);
+                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Connection failed : " + e.Message);
             }
             /*catch (Exception e)
             {

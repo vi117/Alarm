@@ -22,7 +22,7 @@ namespace ViewModel
         /// <param name="propertyName">changed <paramref name="propertyName"/></param>
         protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PlatformSevice.Instance.PropertyChangedInvoke(this, PropertyChanged, new PropertyChangedEventArgs(propertyName));
         }
         public event PropertyChangedEventHandler PropertyChanged;
     }

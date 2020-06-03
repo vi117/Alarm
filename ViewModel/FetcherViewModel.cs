@@ -29,6 +29,8 @@ namespace ViewModel
             Fetcher.Refresh();
         }
         public abstract string Title { get; set; }
+        public abstract PublishedStatusCode StatusCode { get; set; }
+        public abstract string StatusMessage { get; set; }
         public bool IsSelected
         {
             get => isSelected;
