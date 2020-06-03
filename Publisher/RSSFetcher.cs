@@ -52,17 +52,20 @@ namespace Model
             catch (XmlException e)
             {
                 Trace.WriteLine(e.Message);
-                return new PublishedEventArg(PublishedStatusCode.InvaildFormatError,"XML Format error : "+ e.Message);
+                return new PublishedEventArg(PublishedStatusCode.InvaildFormatError,"XML Format Error : "+ e.Message);
             }
             catch(FileNotFoundException e)
             {
-                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Connection failed : " + e.Message);
+                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Connection Failed : " + e.Message);
             }
-            /*catch (Exception e)
+            catch(System.Security.SecurityException e)
             {
-                Trace.WriteLine(e.Message);
-                return new PublishedEventArg(PublishedStatusCode.UnknownError, e.Message);
-            }*/
+                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Security Error : "+ e.Message);
+            }
+            catch(UriFormatException e)
+            {
+                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Invailed Uri Format Error : " + e.Message);
+            }
         }
     }
 }
