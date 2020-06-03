@@ -8,6 +8,8 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
 using System.Diagnostics;
+using System.ServiceModel.Syndication;
+using System.IO;
 
 namespace Model
 {
@@ -19,23 +21,25 @@ namespace Model
         //xml serialize 용
         public RSSFetcher() : base() { }
         public RSSFetcher(string url) : base() => this.url = url;
-        public override Task<List<Document>> Fetch()
+        public override Task<PublishedEventArg> Fetch()
         {
-            var cur_doc = GetRSS();
-            return Task.FromResult(cur_doc);
+            return Task.FromResult(GetRSS());
         }
-        public List<Document> GetRSS()
+        public PublishedEventArg GetRSS()
         {
             try
             {
-                var root = XElement.Load(url);
-                var items = root.Elements("channel").Descendants("item");
+                var reader = XmlReader.Create(url);
+                var root = SyndicationFeed.Load(reader);
+                reader.Close();
+
+                var items = root.Items;
                 var doclist = from item in items
-                              let title = item.Element("title").Value
-                              let description = item.Element("description").Value
-                              let guid = (item.Element("guid")?.Value) ?? title
-                              let pubData = item.Element("pubDate").Value
-                              let wholeUri = item.Element("link").Value
+                              let title = item.Title.Text
+                              let description = item.Summary.Text
+                              let guid = item.Id
+                              let pubData = item.LastUpdatedTime.DateTime
+                              let wholeUri = item.Links.First().Uri.ToString()
                               select DocumentBuilder.Doc()
                                 .Title(title)
                                 .Summary(description)
@@ -43,12 +47,24 @@ namespace Model
                                 .pubDate(pubData)
                                 .URL(wholeUri)
                                 .Build();
-                return doclist.ToList();
+                return new PublishedEventArg(doclist);
             }
-            catch(XmlException e)
+            catch (XmlException e)
             {
                 Trace.WriteLine(e.Message);
-                return new List<Document>();
+                return new PublishedEventArg(PublishedStatusCode.InvaildFormatError,"XML Format Error : "+ e.Message);
+            }
+            catch(FileNotFoundException e)
+            {
+                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Connection Failed : " + e.Message);
+            }
+            catch(System.Security.SecurityException e)
+            {
+                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Security Error : "+ e.Message);
+            }
+            catch(UriFormatException e)
+            {
+                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Invailed Uri Format Error : " + e.Message);
             }
         }
     }

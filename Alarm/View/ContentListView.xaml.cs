@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,18 @@ namespace Alarm.View
         public ContentListView()
         {
             InitializeComponent();
+        }
+
+        private void ContentListViewPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            /*var frame = this.TryFindParent<Frame>();
+            MaxWidth = frame.ActualWidth;*/
+        }
+
+        private void ContentListViewPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            /*var frame = this.TryFindParent<Frame>();
+            this.ListBox.Width = frame.ActualWidth;*/
         }
     }
 }

@@ -19,17 +19,34 @@ namespace Alarm.View.FetcherForm
     /// <summary>
     /// AtomForm.xaml에 대한 상호 작용 논리
     /// </summary>
+    [FetcherForm("Atom",typeof(AtomFetcher))]
     public partial class AtomForm : FetcherFormControl
     {
         public AtomForm()
         {
             InitializeComponent();
         }
-
-        override public Model.Fetcher GetFetcher()
+        public AtomForm(AtomFetcher atomFetcher)
         {
-            //Temp
-            return new AtomFetcher(URLContent.Text);
+            URLContent.Text = atomFetcher.Uri;
+        }
+        override public Fetcher CreateFetcher()
+        {
+            return new AtomFetcher(URLContent.Text) { Interval = IntervalBox.SelectedTime };
+        }
+        public override void SetFromFetcher(Fetcher f)
+        {
+            var fetcher = (AtomFetcher)f;
+            URLContent.Text = fetcher.Uri;
+            IntervalBox.SelectedTime = fetcher.Interval;
+        }
+        public override string FetcherName {
+            get => FetcherTitle.Text;
+            set => FetcherTitle.Text = value;
+        }
+        private bool UrlValid(string url)
+        {
+            return Uri.IsWellFormedUriString(url, UriKind.Absolute);
         }
     }
 }

@@ -10,7 +10,5 @@ namespace ViewModel.Interface
 {
     public interface ICollectionViewModel<T> : IEnumerable<T>, INotifyCollectionChanged
     {
-        void Add(T elem);
-        bool Remove(T elem);
     }
 }

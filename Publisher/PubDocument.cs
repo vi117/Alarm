@@ -7,7 +7,7 @@ using Model.Interface;
 namespace Model
 {
     [Serializable()]
-    public class Document : IDocument
+    public class PubDocument : IDocument
     {
         private string title;
         private string hostUri;
@@ -36,14 +36,15 @@ namespace Model
         public string Summary { get => summary; set => summary = value; }
         public DateTime Date { get => date; set => date = value; }
         public string GUID { get => guid; set => guid = value; }
+        public bool IsRead { get => false; set => throw new InvalidOperationException(); }
     }
 
     public class DocumentBuilder
     {
-        Document ret;
+        PubDocument ret;
         DocumentBuilder()
         {
-            ret = new Document();
+            ret = new PubDocument();
         }
         public static DocumentBuilder Doc()
         {
@@ -97,7 +98,7 @@ namespace Model
             }
             return this;
         }
-        public Document Build()
+        public PubDocument Build()
         {
             return ret;
         }

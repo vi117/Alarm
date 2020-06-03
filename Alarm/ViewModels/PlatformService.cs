@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,26 @@ namespace Alarm.ViewModels
                         dispatcher.BeginInvoke(//STA thread의 디스패처에게 가서 이벤트를 보냄.
                             (Action)(() => nh.Invoke(sender, e)),// new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset)
                             DispatcherPriority.DataBind);
+                        continue;
+                    }
+                }
+                nh.Invoke(sender, e);
+            }
+        }
+        public void PropertyChangedInvoke(object sender, PropertyChangedEventHandler eventHandler, PropertyChangedEventArgs e)
+        {
+            if (eventHandler == null) return;
+            foreach(PropertyChangedEventHandler nh in eventHandler.GetInvocationList())
+            {
+                if(nh.Target is DispatcherObject dispatcherObject)
+                {
+                    var dispatcher = dispatcherObject.Dispatcher;
+                    if(dispatcher != null & !dispatcher.CheckAccess())
+                    {
+                        dispatcher.BeginInvoke(
+                            (Action)(() => nh.Invoke(sender, e)),
+                            DispatcherPriority.DataBind
+                            );
                         continue;
                     }
                 }

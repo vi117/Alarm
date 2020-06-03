@@ -51,10 +51,28 @@
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </Button>
-            <Button Content="&#xE72c;" Grid.Column="1"/>
+            <Button Content="&#xE72c;" Grid.Column="1">
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="Click">
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.RefreshFetcherCommand}"/>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
+            </Button>
             <Button Content="&#xE97e;" Grid.Column="2"/>
-            <Button Content="&#xE74d;" Grid.Column="3"/>
-            <Button Content="&#xE70f;" Grid.Column="4"/>
+            <Button Content="&#xE74d;" Grid.Column="3">
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="Click">
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.RemoveSelectedCommand}"/>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
+            </Button>
+            <Button Content="&#xE70f;" Grid.Column="4">
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="Click">
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.ShowEditFetcherWindowCommand}"/>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
+            </Button>
             <Button Content="&#xE713;" Grid.Column="5">
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
@@ -72,7 +90,12 @@
                 <ColumnDefinition Width="5*" MinWidth="10"/>
             </Grid.ColumnDefinitions>
             <TreeView ItemsSource="{Binding Path=TreeView}"
-                          x:Name="NavTreeView">
+                      x:Name="NavTreeView" AllowDrop="True"
+                      PreviewMouseLeftButtonDown="NavTreeView_PreviewMouseLeftButtonDown"
+                      MouseMove="NavTreeView_MouseMove"
+                      DragEnter="NavTreeView_DragEnter"
+                      Drop="NavTreeView_Drop"
+                      >
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="SelectedItemChanged">
                         <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.NavigateCommand}"
@@ -87,7 +110,7 @@
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
             <Frame Grid.Column="2" x:Name="PageFrame" NavigationUIVisibility="Hidden"
                    Content="{Binding Path=DisplayPage, Mode=TwoWay}"
-                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
         </Grid>
     </DockPanel>
 </Controls:MetroWindow>

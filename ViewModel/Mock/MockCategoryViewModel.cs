@@ -8,12 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.ObjectModel;
+using Model;
 
 namespace ViewModel
 {
     public class MockCategoryViewModel : CategoryViewModel
     {
         private string title;
+        
         private MockCollectionViewModel<FetcherViewModel> siteModels;
 
         //xaml 의 이해할 수 없는 오류로 인해 조치함.
@@ -60,11 +62,25 @@ namespace ViewModel
         {
             get => new DesignerHelper(siteModels);
         }
+        public MockCollectionViewModel<FetcherViewModel> SiteModelsDetail
+        {
+            get => siteModels;
+        }
         public override
             ICollectionViewModel<FetcherViewModel> 
             SiteModels
         {
             get => siteModels;
+        }
+
+        public override void Emplace(string title,Fetcher fetcher)
+        {
+            siteModels.Add(new MockFetcherViewModel() { Title = title });
+        }
+
+        public override bool Remove(FetcherViewModel fetcherViewModel)
+        {
+            return siteModels.Remove(fetcherViewModel);
         }
     }
 }

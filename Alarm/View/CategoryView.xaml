@@ -4,11 +4,46 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Alarm.View"
+      xmlns:mv ="clr-namespace:ViewModel;assembly=ViewModel"
+      xmlns:model ="clr-namespace:Model;assembly=Model"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="CategoryView">
-
+      Title="CategoryView"
+      d:DataContext="{d:DesignData Source=/DesignSampleData/DesignCategorySample}">
+    <Page.Resources>
+        <DataTemplate x:Key="CategoryTemplate" DataType="{x:Type mv:FetcherViewModel}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.RowSpan="2" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=StatusCode}" Value="{x:Static model:PublishedEventArg.OK}">
+                                    <Setter Property="Fill" Value="Blue"/>
+                                </DataTrigger>
+                                <DataTrigger Value="False"
+                                             Binding="{Binding Path=StatusCode, Converter={x:Static local:EnumToBooleanConverter.Instance},
+                                    ConverterParameter={x:Static model:PublishedEventArg.OK}}">
+                                    <Setter Property="Fill" Value="Red"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+                <TextBlock Text="{Binding Path=Title}" FontSize="16" Grid.Column="1"/>
+                <TextBlock Text="{Binding Path=StatusMessage}" Grid.Column="1" Grid.Row="1"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
     <Grid>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" Text="Not Impletemented"></TextBlock>
+        <ListBox ItemTemplate="{StaticResource CategoryTemplate}" ItemsSource="{Binding Path=SiteModels}">
+        </ListBox>
     </Grid>
 </Page>

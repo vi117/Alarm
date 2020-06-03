@@ -17,12 +17,12 @@ namespace ViewModel.DB
     {
         public class SiteModelCollection : ICollectionViewModel<FetcherViewModel>
         {
+
             public event NotifyCollectionChangedEventHandler CollectionChanged;
 
             List<FetcherViewModel> cache;
             int categoryId;
             ViewModelBase parent;
-            DocumentPublisher publisher;
             /// <summary>
             /// For Initializing Process.
             /// Shell not be using constructor except loading.
@@ -34,22 +34,25 @@ namespace ViewModel.DB
             {
                 this.parent = parent;
                 categoryId = dBCategory.DBCategoryId;            
-                cache = context.DBContext.Fetchers.Where((x)=>x.DBCategoryId == categoryId).ToList()
-                    .Select((x) => (FetcherViewModel)new DBFetcherViewModel(context,x.DBFetcherId))
+                cache = context.DBContext.Fetchers.AsNoTracking().Where((x)=>x.DBCategoryId == categoryId).ToArray()
+                    .Select((x) => (FetcherViewModel)new DBFetcherViewModel(context,x.DBFetcherId,parent))
                     .ToList();
-                publisher = context.Publisher;
+            }
+            public SiteModelCollection(DBCategory category, ViewModelBase parent)
+            {
+                this.parent = parent;
+                categoryId = category.DBCategoryId;
+                cache = new List<FetcherViewModel>();
             }
             public void Emplace(string title, Fetcher fetcher)
             {
-                using (var dbcontext = new AppDBContext()) {
-                    var context = new LoadContext() { DBContext = dbcontext, Publisher = publisher };
-                    var elem = new DBFetcherViewModel(context, title, fetcher, categoryId);
-                    cache.Add(elem);
-                }
+                var elem = new DBFetcherViewModel(title, fetcher, categoryId);
+                elem.Parent = parent;
+                cache.Add(elem);
                 PlatformSevice.Instance.CollectionChangedInvoke
                     (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
-            public void Add(FetcherViewModel elem)
+            public void CacheAdd(FetcherViewModel elem)
             {
                 elem.Parent = parent;
                 cache.Add(elem);
@@ -62,19 +65,12 @@ namespace ViewModel.DB
                 return cache.GetEnumerator();
             }
 
-            public bool Remove(FetcherViewModel elem)
+            public bool CacheRemove(FetcherViewModel elem)
             {
-                if (elem is DBFetcherViewModel fetcherViewModel)
-                {
-                    using (var context = new AppDBContext())
-                    {
-                        context.Categorys.Find(categoryId)
-                            .Fetchers.Remove(fetcherViewModel.GetFetcher(context));
-                    }
-                }
+                bool ret = cache.Remove(elem);
                 PlatformSevice.Instance.CollectionChangedInvoke
                     (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                return cache.Remove(elem);
+                return ret;
             }
 
             IEnumerator IEnumerable.GetEnumerator()
@@ -83,37 +79,70 @@ namespace ViewModel.DB
             }
         }
         private int categoryId;
+        private string cachedTitle;
         private SiteModelCollection siteModels;
         /// <summary>
-        /// if <c>category</c> not in db, create and add it, else find and initialize it.
+        /// Load only.
         /// </summary>
         /// <param name="category"></param>
-        public DBCategoryViewModel(LoadContext context, DBCategory category)
+        public DBCategoryViewModel(LoadContext context, DBCategory category,ViewModelBase parent)
         {
-            if (!context.DBContext.Categorys.Contains(category))
-            {
-                context.DBContext.Add(category);
-                Title = category.Title;
-                context.DBContext.SaveChanges();
-                categoryId = category.DBCategoryId;
-            }
-            else
-            {
-                Title = category.Title;
-                categoryId = category.DBCategoryId;
-            }
+            this.Parent = parent;
+            cachedTitle = category.Title;
+            categoryId = category.DBCategoryId;
             siteModels = new SiteModelCollection(context,category, this);
         }
-        public DBCategoryViewModel()
+
+        public DBCategoryViewModel(string title)
         {
+            cachedTitle = title;
+            using (var context = new AppDBContext()) {
+                var dbCategory = new DBCategory() { Title = title };
+                context.Categorys.Add(dbCategory);
+                context.SaveChanges();
+                siteModels = new SiteModelCollection(dbCategory, this);
+            }
         }
         
         public override string Title {
-            get; set;
+            get => cachedTitle;
+            set
+            {
+                using(var context =new AppDBContext())
+                {
+                    GetDBCategory(context).Title = value;
+                    context.SaveChanges();
+                }
+                cachedTitle = value;
+                OnPropertyChanged(nameof(Title));
+            }
         }
         public DBCategory GetDBCategory(AppDBContext context) {
             return context.Categorys.Find(categoryId);
         }
+        public int DBCategoryId => categoryId;
+
+        public override void Emplace(string title, Fetcher fetcher)
+        {
+            siteModels.Emplace(title, fetcher);
+        }
+
+        public override bool Remove(FetcherViewModel fetcherViewModel)
+        {
+            bool ret = siteModels.CacheRemove(fetcherViewModel);
+            if (fetcherViewModel is DBFetcherViewModel dbFetcherViewModel)
+            {
+                using (var context = new AppDBContext())
+                {
+                    var dbfetcher = dbFetcherViewModel.GetDBFetcher(context);
+                    var dbCategory = GetDBCategory(context);
+                    dbCategory.Fetchers.Remove(dbfetcher);
+                    context.SaveChanges();
+                }
+            }
+            return ret;
+        }
+
         public SiteModelCollection SitesModelDetail => siteModels;
         public override ICollectionViewModel<FetcherViewModel> SiteModels {
             get => siteModels;

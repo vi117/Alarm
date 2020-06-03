@@ -11,16 +11,47 @@ using System.Collections;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using Model.Interface;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using System.Diagnostics;
 
 namespace ViewModel.DB
 {
     class DBFetcherViewModel : FetcherViewModel
     {
-        class DocumentCollection : ICollectionViewModel<DocumentViewModel>
+        class DocumentCollection : IListViewModel<DocumentViewModel>
         {
             public event NotifyCollectionChangedEventHandler CollectionChanged;
 
             private int fetcherId;
+
+            public int Count
+            {
+                get
+                {
+                    using (var context = new AppDBContext())
+                    {
+                        return context.Documents.AsNoTracking().Where(x => x.DBFetcherId == fetcherId).Count();
+                    }
+                }
+            }
+
+            public bool IsReadOnly => true;
+
+            public DocumentViewModel this[int index]
+            {
+                get
+                {
+                    using (var context = new AppDBContext ())
+                    {
+                        var dbDoc = context.Documents.AsNoTracking().Where(x => x.DBFetcherId == fetcherId).ElementAt(index);
+                        return new DBDocumentViewModel(dbDoc);
+                    }
+                }
+                set => throw new InvalidOperationException("read only");
+            }
+
             public DocumentCollection(int id)
             {
                 fetcherId = id;
@@ -33,8 +64,8 @@ namespace ViewModel.DB
             {
                 using (var context = new AppDBContext())
                 {
-                    if ((from s in context.Documents 
-                         where s.DBFetcherId == fetcherId && s.GUID == elem.GUID 
+                    if ((from s in context.Documents
+                         where s.DBFetcherId == fetcherId && s.GUID == elem.GUID
                          select s
                          ).Count() == 0
                          )
@@ -52,20 +83,46 @@ namespace ViewModel.DB
                         var fetcher = context.Fetchers.Find(fetcherId);
                         fetcher.Documents.Add(doc);
                         context.SaveChanges();
+                        InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, doc));
                     }
                 }
-                InvokeCollectionChanged();
+            }
+            public void AddRange(IDocument[] dbs)
+            {
+                var list = new List<DocumentViewModel>();
+                using(var context = new AppDBContext())
+                {
+                    var documents = dbs.Select(x => {
+                        var ret = new DBDocument();
+                        ret.SetAll(x);
+                        return ret;
+                    }).ToArray();
+                    var fetcher = context.Fetchers.Find(fetcherId);
+                    foreach (var i in documents)
+                    {
+                        var remainder = from d in context.Documents
+                                        where d.DBFetcherId == fetcherId && i.GUID == d.GUID
+                                        select d;
+                        if (remainder.ToList().Count() == 0)
+                        {
+                            fetcher.Documents.Add(i);
+                            list.Add(new DBDocumentViewModel(i));
+                        }
+                    }
+                    context.SaveChanges();
+                InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, list));
+                }
             }
             private IEnumerator<DocumentViewModel> getEnumerator()
             {
-                List<DBDocumentViewModel> ret;
                 using (var context = new AppDBContext())
                 {
-                    ret = (from doc in context.Documents
-                           where doc.DBFetcherId == fetcherId
-                           select new DBDocumentViewModel(doc)).ToList();
+                    var ret = from doc in context.Documents.AsNoTracking()
+                               where doc.DBFetcherId == fetcherId
+                               orderby doc.Date descending
+                               select doc;
+                    return ret.ToList().Select(x=>new DBDocumentViewModel(x)).GetEnumerator();
                 }
-                return ret.GetEnumerator();
             }
             public IEnumerator<DocumentViewModel> GetEnumerator()
             {
@@ -78,93 +135,231 @@ namespace ViewModel.DB
 
             public bool Remove(DocumentViewModel elem)
             {
-                using (var context= new AppDBContext())
+                if (elem is DBDocumentViewModel doc)
                 {
-                    var selected = (from s in context.Documents 
-                                    where s.GUID == elem.GUID 
-                                    select s);
-                    if (selected.Count() == 0) return false;
-                    foreach (var s in selected)
+                    using (var context = new AppDBContext())
                     {
-                        context.Documents.Remove(s);
+                        var selected = (from s in context.Documents
+                                        where s.DBFetcherId == doc.FetcherId && s.GUID == doc.GUID
+                                        select s);
+                        context.Documents.RemoveRange(selected);
+                        context.SaveChanges();
                     }
-                    context.SaveChanges();
+                InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,doc));
                 }
-                InvokeCollectionChanged();
                 return true;
             }
 
-            private void InvokeCollectionChanged()
+            private void InvokeCollectionChanged(NotifyCollectionChangedEventArgs eventArgs)
             {
                 PlatformSevice.Instance.CollectionChangedInvoke
-                    (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                    (this, this.CollectionChanged, eventArgs);
+            }
+
+            public int IndexOf(DocumentViewModel item)
+            {
+                if (item is DBDocumentViewModel doc) {
+                    using (var context = new AppDBContext())
+                    {
+                        var ddd = context.Documents.Find(doc.DocumentId);
+                        return (from d in context.Documents.AsNoTracking()
+                         where d.DBFetcherId == doc.FetcherId
+                         select d).ToList().IndexOf(ddd);
+                    }
+                }
+                return -1;
+            }
+
+            public void Insert(int index, DocumentViewModel item)
+            {
+                throw new InvalidOperationException();
+            }
+
+            public void RemoveAt(int index)
+            {
+                throw new InvalidOperationException();
+            }
+
+            public void Clear()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public bool Contains(DocumentViewModel item)
+            {
+                if (item is DBDocumentViewModel doc)
+                {
+                    using (var context = new AppDBContext())
+                    {
+                        return (from d in context.Documents.AsNoTracking()
+                                where d.DBDocumentId == doc.DocumentId
+                                select d).Count() != 0;
+                    }
+                }
+                return false;
+            }
+
+            public void CopyTo(DocumentViewModel[] array, int arrayIndex)
+            {
+                using (var context = new AppDBContext())
+                {
+                    var documents = context.Documents.AsNoTracking().Where(x => x.DBFetcherId == fetcherId).Skip(arrayIndex).Take(array.Length).ToArray();
+                    documents.CopyTo(array, arrayIndex);
+                }
             }
         }
 
-        private int cateogryId;
-        private int fetcherId;
+        private readonly int cateogryId;
+        private readonly int fetcherId;
+        private string cachedTitle;
         private DocumentCollection documents;
+        private Fetcher fetcher;
+        private PublishedStatusCode statusCode;
+        private string statusMessage;
 
-        public DBFetcherViewModel(LoadContext context, string title, Fetcher fetcher, int categoryId)
+        /// <summary>
+        /// create new fetcher view model and add db.
+        /// </summary>
+        /// <param name="publisher"></param>
+        /// <param name="title"></param>
+        /// <param name="fetcher"></param>
+        /// <param name="categoryId"></param>
+        public DBFetcherViewModel(string title, Fetcher fetcher, int categoryId)
         {
-            Title = title;
-            var f = new DBFetcher()
+            this.fetcher = fetcher;
+            using (var context = new AppDBContext())
             {
-                Title = title
-            };
-            f.SetFetcher(fetcher);
-            var category = context.DBContext.Categorys.Find(categoryId);
-            category.Fetchers.Add(f);
-            context.DBContext.SaveChanges();
-            fetcherId = f.DBFetcherId;
-            cateogryId = categoryId;
-            documents = new DocumentCollection(fetcherId);
-            context.Publisher.AddFetcher(fetcher, OnPublished);
+                cachedTitle = title;
+                var f = new DBFetcher()
+                {
+                    Title = title
+                };
+                f.SetFetcher(fetcher);
+                var category = context.Categorys.Find(categoryId);
+                category.Fetchers.Add(f);
+                context.SaveChanges();
+                fetcherId = f.DBFetcherId;
+                this.cateogryId = categoryId;
+                documents = new DocumentCollection(fetcherId);
+                fetcher.OnPublished += OnPublished;
+                fetcher.Start();
+            }
         }
-        public DBFetcherViewModel(LoadContext context, int fetcherId)
+
+        /// <summary>
+        /// Load From DB
+        /// </summary>
+        public DBFetcherViewModel(LoadContext context, int fetcherId, ViewModelBase parent)
         {
+            Parent = parent;
             var dbfetcher = context.DBContext.Fetchers.Find(fetcherId);
-            Title = dbfetcher.Title;
-            var fetcher = dbfetcher.GetFetcher();
+            cachedTitle = dbfetcher.Title;
+            fetcher = dbfetcher.GetFetcher();
             this.fetcherId = fetcherId;
-            context.Publisher.AddFetcher(
-                fetcher,
-                OnPublished
-            );
+            fetcher.OnPublished += OnPublished;
+            fetcher.Start();
             documents = new DocumentCollection(fetcherId);
         }
         private void OnPublished(object sender, PublishedEventArg args)
         {
-            //using (var dBContext = new AppDBContext())
+            StatusCode = args.Code;
+            StatusMessage = args.DetailErrorMessage;
+            if (args.Code == PublishedStatusCode.OK)
             {
-                foreach (var doc in args.Documents)
-                {
-                    var dbDoc = new DBDocument()
-                    {
-                        Title = doc.Title,
-                        Summary = doc.Summary,
-                        Date = doc.Date,
-                        HostUri = doc.HostUri,
-                        PathUri = doc.PathUri,
-                        GUID = doc.GUID,
-                        IsRead = false
-                    };
-                    //dBContext.Fetchers.Find(fetcherId).Documents.Add(dbDoc);
-                    Documents.Add(new DBDocumentViewModel(dbDoc));
-                    //dBContext.SaveChanges();
-                }
+                AddDocument(args.Documents.ToArray());
             }
         }
-        public DBFetcher GetFetcher(AppDBContext context)
+        private void AddDocument(DBDocumentViewModel dbDoc)
+        {
+            documents.Add(dbDoc);
+        }
+        private void AddDocument(IDocument[] dBDocumentViews)
+        {
+            documents.AddRange(dBDocumentViews);
+        }
+        public override void AddDocument(IDocument document)
+        {
+            documents.Add(new DBDocumentViewModel(document));
+        }
+        public DBFetcher GetDBFetcher(AppDBContext context)
         {
             return context.Fetchers.Find(fetcherId);
         }
 
-        public override ICollectionViewModel<DocumentViewModel> Documents { 
-            get => documents; 
+        public override void ChangeOwner(CategoryViewModel newViewModel)
+        {
+            if (newViewModel is DBCategoryViewModel dbCategory)
+            {
+                var old_owner_model = Parent as DBCategoryViewModel;
+                using (var context = new AppDBContext())
+                {
+                    var dbf = new DBFetcher();
+                    dbf.DBFetcherId = fetcherId;
+                    context.Attach(dbf);
+                    dbf.DBCategoryId = dbCategory.DBCategoryId;
+                    //For speed
+                    context.ChangeTracker.AutoDetectChangesEnabled = false;
+                    context.SaveChanges();
+                }
+                old_owner_model.SitesModelDetail.CacheRemove(this);
+                dbCategory.SitesModelDetail.CacheAdd(this);
+            }
         }
-        public override string Title {
-            get; set;
+
+        public override string Title
+        {
+            get => cachedTitle;
+            set
+            {
+                using (var context = new AppDBContext())
+                {
+                    GetDBFetcher(context).Title = value;
+                    context.SaveChanges();
+                }
+                cachedTitle = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+        public override Fetcher Fetcher
+        {
+            get => fetcher;
+            set
+            {
+                fetcher.OnPublished -= OnPublished;
+                fetcher.Stop();
+                using (var context = new AppDBContext())
+                {
+                    GetDBFetcher(context).SetFetcher(value);
+                    context.SaveChanges();
+                }
+                fetcher = value;
+                fetcher.OnPublished += OnPublished;
+                fetcher.Start();
+            }
+        }
+
+        public override IListViewModel<DocumentViewModel> Documents => documents;
+
+        public override PublishedStatusCode StatusCode { 
+            get => statusCode; 
+            set {
+                if (statusCode != value)
+                {
+                    statusCode = value;
+                    OnPropertyChanged(nameof(StatusCode));
+                }
+            } 
+        }
+        public override string StatusMessage { 
+            get => statusMessage;
+            set
+            {
+                if (statusMessage != value)
+                {
+                    statusMessage = value;
+                    OnPropertyChanged(nameof(StatusMessage));
+                }
+            }
         }
     }
 }

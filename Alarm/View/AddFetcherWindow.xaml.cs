@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,14 +28,24 @@ namespace Alarm.View
     {
         FetcherForm.FetcherFormControl fetcherView;
         Dictionary<string, FetcherFormControl> keyValuePairs;
+        public AddFetcherWindow(string title,Fetcher fetcher):this()
+        {
+            Title = "Edit Fetcher Window";
+            AddButton.Content = "Edit";
+            MethodInfo methodInfo;
+            var fetcherType = fetcher.GetType();
+            bool b = FetcherFormAttributeHelper.FetcherTypeMethodPairs.TryGetValue(fetcherType, out methodInfo);
+            if (!b) throw new ArgumentException("The argument doesn't implemenet " + nameof(FetcherFormAttribute));
+            var name = FetcherFormAttributeHelper.FatcherTypeToNamePairs[fetcherType];
+            methodInfo.Invoke(keyValuePairs[name], new object[] { fetcher });
+            ContentTypeComboBox.SelectedIndex = keyValuePairs.Keys.OrderBy(x => x).ToList().IndexOf(name);
+        }
         public AddFetcherWindow()
         {
             InitializeComponent();
-            keyValuePairs = new Dictionary<string, FetcherFormControl>() {
-                ["RSS"] = new RSSForm(),
-                ["Atom"] = new AtomForm()
-            };
+            keyValuePairs = FetcherFormAttributeHelper.GetForms();
             fetcherView = null;
+            ContentTypeComboBox.ItemsSource = keyValuePairs.Keys.OrderBy(x=>x).ToList();
         }
 
         public Fetcher GetFetcher()
@@ -42,14 +53,11 @@ namespace Alarm.View
             if (fetcherView == null)
                 return null;
             else
-                return fetcherView.GetFetcher();
+                return fetcherView.CreateFetcher();
         }
-        public FetcherViewModel GetFetcherViewModel()
+        public string GetFetcherTitle()
         {
-            if (fetcherView == null)
-                return null;
-            else
-                return fetcherView.GetFetcherViewModel();
+            return fetcherView?.FetcherName;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -61,7 +69,7 @@ namespace Alarm.View
         /// Set the View
         /// </summary>
         /// <param name="elem">UIElement to replace</param>
-        private void SetUserControl(FetcherFormControl elem)
+        private void SetUserControl(UIElement elem)
         {
             var showingAnimation = FindResource("ShowingElement") as DoubleAnimation;
             var disposeAnimation = FindResource("DisposeElement") as DoubleAnimation;
@@ -69,7 +77,7 @@ namespace Alarm.View
             EventHandler disposeAnimationCompleted = (s, e) => { };
             disposeAnimationCompleted = (s, e) =>
             {
-                fetcherView = elem;
+                fetcherView = (FetcherFormControl)elem;
                 FetcherContentParent.Children.Clear();
                 FetcherContentParent.Children.Add(elem);
                 disposeAnimation.Completed -= disposeAnimationCompleted;
@@ -84,9 +92,8 @@ namespace Alarm.View
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
-            var item = comboBox.SelectedItem as ComboBoxItem;
-            var query = item.Content.ToString();
-            SetUserControl(keyValuePairs[query]);
+            var item = comboBox.SelectedItem as string;
+            SetUserControl(keyValuePairs[item]);
         }
     }
 }

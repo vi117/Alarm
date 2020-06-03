@@ -11,15 +11,13 @@ namespace ViewModel.DB
 {
     public class LoadContext {
         public AppDBContext DBContext { get; set; }
-        public DocumentPublisher Publisher { get; set; }
     }
     static public class ViewModelLoader
     {
-        static public ViewModel LoadViewModel(DocumentPublisher publisher)
+        static public ViewModel LoadViewModel()
         {
             var context = new LoadContext() {
                 DBContext = new AppDBContext(),
-                Publisher = publisher
             };
             var viewModel = new DBViewModel(context);
             context.DBContext.SaveChanges();

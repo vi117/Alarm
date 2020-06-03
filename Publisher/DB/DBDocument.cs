@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Model.Interface;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace Model.DB
 {
     public class AppDBContext : DbContext
     {
+        //static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Warning));
+
         public DbSet<DBCategory> Categorys { get; set; }
         public DbSet<DBFetcher> Fetchers { get; set; }
         public DbSet<DBDocument> Documents { get; set; }
@@ -28,7 +31,9 @@ namespace Model.DB
         }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite("Data Source=doc.db");    
+            options
+                //.UseLoggerFactory(MyLoggerFactory)
+                .UseSqlite("Data Source=doc.db");    
         }
         public static void Test()
         {
@@ -73,8 +78,12 @@ namespace Model.DB
         public virtual List<DBDocument> Documents { get; set; } = new List<DBDocument>(); /*{ get; set; }*/
 
         public int DBCategoryId { get; set; }
-        public DBCategory DBCategory { get; set; }
+        public virtual DBCategory DBCategory { get; set; }
 
+        public void ChangeOwner(DBCategory dBCategory)
+        {
+            DBCategory = dBCategory;
+        }
         public void SetFetcher(Fetcher fetcher)
         {
             var ser = new XmlSerializer(typeof(Fetcher), ConcreteFetcherList.types);

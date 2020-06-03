@@ -35,8 +35,11 @@ namespace ViewModel
             get => isSelected;
             set
             {
-                isSelected = value;
-                OnPropertyChanged(nameof(isSelected));
+                if (isSelected != value)
+                {
+                    isSelected = value;
+                    OnPropertyChanged(nameof(isSelected));
+                }
             }
         }
 

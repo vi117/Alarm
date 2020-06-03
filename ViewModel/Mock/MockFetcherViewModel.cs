@@ -5,24 +5,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.Interface;
+using System.Collections.ObjectModel;
 
 namespace ViewModel
 {
     public class MockFetcherViewModel : FetcherViewModel
     {
-        private string title;
-        private MockCollectionViewModel<DocumentViewModel> documents;
-
-        public MockFetcherViewModel()
+        //알수 없는 에러로 인해.
+        public class DesignHelper : ObservableCollection<MockDocumentViewModel>
         {
-            documents = new MockCollectionViewModel<DocumentViewModel>(this);
-            IsSelected = false;
-            IsExpanded = false;
+            MockListViewModel<DocumentViewModel> documentViews;
+            public DesignHelper(MockListViewModel<DocumentViewModel> d) {
+                documentViews = d;
+            }
+            protected override void InsertItem(int index, MockDocumentViewModel item)
+            {
+                base.InsertItem(index, item);
+                documentViews.Add(item);
+            }
         }
-        public MockFetcherViewModel(string title)
+        private string title;
+        private MockListViewModel<DocumentViewModel> documents;
+        private Fetcher fetcher;
+        private PublishedStatusCode statusCode = PublishedStatusCode.OK;
+        private string statusMessage = "OK";
+
+        public MockFetcherViewModel():this(""){}
+
+        public MockFetcherViewModel(string title):this(title,new MockFetcher()){}
+
+        public MockFetcherViewModel(string title,Fetcher fetcher)
         {
+            this.fetcher = fetcher;
             this.title = title;
-            documents = new MockCollectionViewModel<DocumentViewModel>(this);
+            documents = new MockListViewModel<DocumentViewModel>(this);
             IsSelected = false;
             IsExpanded = false;
         }
@@ -35,15 +52,16 @@ namespace ViewModel
                 OnPropertyChanged(nameof(Title));
             }
         }
-        public MockCollectionViewModel<DocumentViewModel> DesignerDocuments
-        {
-            get => documents;
-        }
-        public override ICollectionViewModel<DocumentViewModel> Documents
-        {
-            get => documents;
+        public DesignHelper DesignerDocuments => new DesignHelper(documents);
+        
+        public override IListViewModel<DocumentViewModel> Documents => documents;
+        public override Fetcher Fetcher { 
+            get => fetcher;
+            set => fetcher = value; 
         }
 
+        public override PublishedStatusCode StatusCode { get => statusCode; set => statusCode = value; }
+        public override string StatusMessage { get => statusMessage; set => statusMessage = value; }
 
         public void RemoveFirstDocument()
         {
@@ -59,6 +77,18 @@ namespace ViewModel
         {
             documents.Add(document);
             OnPropertyChanged(nameof(Documents));
+        }
+
+        public override void ChangeOwner(CategoryViewModel newViewModel)
+        {
+            var old = Parent as MockCategoryViewModel;
+            old.SiteModelsDetail.Remove(this);
+            ((MockCategoryViewModel)newViewModel).SiteModelsDetail.Add(this);
+        }
+
+        public override void AddDocument(IDocument document)
+        {
+            documents.Add(new MockDocumentViewModel(document));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace ViewModel
                     var sc = new MockCategoryViewModel("Science");
                     var siteA = new MockFetcherViewModel("A");
                     {
-                        var doc = new Document
+                        var doc = new PubDocument
                         {
                             Title = "News1",
                             Summary = "News1 Summary",
@@ -25,7 +25,7 @@ namespace ViewModel
                             Uri = "https://www.naver.com"
                         };
                         siteA.Add(new MockDocumentViewModel(doc));
-                        doc = new Document
+                        doc = new PubDocument
                         {
                             Title = "News2",
                             Summary = "News2 Summary",
@@ -35,15 +35,15 @@ namespace ViewModel
                         };
                         siteA.Add(new MockDocumentViewModel(doc));
                     }
-                    sc.SiteModels.Add(siteA);
-                    sc.SiteModels.Add(new MockFetcherViewModel("B"));
-                    sc.SiteModels.Add(new MockFetcherViewModel("C"));
+                    sc.SiteModelsDetail.Add(siteA);
+                    sc.SiteModelsDetail.Add(new MockFetcherViewModel("B"));
+                    sc.SiteModelsDetail.Add(new MockFetcherViewModel("C"));
                     treeView.Add(sc);
                 }
                 {
                     var yt = new MockCategoryViewModel("Youtube");
-                    yt.SiteModels.Add(new MockFetcherViewModel("A"));
-                    yt.SiteModels.Add(new MockFetcherViewModel("B"));
+                    yt.SiteModelsDetail.Add(new MockFetcherViewModel("A"));
+                    yt.SiteModelsDetail.Add(new MockFetcherViewModel("B"));
                     treeView.Add(yt);
                 }
             }
@@ -55,6 +55,16 @@ namespace ViewModel
         public override ICollectionViewModel<CategoryViewModel> TreeView
         {
             get => treeView;
+        }
+
+        public override void EmplaceCategory(string title)
+        {
+            treeView.Add(new MockCategoryViewModel(title));
+        }
+
+        public override bool RemoveCategory(CategoryViewModel categoryViewModel)
+        {
+            return treeView.Remove(categoryViewModel);
         }
     }
 }

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Collections;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace ViewModel.DB
 {
@@ -19,7 +21,6 @@ namespace ViewModel.DB
 
             private Dictionary<string,CategoryViewModel> categoriesCache;
             private ViewModelBase parent;
-
             /// <summary>
             /// For Initializing Process.
             /// Shell not be using constructor except loading.
@@ -28,19 +29,13 @@ namespace ViewModel.DB
             public TreeViewCollection(LoadContext loadContext, ViewModelBase parent) {
                 this.parent = parent;
                 categoriesCache =
-                        loadContext.DBContext.Categorys.ToList()
-                        .Select((x) => (CategoryViewModel)new DBCategoryViewModel(loadContext, x))
+                        loadContext.DBContext.Categorys.AsNoTracking().ToArray()
+                        .Select((x) => (CategoryViewModel)new DBCategoryViewModel(loadContext, x, parent))
                         .OrderBy((x) => x.Title)
                         .ToDictionary((x) => x.Title);
                 if(categoriesCache.Count == 0)
                 {
-                    Add(new DBCategoryViewModel
-                            (
-                                loadContext,
-                                new DBCategory() { Title = "Default" }
-                            )
-                        );
-                    loadContext.DBContext.SaveChanges();
+                    Emplace("Default");
                 }
             }
 
@@ -48,17 +43,30 @@ namespace ViewModel.DB
             {
                 elem.Parent = parent;
                 if (elem is DBCategoryViewModel dB)
-                {
+                { 
                     categoriesCache.Add(dB.Title, dB);
                     PlatformSevice.Instance.CollectionChangedInvoke
                         (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 }
                 else throw new NotImplementedException();
             }
-
+            public void Emplace(string title)
+            {
+                var dBCategoryView = new DBCategoryViewModel(title);
+                categoriesCache.Add(title, dBCategoryView);
+                dBCategoryView.Parent = parent;
+                PlatformSevice.Instance.CollectionChangedInvoke
+                        (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            }
+            private IEnumerator<CategoryViewModel> getEnumerator()
+            {
+                return (from kv in categoriesCache
+                        orderby kv.Key
+                        select kv.Value).GetEnumerator();
+            }
             public IEnumerator<CategoryViewModel> GetEnumerator()
             {
-                return categoriesCache.Values.GetEnumerator();
+                return getEnumerator();
             }
 
             public bool Remove(CategoryViewModel elem)
@@ -68,20 +76,33 @@ namespace ViewModel.DB
                     using (var context = new AppDBContext())
                     {
                         context.Categorys.Remove(dB.GetDBCategory(context));
+                        context.SaveChanges();
                     }
                 }
+                bool ret = categoriesCache.Remove(elem.Title);
                 PlatformSevice.Instance.CollectionChangedInvoke
                     (this, this.CollectionChanged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                return categoriesCache.Remove(elem.Title);
+                return ret;
             }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return categoriesCache.Values.GetEnumerator();
+                return getEnumerator();
             }
         }
         private TreeViewCollection categories;
 
+        public override void EmplaceCategory(string title)
+        {
+            categories.Emplace(title);
+        }
+
+        public override bool RemoveCategory(CategoryViewModel categoryViewModel)
+        {
+            return categories.Remove(categoryViewModel);
+        }
+
+        //Load Only
         public DBViewModel(LoadContext loadContext)
         {
             categories = new TreeViewCollection(loadContext, this);

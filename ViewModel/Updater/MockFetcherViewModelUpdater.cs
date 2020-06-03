@@ -23,31 +23,9 @@ namespace ViewModel.Updater
             {
                 foreach (var doc in args.Documents)
                 {
-                    //lock (fetcherView.Documents.colLock)
-                    {
-                        fetcherView.Documents.Add(new MockDocumentViewModel()
-                        {
-                            Title = doc.Title,
-                            Summary = doc.Summary,
-                            Date = doc.Date,
-                            HostUri = doc.HostUri,
-                            PathUri = doc.PathUri,
-                            GUID = doc.GUID,
-                        });
-                    }
+                    fetcherView.AddDocument(doc);
                 }
             }
-        }
-        public void RegisterPublisher(DocumentPublisher publisher)
-        {
-            publisher.OnPublished += OnPublished;
-        }
-    }
-    static public class MockModelUpdaterExtension
-    {
-        public static void RegisterUpdater(this DocumentPublisher publisher, MockFetcherViewModelUpdater updater)
-        {
-            updater.RegisterPublisher(publisher);
         }
     }
 }
