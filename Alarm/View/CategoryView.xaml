@@ -25,12 +25,12 @@
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=StatusCode}" Value="{x:Static model:PublishedEventArg.OK}">
+                                <DataTrigger Binding="{Binding Path=StatusCode}" Value="{x:Static model:PublishedStatusCode.OK}">
                                     <Setter Property="Fill" Value="Blue"/>
                                 </DataTrigger>
                                 <DataTrigger Value="False"
                                              Binding="{Binding Path=StatusCode, Converter={x:Static local:EnumToBooleanConverter.Instance},
-                                    ConverterParameter={x:Static model:PublishedEventArg.OK}}">
+                                    ConverterParameter={x:Static model:PublishedStatusCode.OK}}">
                                     <Setter Property="Fill" Value="Red"></Setter>
                                 </DataTrigger>
                             </Style.Triggers>

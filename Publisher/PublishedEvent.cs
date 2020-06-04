@@ -17,7 +17,6 @@ namespace Model
         UnknownError
     }
     public class PublishedEventArg : EventArgs {
-        public static readonly PublishedStatusCode OK = PublishedStatusCode.OK;
         private Queue<PubDocument> documents;
         public PublishedStatusCode Code { get; private set; }
         public string DetailErrorMessage { get; private set; }
