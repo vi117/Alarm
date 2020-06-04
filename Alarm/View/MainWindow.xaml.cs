@@ -47,6 +47,12 @@ namespace Alarm.View
                 viewModel.EmplaceCategory(t);
             }
         }
+        async void RemoveCategoryView(CategoryViewModel category)
+        {
+            var t = await DialogManager.ShowMessageAsync(this, "Ensure", "Delete?",MessageDialogStyle.AffirmativeAndNegative);
+            if(t == MessageDialogResult.Affirmative)
+                (category.Parent as ViewModel.ViewModel).RemoveCategory(category);
+        }
         void EditFetcherView(FetcherViewModel fetcher)
         {
             AddFetcherWindow window = new AddFetcherWindow(fetcher.Title,fetcher.Fetcher);
@@ -122,7 +128,7 @@ namespace Alarm.View
                     switch (NavTreeView.SelectedItem)
                     {
                         case CategoryViewModel category:
-                            (category.Parent as ViewModel.ViewModel).RemoveCategory(category);
+                                RemoveCategoryView(category);
                             break;
                         case FetcherViewModel fetcher:
                             (fetcher.Parent as CategoryViewModel).Remove(fetcher);
