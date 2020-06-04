@@ -49,7 +49,7 @@ namespace Alarm.View
         }
         async void RemoveCategoryView(CategoryViewModel category)
         {
-            var t = await DialogManager.ShowMessageAsync(this, "Ensure", "Delete?",MessageDialogStyle.AffirmativeAndNegative);
+            var t = await DialogManager.ShowMessageAsync(this, "Confirm", "Delete this category?",MessageDialogStyle.AffirmativeAndNegative);
             if(t == MessageDialogResult.Affirmative)
                 (category.Parent as ViewModel.ViewModel).RemoveCategory(category);
         }
