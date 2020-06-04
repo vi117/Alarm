@@ -25,10 +25,10 @@ namespace PapagoGlue
     public class PapagoGlue
     {
 		// Papago Api URL
-		static String url = "https://openapi.naver.com/v1/papago/n2mt";
+		const String url = "https://openapi.naver.com/v1/papago/n2mt";
 
 		// TODO: use proper path
-		static ApiPass apiPass = ApiPass.FromFile("../../../key.json");
+		const ApiPass apiPass = ApiPass.FromFile("../../../key.json");
 		HttpClient client;
 
 		public PapagoGlue() {
