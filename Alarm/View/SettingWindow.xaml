@@ -9,6 +9,6 @@
         Title="Settings" Height="450" Width="800"
         WindowStartupLocation="CenterOwner">
     <Grid x:Name="TestGrid">
-        <TextBlock Text="Not Impletemented" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button Content="Test" Click="Button_Click"/>
     </Grid>
 </Controls:MetroWindow>

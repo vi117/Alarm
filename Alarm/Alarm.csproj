@@ -239,11 +239,20 @@
     <Compile Include="ViewModels\AppCommand.cs" />
     <Compile Include="ViewModels\PageFactory.cs" />
     <Compile Include="View\EnumToBooleanConverter.cs" />
+    <Compile Include="SkinDictionary.cs" />
     <Page Include="DesignSampleData\DesignCategorySample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkSkin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\LightSkin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

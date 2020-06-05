@@ -10,7 +10,10 @@
         xmlns:cmd ="clr-namespace:Alarm.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
-        Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100">
+        Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100"
+                      Background="{StaticResource BackgroundColor}"
+                      WindowTitleBrush="{DynamicResource TitleBarColor}"
+                      >
     <Controls:MetroWindow.Resources>
         <HierarchicalDataTemplate
             DataType="{x:Type view:CategoryViewModel}"
@@ -154,6 +157,7 @@
                       MouseMove="NavTreeView_MouseMove"
                       DragEnter="NavTreeView_DragEnter"
                       Drop="NavTreeView_Drop"
+                      
                       >
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="SelectedItemChanged">

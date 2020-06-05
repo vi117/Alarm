@@ -13,11 +13,34 @@ using CefSharp.Wpf;
 
 namespace Alarm
 {
+    public enum SkinType
+    {
+        Light,
+        Dark
+    }
     /// <summary>
     /// App.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Do not change.
+        /// </summary>
+        static internal SkinType Skin { get; set; } = SkinType.Light;
+        public void ChangeSkin(SkinType newSkin)
+        {
+            Skin = newSkin;
+
+            foreach (ResourceDictionary dict in Resources.MergedDictionaries)
+            {
+
+                if (dict is SkinDictionary skinDict)
+                    skinDict.UpdateSource();
+                else
+                    dict.Source = dict.Source;
+            }
+        }
+
         public App()
         {
             AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
