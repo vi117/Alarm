@@ -34,7 +34,6 @@
                 </Grid.RowDefinitions>
                 <TextBlock FontSize="20" Text="{Binding Path=Title, Mode=OneWay}" Style="{StaticResource NewsForm}"/>
                 <html:HtmlPanel Grid.Row="1" Text="{Binding Path=Summary, Mode=OneWay}" Background="Transparent"/>
-                <!-- <TextBlock Text="{Binding Path=Summary, Mode=OneWay}" Grid.Row="1" TextWrapping="Wrap" Style="{StaticResource NewsForm}"/> -->
             </Grid>
         </DataTemplate>
         <Style TargetType="ListBoxItem">
