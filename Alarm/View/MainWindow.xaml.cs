@@ -10,7 +10,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModel;
 using ViewModel.DB;
-using ViewModel.Updater;
 using Alarm.Helper;
 using MessageBox = System.Windows.MessageBox;
 using System.Windows.Interactivity;
