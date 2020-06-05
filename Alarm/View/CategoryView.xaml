@@ -12,7 +12,7 @@
       d:DataContext="{d:DesignData Source=/DesignSampleData/DesignCategorySample}">
     <Page.Resources>
         <DataTemplate x:Key="CategoryTemplate" DataType="{x:Type mv:FetcherViewModel}">
-            <Grid>
+            <Grid Background="{DynamicResource BackgroundColor}">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -37,13 +37,16 @@
                         </Style>
                     </Rectangle.Style>
                 </Rectangle>
-                <TextBlock Text="{Binding Path=Title}" FontSize="16" Grid.Column="1"/>
-                <TextBlock Text="{Binding Path=StatusMessage}" Grid.Column="1" Grid.Row="1"/>
+                <TextBlock Text="{Binding Path=Title}" FontSize="16" Grid.Column="1" 
+                           Background="Transparent" Foreground="{DynamicResource CharacterColor}"/>
+                <TextBlock Text="{Binding Path=StatusMessage}" Grid.Column="1" Grid.Row="1" 
+                           Background="Transparent" Foreground="{DynamicResource CharacterColor}"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
     <Grid>
-        <ListBox ItemTemplate="{StaticResource CategoryTemplate}" ItemsSource="{Binding Path=SiteModels}">
+        <ListBox ItemTemplate="{StaticResource CategoryTemplate}" ItemsSource="{Binding Path=SiteModels}"
+                 Background="{DynamicResource BackgroundColor}">
         </ListBox>
     </Grid>
 </Page>

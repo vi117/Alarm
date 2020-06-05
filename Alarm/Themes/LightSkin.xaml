@@ -3,4 +3,7 @@
                     >
     <SolidColorBrush x:Key="BackgroundColor" Color="#f8f9fa"/>
     <SolidColorBrush x:Key="TitleBarColor" Color="#41b1ff"/>
+    <SolidColorBrush x:Key="CharacterColor" Color="Black"/>
+    <SolidColorBrush x:Key="ButtonBackgroundColor" Color="#d5d5d5"/>
+    <SolidColorBrush x:Key="GridSplitterColor" Color="#d5d5d5"/>
 </ResourceDictionary>
