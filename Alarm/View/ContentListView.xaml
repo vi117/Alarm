@@ -27,7 +27,7 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}" >
-            <Grid HorizontalAlignment="Stretch" Height="100">
+            <Grid HorizontalAlignment="Stretch" Height="100 ">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="70"/>

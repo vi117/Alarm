@@ -178,7 +178,8 @@
                           Background="{DynamicResource GridSplitterColor}"/>
             <Frame Grid.Column="2" x:Name="PageFrame" NavigationUIVisibility="Hidden"
                    Content="{Binding Path=DisplayPage, Mode=TwoWay}"
-                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                   Background="{DynamicResource BackgroundColor}"/>
         </Grid>
     </DockPanel>
 </Controls:MetroWindow>
