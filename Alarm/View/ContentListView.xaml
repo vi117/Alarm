@@ -27,15 +27,16 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}" >
-            <Grid HorizontalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" Height="100">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="70"/>
                 </Grid.RowDefinitions>
                 <TextBlock FontSize="20" Text="{Binding Path=Title, Mode=OneWay}" Style="{StaticResource NewsForm}"
                            Background="Transparent"
                            Foreground="{DynamicResource CharacterColor}"/>
-                <html:HtmlPanel Grid.Row="1" Text="{Binding Path=Summary, Mode=OneWay}" Background="Transparent"/>
+                <html:HtmlLabel Grid.Row="1" Text="{Binding Path=Summary, Mode=OneWay}" Background="Transparent" 
+                                VerticalAlignment="Top"/>
             </Grid>
         </DataTemplate>
         <Style TargetType="ListBoxItem">
