@@ -1,9 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     >
+    <SolidColorBrush x:Key="InnerBackgroundColor" Color="#f8f9fa"/>
     <SolidColorBrush x:Key="BackgroundColor" Color="#f8f9fa"/>
     <SolidColorBrush x:Key="TitleBarColor" Color="#41b1ff"/>
     <SolidColorBrush x:Key="CharacterColor" Color="Black"/>
     <SolidColorBrush x:Key="ButtonBackgroundColor" Color="#d5d5d5"/>
     <SolidColorBrush x:Key="GridSplitterColor" Color="#d5d5d5"/>
+    <SolidColorBrush x:Key="ComboBoxBackgroundColor" Color="White"/>
+    <SolidColorBrush x:Key="ComboBoxItemDefaultColor" Color="White"/>
+    <SolidColorBrush x:Key="ComboBoxItemSelectedColor" Color="#41b1e1"/>
+    <SolidColorBrush x:Key="ComboBoxItemHighlightColor" Color="#A0D8F0"/>
+    <SolidColorBrush x:Key="InputBackgroundColor" Color="White"/>
 </ResourceDictionary>

@@ -9,6 +9,8 @@
              x:Name="UCC">
     <Grid>
         <ComboBox Grid.Row="2" Grid.Column="1" x:Name="IntervalBox" SelectionChanged="IntervalBox_SelectionChanged"/>
-        <Label Content="{Binding ElementName=UCC,Path=DefaultText}" IsHitTestVisible="False" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="DefaultLabel"/>
+        <Label Content="{Binding ElementName=UCC,Path=DefaultText}" IsHitTestVisible="False" 
+               HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="DefaultLabel"
+               FontSize="12" Foreground="Black"/>
     </Grid>
 </UserControl>

@@ -47,7 +47,7 @@
         <ListBox x:Name="ListBox" ItemTemplate="{StaticResource DocumentTemplate}" ItemsSource="{Binding Path=Documents}" 
                  VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
                  HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 Background="{DynamicResource BackgroundColor}"
+                 Background="Transparent"
                  >
             <ie:Interaction.Triggers>
                 <ie:EventTrigger EventName="MouseDoubleClick">

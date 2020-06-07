@@ -7,17 +7,13 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Navigation;
 using Alarm.ViewModels;
 using CefSharp;
 using CefSharp.Wpf;
 
 namespace Alarm
 {
-    public enum SkinType
-    {
-        Light,
-        Dark
-    }
     /// <summary>
     /// App.xaml에 대한 상호 작용 논리
     /// </summary>
@@ -26,16 +22,18 @@ namespace Alarm
         /// <summary>
         /// Do not change.
         /// </summary>
-        static internal SkinType Skin { get; set; } = SkinType.Light;
-        public void ChangeSkin(SkinType newSkin)
+        static private Setting setting;
+        static private string[] skinList;
+        static public string[] SkinList => skinList;
+        static public Setting Setting => setting;
+        public void ChangeSkin(string newSkin)
         {
-            Skin = newSkin;
+            setting.SkinType = newSkin;
 
             foreach (ResourceDictionary dict in Resources.MergedDictionaries)
             {
-
-                if (dict is SkinDictionary skinDict)
-                    skinDict.UpdateSource();
+                if (dict is SkinManager skinDict)
+                    skinDict.UpdateSource(setting.SkinType);
                 else
                     dict.Source = dict.Source;
             }
@@ -46,6 +44,23 @@ namespace Alarm
             AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
             InitializeCefSharp();
             WPFPlatform.Register();
+            setting = Setting.GetDefault();
+            setting.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(setting.SkinType))
+                {
+                    ChangeSkin((s as Setting).SkinType);
+                }
+            };
+        }
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            foreach (ResourceDictionary dict in Resources.MergedDictionaries)
+            {
+                if (dict is SkinManager skinDict)
+                    skinList = skinDict.SkinDict.Keys.ToArray();
+            }
         }
         public void InitializeCefSharp(){
             var settings = new CefSettings();

@@ -22,11 +22,7 @@ namespace Alarm.View
         public SettingWindow()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            (Application.Current as App).ChangeSkin(SkinType.Dark);
+            DataContext = App.Setting;
         }
     }
 }

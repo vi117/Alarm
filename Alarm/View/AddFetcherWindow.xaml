@@ -7,6 +7,8 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource BackgroundColor}"
+        WindowTitleBrush="{DynamicResource TitleBarColor}"
         Title="Fetcher Add Dialog" Height="450" Width="800">
     <Controls:MetroWindow.Resources>
         <DoubleAnimation x:Key="ShowingElement"
@@ -19,13 +21,12 @@
                 Duration="0:0:0.2"/>
     </Controls:MetroWindow.Resources>
     <DockPanel>
-
         <Grid DockPanel.Dock="Top" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="120" Width="*"/>
                 <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Fetcher Type" FontSize="16"/>
+            <Label Content="Fetcher Type" FontSize="16" Foreground="{DynamicResource CharacterColor}"/>
             <ComboBox Grid.Column="1" x:Name="ContentTypeComboBox" SelectionChanged="ComboBox_SelectionChanged">
             </ComboBox>
         </Grid>
@@ -36,7 +37,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.Resources>
-                <Style TargetType="Button">
+                <Style TargetType="Button" BasedOn="{StaticResource AlarmButton}">
                     <Setter Property="Width" Value="100"/>
                     <Setter Property="Height" Value="30"/>
                 </Style>

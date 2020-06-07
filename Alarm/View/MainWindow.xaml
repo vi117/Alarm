@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
         Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100"
-                      Background="{StaticResource BackgroundColor}"
+                      Background="{DynamicResource InnerBackgroundColor}"
                       WindowTitleBrush="{DynamicResource TitleBarColor}"
                       >
     <Controls:MetroWindow.Resources>
@@ -24,20 +24,18 @@
             <TextBlock Text="{Binding Path=Title}"></TextBlock>
         </DataTemplate>
         <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
-            <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+            <Setter Property="Background" Value="{DynamicResource InnerBackgroundColor}"/>
             <Setter Property="Foreground" Value="{DynamicResource CharacterColor}"/>
             <Setter Property="IsSelected" Value="{Binding IsSelected}" />
             <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
         </Style>
-        <Style TargetType="Button" BasedOn="{StaticResource MetroFlatButton}">
+        <Style TargetType="Button" BasedOn="{StaticResource AlarmButton}">
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Padding" Value="5"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="Height" Value="35"/>
-            <Setter Property="Foreground" Value="{DynamicResource CharacterColor}"/>
-            <Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
         </Style>
         <Style x:Key="Symbols" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
@@ -161,7 +159,7 @@
                       MouseMove="NavTreeView_MouseMove"
                       DragEnter="NavTreeView_DragEnter"
                       Drop="NavTreeView_Drop"
-                      Background="{DynamicResource BackgroundColor}"
+                      Background="{DynamicResource InnerBackgroundColor}"
                       >
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="SelectedItemChanged">
@@ -179,7 +177,7 @@
             <Frame Grid.Column="2" x:Name="PageFrame" NavigationUIVisibility="Hidden"
                    Content="{Binding Path=DisplayPage, Mode=TwoWay}"
                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                   Background="{DynamicResource BackgroundColor}"/>
+                   Background="{DynamicResource InnerBackgroundColor}"/>
         </Grid>
     </DockPanel>
 </Controls:MetroWindow>
