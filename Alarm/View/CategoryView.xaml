@@ -9,10 +9,11 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CategoryView"
-      d:DataContext="{d:DesignData Source=/DesignSampleData/DesignCategorySample}">
+      d:DataContext="{d:DesignData Source=/DesignSampleData/DesignCategorySample.xaml}"
+      >
     <Page.Resources>
         <DataTemplate x:Key="CategoryTemplate" DataType="{x:Type mv:FetcherViewModel}">
-            <Grid>
+            <Grid Background="{DynamicResource InnerBackgroundColor}">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -25,25 +26,30 @@
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=StatusCode}" Value="{x:Static model:PublishedEventArg.OK}">
+                                <DataTrigger Binding="{Binding Path=StatusCode}" Value="{x:Static model:PublishedStatusCode.OK}">
                                     <Setter Property="Fill" Value="Blue"/>
                                 </DataTrigger>
                                 <DataTrigger Value="False"
                                              Binding="{Binding Path=StatusCode, Converter={x:Static local:EnumToBooleanConverter.Instance},
-                                    ConverterParameter={x:Static model:PublishedEventArg.OK}}">
+                                    ConverterParameter={x:Static model:PublishedStatusCode.OK}}">
                                     <Setter Property="Fill" Value="Red"></Setter>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Rectangle.Style>
                 </Rectangle>
-                <TextBlock Text="{Binding Path=Title}" FontSize="16" Grid.Column="1"/>
-                <TextBlock Text="{Binding Path=StatusMessage}" Grid.Column="1" Grid.Row="1"/>
+                <TextBlock Text="{Binding Path=Title}" FontSize="16" Grid.Column="1" 
+                           Background="Transparent"
+                           Foreground="{DynamicResource CharacterColor}"/>
+                <TextBlock Text="{Binding Path=StatusMessage}" Grid.Column="1" Grid.Row="1" 
+                           Background="Transparent"
+                           Foreground="{DynamicResource CharacterColor}"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
     <Grid>
-        <ListBox ItemTemplate="{StaticResource CategoryTemplate}" ItemsSource="{Binding Path=SiteModels}">
+        <ListBox ItemTemplate="{StaticResource CategoryTemplate}" ItemsSource="{Binding Path=SiteModels}"
+                 Background="Transparent">
         </ListBox>
     </Grid>
 </Page>

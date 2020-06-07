@@ -38,6 +38,7 @@ namespace Alarm.View
             if (!b) throw new ArgumentException("The argument doesn't implemenet " + nameof(FetcherFormAttribute));
             var name = FetcherFormAttributeHelper.FatcherTypeToNamePairs[fetcherType];
             methodInfo.Invoke(keyValuePairs[name], new object[] { fetcher });
+            keyValuePairs[name].FetcherName = title;
             ContentTypeComboBox.SelectedIndex = keyValuePairs.Keys.OrderBy(x => x).ToList().IndexOf(name);
         }
         public AddFetcherWindow()

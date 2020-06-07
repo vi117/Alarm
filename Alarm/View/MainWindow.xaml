@@ -10,7 +10,10 @@
         xmlns:cmd ="clr-namespace:Alarm.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
-        Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100">
+        Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100"
+                      Background="{DynamicResource InnerBackgroundColor}"
+                      WindowTitleBrush="{DynamicResource TitleBarColor}"
+                      >
     <Controls:MetroWindow.Resources>
         <HierarchicalDataTemplate
             DataType="{x:Type view:CategoryViewModel}"
@@ -21,20 +24,35 @@
             <TextBlock Text="{Binding Path=Title}"></TextBlock>
         </DataTemplate>
         <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
+            <Setter Property="Background" Value="{DynamicResource InnerBackgroundColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource CharacterColor}"/>
             <Setter Property="IsSelected" Value="{Binding IsSelected}" />
             <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource AlarmButton}">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+        <Style x:Key="Symbols" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        </Style>
+        <Style x:Key="Characters" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Sans"/>
+            <Setter Property="Margin" Value="5,0,0,0"/>
+            <Style.Triggers>
+                <DataTrigger Value="False" Binding="{Binding RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor},
+                    Path=ActualWidth, Converter={local:DNGreaterThan 120} }">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </Controls:MetroWindow.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Top">
-            <Grid.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="FontSize" Value="20"/>
-                    <Setter Property="Padding" Value="5"/>
-                </Style>
-            </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -42,46 +60,92 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="&#xE710;" Grid.Column="0">
+            <Button Grid.Column="0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource Symbols}">
+                        &#xE710;
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}">
+                        Add
+                    </TextBlock>
+                </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
                         <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.ShowAddFetcherWindowCommand}"/>
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </Button>
-            <Button Content="&#xE72c;" Grid.Column="1">
+            <Button Grid.Column="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource Symbols}">
+                        &#xE72c;
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}">
+                        Refresh
+                    </TextBlock>
+                </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
                         <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.RefreshFetcherCommand}"/>
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </Button>
-            <Button Content="&#xE97e;" Grid.Column="2"/>
-            <Button Content="&#xE74d;" Grid.Column="3">
+            <Button Grid.Column="2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource Symbols}">
+                        &#xE97e;
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}">
+                        Translate
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="3">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource Symbols}">
+                        &#xE74d;
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}">
+                        Remove
+                    </TextBlock>
+                </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
                         <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.RemoveSelectedCommand}"/>
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </Button>
-            <Button Content="&#xE70f;" Grid.Column="4">
+            <Button Grid.Column="4">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource Symbols}">
+                        &#xE70f;
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}">
+                        Edit
+                    </TextBlock>
+                </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
                         <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.ShowEditFetcherWindowCommand}"/>
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </Button>
-            <Button Content="&#xE713;" Grid.Column="5">
+            <Button Grid.Column="5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource Symbols}">
+                        &#xE713;
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}">
+                        Setting
+                    </TextBlock>
+                </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
                         <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.ShowSettingWindowCommand}"/>
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </Button>
-
-            <Button Content="&#xE72B;" Grid.Column="6"/>
         </Grid>
         <Grid DockPanel.Dock="Top" >
             <Grid.ColumnDefinitions>
@@ -95,6 +159,7 @@
                       MouseMove="NavTreeView_MouseMove"
                       DragEnter="NavTreeView_DragEnter"
                       Drop="NavTreeView_Drop"
+                      Background="{DynamicResource InnerBackgroundColor}"
                       >
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="SelectedItemChanged">
@@ -107,10 +172,12 @@
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </TreeView>
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"
+                          Background="{DynamicResource GridSplitterColor}"/>
             <Frame Grid.Column="2" x:Name="PageFrame" NavigationUIVisibility="Hidden"
                    Content="{Binding Path=DisplayPage, Mode=TwoWay}"
-                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                   Background="{DynamicResource InnerBackgroundColor}"/>
         </Grid>
     </DockPanel>
 </Controls:MetroWindow>

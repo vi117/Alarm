@@ -10,7 +10,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModel;
 using ViewModel.DB;
-using ViewModel.Updater;
 using Alarm.Helper;
 using MessageBox = System.Windows.MessageBox;
 using System.Windows.Interactivity;
@@ -46,6 +45,12 @@ namespace Alarm.View
             {
                 viewModel.EmplaceCategory(t);
             }
+        }
+        async void RemoveCategoryView(CategoryViewModel category)
+        {
+            var t = await DialogManager.ShowMessageAsync(this, "Confirm", "Delete this category?",MessageDialogStyle.AffirmativeAndNegative);
+            if(t == MessageDialogResult.Affirmative)
+                (category.Parent as ViewModel.ViewModel).RemoveCategory(category);
         }
         void EditFetcherView(FetcherViewModel fetcher)
         {
@@ -122,7 +127,7 @@ namespace Alarm.View
                     switch (NavTreeView.SelectedItem)
                     {
                         case CategoryViewModel category:
-                            (category.Parent as ViewModel.ViewModel).RemoveCategory(category);
+                                RemoveCategoryView(category);
                             break;
                         case FetcherViewModel fetcher:
                             (fetcher.Parent as CategoryViewModel).Remove(fetcher);
@@ -258,7 +263,6 @@ namespace Alarm.View
                     }
                 }
                 if (category == null) throw new ApplicationException("Search fail.");
-                Trace.WriteLine("Change Owner Start");
                 if (fetcherViewModel.Parent != category)
                 {
                     fetcherViewModel.ChangeOwner(category);

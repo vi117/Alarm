@@ -22,6 +22,7 @@ namespace Alarm.View
         public SettingWindow()
         {
             InitializeComponent();
+            DataContext = App.Setting;
         }
     }
 }

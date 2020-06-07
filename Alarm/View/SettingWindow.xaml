@@ -4,11 +4,55 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls ="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:apps ="clr-namespace:Alarm"
         xmlns:local="clr-namespace:Alarm.View"
         mc:Ignorable="d"
         Title="Settings" Height="450" Width="800"
-        WindowStartupLocation="CenterOwner">
-    <Grid x:Name="TestGrid">
-        <TextBlock Text="Not Impletemented" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-    </Grid>
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource BackgroundColor}"
+        WindowTitleBrush="{DynamicResource TitleBarColor}"
+        d:DataContext="{d:DesignInstance Type=apps:Setting,IsDesignTimeCreatable=True}">
+    <Controls:MetroWindow.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="{DynamicResource CharacterColor}"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource ComboBoxBackgroundColor}"/>
+        </Style>
+    </Controls:MetroWindow.Resources>
+    <DockPanel>
+        <Grid Margin="5" DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource AlarmButton}">
+                    <Setter Property="Width" Value="100"/>
+                    <Setter Property="Height" Value="30"/>
+                </Style>
+            </Grid.Resources>
+            <Button Grid.Column="0" Content="Ok" x:Name="OkButton" IsDefault="True"/>
+            <Button Grid.Column="1" Content="Cancel" x:Name="CancelButton" IsCancel="True"/>
+        </Grid>
+        <ScrollViewer DockPanel.Dock="Top">
+            <Grid Margin="5" Height="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="120" Width="*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="Skin"/>
+                <ComboBox x:Name="SkinComboBox"
+                      Grid.Column="1"
+                      ItemsSource="{x:Static apps:App.SkinList}"
+                      SelectedItem="{Binding Path=SkinType}"
+                      ItemContainerStyle="{StaticResource AlarmComboBoxItem}"/>
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
 </Controls:MetroWindow>

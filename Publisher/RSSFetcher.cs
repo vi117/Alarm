@@ -51,7 +51,6 @@ namespace Model
             }
             catch (XmlException e)
             {
-                Trace.WriteLine(e.Message);
                 return new PublishedEventArg(PublishedStatusCode.InvaildFormatError,"XML Format Error : "+ e.Message);
             }
             catch(FileNotFoundException e)

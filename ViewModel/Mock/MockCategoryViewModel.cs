@@ -50,7 +50,6 @@ namespace ViewModel
         public override string Title
         {
             get {
-                Trace.Write(title); 
                 return title; }
             set
             {

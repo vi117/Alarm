@@ -16,7 +16,8 @@ namespace ViewModel
         public class DesignHelper : ObservableCollection<MockDocumentViewModel>
         {
             MockListViewModel<DocumentViewModel> documentViews;
-            public DesignHelper(MockListViewModel<DocumentViewModel> d) {
+            public DesignHelper(MockListViewModel<DocumentViewModel> d)
+            {
                 documentViews = d;
             }
             protected override void InsertItem(int index, MockDocumentViewModel item)
@@ -31,11 +32,11 @@ namespace ViewModel
         private PublishedStatusCode statusCode = PublishedStatusCode.OK;
         private string statusMessage = "OK";
 
-        public MockFetcherViewModel():this(""){}
+        public MockFetcherViewModel() : this("") { }
 
-        public MockFetcherViewModel(string title):this(title,new MockFetcher()){}
+        public MockFetcherViewModel(string title) : this(title, new MockFetcher()) { }
 
-        public MockFetcherViewModel(string title,Fetcher fetcher)
+        public MockFetcherViewModel(string title, Fetcher fetcher)
         {
             this.fetcher = fetcher;
             this.title = title;
@@ -53,11 +54,12 @@ namespace ViewModel
             }
         }
         public DesignHelper DesignerDocuments => new DesignHelper(documents);
-        
+
         public override IListViewModel<DocumentViewModel> Documents => documents;
-        public override Fetcher Fetcher { 
+        public override Fetcher Fetcher
+        {
             get => fetcher;
-            set => fetcher = value; 
+            set => fetcher = value;
         }
 
         public override PublishedStatusCode StatusCode { get => statusCode; set => statusCode = value; }

@@ -24,7 +24,6 @@ namespace Alarm.View
         public CategoryView()
         {
             InitializeComponent();
-            Trace.WriteLine(DataContext);
         }
     }
 }
