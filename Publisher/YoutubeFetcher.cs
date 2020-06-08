@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
@@ -12,13 +11,15 @@ namespace Model
     {
         private RSSFetcher inner = null;
 
-        public string URL { 
-            get => inner.URL;
-            set {
-                if (inner == null) inner = new RSSFetcher();
-                inner.URL = value;
-            }
-        }
+		public string channelId {
+			get => channelId;
+			set {
+				var url = "https://www.youtube.com/feeds/videos.xml?channel_id=" + id;
+				this.channelId = id;
+				this.inner.URL =  url;
+			}
+		}
+
         //xml serialize 용도.
         public YoutubeFetcher() { }
 
@@ -35,6 +36,7 @@ namespace Model
             var inner = new RSSFetcher(url);
             return new YoutubeFetcher()
             {
+				channelId = id,
                 inner = inner
             };
         }
@@ -51,5 +53,11 @@ namespace Model
         {
             return this.inner.Fetch();
         }
+
+		public void SetChannelID(string id) {
+			var url = "https://www.youtube.com/feeds/videos.xml?channel_id=" + id;
+			this.channelId = id;
+			this.inner.URL =  url;
+		}
     }
 }
