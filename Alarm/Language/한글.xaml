@@ -19,6 +19,7 @@
     <sys:String x:Key="LangStr">언어</sys:String>
     <sys:String x:Key="ThemeStr">테마</sys:String>
     <sys:String x:Key="AccentStr">색 테마</sys:String>
+    <sys:String x:Key="FetcherTypeStr">Fetcher 종류</sys:String>
     <sys:String x:Key="FetcherTitleStr">Fetcher 이름</sys:String>
     <sys:String x:Key="URLStr">주소</sys:String>
     <sys:String x:Key="UpdateFrequencyStr">갱신 주기</sys:String>
