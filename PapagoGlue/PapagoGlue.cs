@@ -7,7 +7,8 @@ using System.Collections.Generic;
 
 namespace PapagoGlue
 {
-	class ApiPass {
+	private class ApiPass
+	{
 		// Strangely, if someone remove setter here, JsonSerializer
 		// does not work.
 		public string Id { get; set; }
@@ -22,21 +23,21 @@ namespace PapagoGlue
 		}
 	}
 
+	private class NotAuthorizedException: Exception { }
+
     public class PapagoGlue
     {
 		// Papago Api URL
-		const String url = "https://openapi.naver.com/v1/papago/n2mt";
+		const string url = "https://openapi.naver.com/v1/papago/n2mt";
 
-		// TODO: use proper path
-		const ApiPass apiPass = ApiPass.FromFile("../../../key.json");
-		HttpClient client;
+		static private ApiPass apiPass = ApiPass.FromFile("key.json");
+
+		private HttpClient client;
 
 		public PapagoGlue() {
 			client = new HttpClient();
 		}
 
-		// FIXME: this function wiil crash if there's no proper Id
-		// and Secret in key.json.
 		// TODO: Handle Errors appropriately (error handling not present)
 		async public Task<String> Translate(String s) {
 			var request = new HttpRequestMessage(new HttpMethod("POST"), url);
@@ -53,16 +54,21 @@ namespace PapagoGlue
 			request.Headers.Add("X-Naver-Client-Secret", apiPass.Secret);
 			request.Content = con;
 
+			// send request
 			var response = await client.SendAsync(request);
-			var content = await response.Content.ReadAsStringAsync();
-			var rjson = JsonDocument.Parse(content);
+			if (response.IsSuccessStatusCode) {
+				var content = await response.Content.ReadAsStringAsync();
+				var rjson = JsonDocument.Parse(content);
 
-			var translatedText =  rjson.RootElement
-				.GetProperty("message")
-				.GetProperty("result")
-				.GetProperty("translatedText");
+				var translatedText =  rjson.RootElement
+					.GetProperty("message")
+					.GetProperty("result")
+					.GetProperty("translatedText");
 
-			return translatedText.ToString();
+				return translatedText.ToString();
+			} else {
+				throw new NotAuthorizedException();
+			}
 		}
     }
 }
