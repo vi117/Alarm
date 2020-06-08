@@ -28,7 +28,7 @@
                 </Style>
             </Grid.Resources>
             <Button Grid.Column="0" Content="{DynamicResource WIndowConfirmButtonStr}" x:Name="ConfirmButton" IsDefault="True" Click="ConfirmButton_Click"/>
-            <Button Grid.Column="1" Content="{DynamicResource WindowCancelButtonStr}" x:Name="CancelButton" IsCancel="True"/>
+            <Button Grid.Column="1" Content="{DynamicResource WindowCancelButtonStr}" x:Name="CancelButton" Click="CancelButton_Click"/>
         </Grid>
         <ScrollViewer DockPanel.Dock="Top" Margin="5">
             <Grid Margin="5" Height="Auto">

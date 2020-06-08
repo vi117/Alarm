@@ -18,7 +18,7 @@ namespace Alarm
         private string language = LanguageManager.English;
         private string appTheme = "BaseLight";
         private string accent = "Green";
-
+        
         public string Language
         {
             get => language;
@@ -55,15 +55,22 @@ namespace Alarm
                 }
             }
         }
-
+        
         public void InvokeChangeEvent(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public void Save(string path)
+        public void CopyTo(Setting dest)
         {
-            string jsonStr = JsonSerializer.Serialize(this);
-            File.WriteAllText(path, jsonStr);
+            var propertyInfos = typeof(Setting).GetProperties(
+                System.Reflection.BindingFlags.Instance|
+                System.Reflection.BindingFlags.Public|
+                System.Reflection.BindingFlags.SetProperty|
+                System.Reflection.BindingFlags.GetProperty);
+            foreach (var item in propertyInfos)
+            {
+                item.SetValue(dest, item.GetValue(this));
+            }
         }
         static public Setting GetDefault()
         {
@@ -73,6 +80,11 @@ namespace Alarm
                 Accent = "Blue",
                 AppTheme = "BaseLight",
             };
+        }
+        public void Save(string path)
+        {
+            string jsonStr = JsonSerializer.Serialize(this);
+            File.WriteAllText(path, jsonStr);
         }
         static public Setting Load(string path)
         {

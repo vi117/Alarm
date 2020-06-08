@@ -63,7 +63,7 @@ namespace Alarm
             string path = Setting.DefaultPath;
             Setting s;
             if (File.Exists(path))
-                s = await Setting.LoadAsync(path);
+                s = await Setting.LoadAsync(path).ConfigureAwait(false);
             else
                 s = Setting.GetDefault();
             s.PropertyChanged += (sender, e) =>
@@ -99,9 +99,10 @@ namespace Alarm
                 if (dict is LanguageManager skinDict)
                     languageList = skinDict.LanguageDict.Keys.ToArray();
             }
-            initSettingTask.Wait();
+            Task.WaitAll(initSettingTask);
             setting = initSettingTask.Result;
             ChangeTheme(setting.Accent, setting.AppTheme);
+            ChangeLanguage(setting.Language);
         }
         public void InitializeCefSharp()
         {
