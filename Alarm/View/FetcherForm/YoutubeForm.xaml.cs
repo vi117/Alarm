@@ -44,13 +44,16 @@ namespace Alarm.View.FetcherForm
         override public void SetFromFetcher(Fetcher f)
         {
             var fetcher = f as YoutubeFetcher;
-            ChannelID.Text = fetcher.channelId;
+            Feed.Text = fetcher.channelId;
             IntervalBox.SelectedTime = fetcher.Interval;
         }
 
         override public Model.Fetcher CreateFetcher()
         {
-            return YoutubeFetcher.FromChannelId(ChannelID.Text) { Interval = IntervalBox.SelectedTime };
+			if (YoutubeFetcher.IsYoutubeURL(Feed.Text))
+				return YoutubeFetcher.FromURL(Feed.Text) { Interval = IntervalBox.SelectedTime };
+			else
+				return YoutubeFetcher.FromChannelId(Feed.Text) { Interval = IntervalBox.SelectedTime };
         }
     }
 }

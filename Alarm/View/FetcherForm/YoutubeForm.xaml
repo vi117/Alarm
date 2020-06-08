@@ -20,8 +20,8 @@
         <local:LineInput Grid.Column="1" BackgroundText="Fetcher Title" FontSize="16" x:Name="FetcherTitle"
                          BackgroundTextFill="Gray">
         </local:LineInput>
-        <Label Content="Channel ID" FontSize="16" Grid.Row="1"/>
-        <local:LineInput Grid.Row="1" Grid.Column="1" BackgroundText="Channel ID" FontSize="16" x:Name="ChannelID"
+        <Label Content="Channel ID or URL" FontSize="16" Grid.Row="1"/>
+        <local:LineInput Grid.Row="1" Grid.Column="1" BackgroundText="Channel ID" FontSize="16" x:Name="Feed"
                          BackgroundTextFill="Gray" Validation="UrlValid"
                          >
         </local:LineInput>
