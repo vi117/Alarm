@@ -41,7 +41,9 @@ namespace Alarm.View
         }
         async void AddCategoryView()
         {
-            var t = await DialogManager.ShowInputAsync(this, "Add Category", "Write the category's name");
+            var t = await DialogManager.ShowInputAsync(this, 
+                (string)FindResource("AddCategoryTitle"),
+                (string)FindResource("AddCategoryMessage"));
             if (t != null && t != string.Empty)
             {
                 viewModel.EmplaceCategory(t);
@@ -49,7 +51,10 @@ namespace Alarm.View
         }
         async void RemoveCategoryView(CategoryViewModel category)
         {
-            var t = await DialogManager.ShowMessageAsync(this, "Confirm", "Delete this category?",MessageDialogStyle.AffirmativeAndNegative);
+            var t = await DialogManager.ShowMessageAsync(this, 
+                (string)FindResource("RemoveCategoryTitle"),
+                (string)FindResource("RemoveCategoryMessage"),
+                MessageDialogStyle.AffirmativeAndNegative);
             if(t == MessageDialogResult.Affirmative)
                 (category.Parent as ViewModel.ViewModel).RemoveCategory(category);
         }
@@ -65,7 +70,9 @@ namespace Alarm.View
         }
         async void EditCategoryView(CategoryViewModel category)
         {
-            var t = await DialogManager.ShowInputAsync(this, "Edit Category", "Write the new name of category");
+            var t = await DialogManager.ShowInputAsync(this,
+                (string)FindResource("EditCategoryTitle"),
+                (string)FindResource("EditCategoryMessage"));
             if (t != null && t != string.Empty)
             {
                 category.Title = t;

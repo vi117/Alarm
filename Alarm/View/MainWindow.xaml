@@ -62,9 +62,7 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE710;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Add
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource AddButtonStr}"/>
                 </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
@@ -77,9 +75,7 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE72c;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Refresh
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource RefreshButtonStr}"/>
                 </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
@@ -92,9 +88,7 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE97e;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Translate
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource TranslateButtonStr}"/>
                 </StackPanel>
             </Button>
             <Button Grid.Column="3">
@@ -102,9 +96,7 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE74d;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Remove
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource RemoveButtonStr}"/>
                 </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
@@ -117,9 +109,7 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE70f;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Edit
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource EditButtonStr}"/>
                 </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
@@ -132,9 +122,7 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE713;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Setting
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource SettingButtonStr}"/>
                 </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">

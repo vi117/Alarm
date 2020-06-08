@@ -28,15 +28,15 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label Content="Fetcher Title"/>
+        <Label Content="{DynamicResource FetcherTitleStr}"/>
         <local:LineInput Grid.Column="1" BackgroundText="Fetcher Title" 
                          x:Name="FetcherTitle">
         </local:LineInput>
-        <Label Content="URL" Grid.Row="1"/>
+        <Label Content="{DynamicResource URLStr}" Grid.Row="1"/>
         <local:LineInput Grid.Row="1" Grid.Column="1" BackgroundText="URLContent" 
                          x:Name="URLContent" Validation="UrlValid">
         </local:LineInput>
-        <Label Content="Frequency" Grid.Row="2"/>
+        <Label Content="{DynamicResource UpdateFrequencyStr}" Grid.Row="2"/>
         <local:TimeComboBox Grid.Row="2" Grid.Column="1" x:Name="IntervalBox"/>
     </Grid>
 </local:FetcherFormControl>

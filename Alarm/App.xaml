@@ -18,8 +18,17 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Cobalt.xaml" />
                 <!-- theme resource -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml"/>
-
                 <ResourceDictionary Source="/Alarm;component/Themes/ButtonStyle.xaml"/>
+
+                <local:LanguageManager Source="/Alarm;component/Language/English.xaml">
+                    <local:LanguageManager.LanguageDict>
+                        <local:LanguageDictionary>
+                            <sys:Uri x:Key="English">/Alarm;component/Language/English.xaml</sys:Uri>
+                            <sys:Uri x:Key="한글">/Alarm;component/Language/한글.xaml</sys:Uri>
+                        </local:LanguageDictionary>
+                    </local:LanguageManager.LanguageDict>
+                </local:LanguageManager>
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -27,8 +27,8 @@
                     <Setter Property="Height" Value="30"/>
                 </Style>
             </Grid.Resources>
-            <Button Grid.Column="0" Content="Confirm" x:Name="ConfirmButton" IsDefault="True" Click="ConfirmButton_Click"/>
-            <Button Grid.Column="1" Content="Cancel" x:Name="CancelButton" IsCancel="True"/>
+            <Button Grid.Column="0" Content="{DynamicResource WIndowConfirmButtonStr}" x:Name="ConfirmButton" IsDefault="True" Click="ConfirmButton_Click"/>
+            <Button Grid.Column="1" Content="{DynamicResource WindowCancelButtonStr}" x:Name="CancelButton" IsCancel="True"/>
         </Grid>
         <ScrollViewer DockPanel.Dock="Top" Margin="5">
             <Grid Margin="5" Height="Auto">
@@ -42,18 +42,18 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Content="Language"/>
+                <Label Content="{DynamicResource LangStr}"/>
                 <ComboBox x:Name="LanguageComboBox"
                       Grid.Column="1"
                       ItemsSource="{x:Static apps:App.LanguageList}"
                       SelectedItem="{Binding Path=Language}"/>
-                <Label Content="Theme" Grid.Row="1"/>
+                <Label Content="{DynamicResource ThemeStr}" Grid.Row="1"/>
                 <ComboBox x:Name="ThemeComboBox"
                       Grid.Row="1"
                       Grid.Column="1"
                       ItemsSource="{x:Static apps:App.ThemeList}"
                       SelectedItem="{Binding Path=AppTheme}"/>
-                <Label Content="Accent" Grid.Row="2"/>
+                <Label Content="{DynamicResource AccentStr}" Grid.Row="2"/>
                 <ComboBox x:Name="AccentComboBox"
                       Grid.Row="2"
                       Grid.Column="1"

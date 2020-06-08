@@ -40,8 +40,8 @@
                     <Setter Property="Height" Value="30"/>
                 </Style>
             </Grid.Resources>
-            <Button Grid.Column="0" Content="Add" x:Name="AddButton" IsDefault="True" Click="AddButton_Click"/>
-            <Button Grid.Column="1" Content="Cancel" x:Name="CancelButton" IsCancel="True"/>
+            <Button Grid.Column="0" Content="{DynamicResource WindowAddButtonStr}" x:Name="AddButton" IsDefault="True" Click="AddButton_Click"/>
+            <Button Grid.Column="1" Content="{DynamicResource WindowCancelButtonStr}" x:Name="CancelButton" IsCancel="True"/>
         </Grid>
          <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="FetcherContentParent">

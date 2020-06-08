@@ -15,10 +15,10 @@ namespace Alarm
 
         public const string English = "LightSkin";
 
-        internal void UpdateSource(string skinType)
+        internal void UpdateSource(string languageType)
         {
-            if (!LanguageDict.ContainsKey(skinType)) throw new KeyNotFoundException("Skin Key not found.");
-            var val = LanguageDict[skinType];
+            if (!LanguageDict.ContainsKey(languageType)) throw new KeyNotFoundException("Skin Key not found.");
+            var val = LanguageDict[languageType];
             if (val != null && base.Source != val)
                 base.Source = val;
         }
