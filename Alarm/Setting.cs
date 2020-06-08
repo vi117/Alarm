@@ -12,17 +12,46 @@ namespace Alarm
 {
     public class Setting : INotifyPropertyChanged
     {
+        static public readonly string DefaultPath = "setting.json";
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private string skinType = SkinManager.LightSkinName;
+        private string language = LanguageManager.English;
+        private string appTheme = "BaseLight";
+        private string accent = "Green";
 
-        public string SkinType {
-            get => skinType; 
-            set {
-                if(value != skinType)
+        public string Language
+        {
+            get => language;
+            set
+            {
+                if (value != language)
                 {
-                    skinType = value;
-                    InvokeChangeEvent(nameof(SkinType));
+                    language = value;
+                    InvokeChangeEvent(nameof(Language));
+                }
+            }
+        }
+        public string AppTheme
+        {
+            get => appTheme;
+            set
+            {
+                if (value != appTheme)
+                {
+                    appTheme = value;
+                    InvokeChangeEvent(nameof(AppTheme));
+                }
+            }
+        }
+        public string Accent
+        {
+            get => accent;
+            set
+            {
+                if (value != accent)
+                {
+                    accent = value;
+                    InvokeChangeEvent(nameof(Accent));
                 }
             }
         }
@@ -36,15 +65,24 @@ namespace Alarm
             string jsonStr = JsonSerializer.Serialize(this);
             File.WriteAllText(path, jsonStr);
         }
-        static public Setting GetDefault() {
-            return new Setting() {
-                SkinType = SkinManager.LightSkinName
+        static public Setting GetDefault()
+        {
+            return new Setting()
+            {
+                Language = LanguageManager.English,
+                Accent = "Blue",
+                AppTheme = "BaseLight",
             };
         }
         static public Setting Load(string path)
         {
             string jsonStr = File.ReadAllText(path);
             return JsonSerializer.Deserialize<Setting>(jsonStr);
+        }
+        static public async Task<Setting> LoadAsync(string path) {
+            using (var file = new FileStream(path,FileMode.Open)) {
+                return await JsonSerializer.DeserializeAsync<Setting>(file);
+            }
         }
     }
 }

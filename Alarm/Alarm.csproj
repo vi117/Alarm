@@ -212,6 +212,7 @@
     </ApplicationDefinition>
     <Compile Include="Helper\SizeExtension.cs" />
     <Compile Include="Setting.cs" />
+    <Compile Include="Themes\Helper.cs" />
     <Compile Include="ViewModels\PlatformService.cs" />
     <Compile Include="View\AddFetcherWindow.xaml.cs">
       <DependentUpon>AddFetcherWindow.xaml</DependentUpon>
@@ -249,7 +250,7 @@
     <Compile Include="ViewModels\AppCommand.cs" />
     <Compile Include="ViewModels\PageFactory.cs" />
     <Compile Include="View\EnumToBooleanConverter.cs" />
-    <Compile Include="SkinManager.cs" />
+    <Compile Include="LanguageManager.cs" />
     <Page Include="DesignSampleData\DesignCategorySample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -259,10 +260,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Colors.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\ComboBoxStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

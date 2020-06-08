@@ -14,19 +14,12 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
-                <!-- LightSkinSource="/Alarm;component/Themes/LightSkin.xaml"
-                                      DarkSkinSource="/Alarm;component/Themes/DarkSkin.xaml" -->
-                <local:SkinManager Source="/Alarm;component/Themes/LightSkin.xaml">
-                    <local:SkinManager.SkinDict>
-                        <local:SkinDictionary>
-                            <sys:Uri x:Key="LightSkin">/Alarm;component/Themes/LightSkin.xaml</sys:Uri>
-                            <sys:Uri x:Key="DarkSkin">/Alarm;component/Themes/DarkSkin.xaml</sys:Uri>
-                        </local:SkinDictionary>
-                    </local:SkinManager.SkinDict>
-                </local:SkinManager>
+                <!-- accent resource -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Cobalt.xaml" />
+                <!-- theme resource -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml"/>
 
                 <ResourceDictionary Source="/Alarm;component/Themes/ButtonStyle.xaml"/>
-                <ResourceDictionary Source="/Alarm;component/Themes/ComboBoxStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

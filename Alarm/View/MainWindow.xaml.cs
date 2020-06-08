@@ -14,6 +14,7 @@ using Alarm.Helper;
 using MessageBox = System.Windows.MessageBox;
 using System.Windows.Interactivity;
 using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro;
 
 namespace Alarm.View
 {

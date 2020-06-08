@@ -11,6 +11,7 @@ using System.Windows.Navigation;
 using Alarm.ViewModels;
 using CefSharp;
 using CefSharp.Wpf;
+using MahApps.Metro;
 
 namespace Alarm
 {
@@ -23,46 +24,87 @@ namespace Alarm
         /// Do not change.
         /// </summary>
         static private Setting setting;
-        static private string[] skinList;
-        static public string[] SkinList => skinList;
+        static private string[] accentList;
+        static public string[] AccentList => accentList;
+        static private string[] themeList;
+        static public string[] ThemeList => themeList;
+        static private string[] languageList;
+        static public string[] LanguageList => languageList;
         static public Setting Setting => setting;
-        public void ChangeSkin(string newSkin)
+
+        public void ChangeLanguage(string newLang)
         {
-            setting.SkinType = newSkin;
+            setting.Language = newLang;
 
             foreach (ResourceDictionary dict in Resources.MergedDictionaries)
             {
-                if (dict is SkinManager skinDict)
-                    skinDict.UpdateSource(setting.SkinType);
+                if (dict is LanguageManager langDict)
+                    langDict.UpdateSource(setting.Language);
                 else
                     dict.Source = dict.Source;
             }
         }
-
+        public void ChangeTheme(string accent, string appTheme)
+        {
+            ThemeManager.ChangeAppStyle(Application.Current,
+                                                    ThemeManager.GetAccent(accent),
+                                                    ThemeManager.GetAppTheme(appTheme));
+        }
+        private Task<Setting> initSettingTask;
         public App()
         {
             AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
             InitializeCefSharp();
             WPFPlatform.Register();
-            setting = Setting.GetDefault();
-            setting.PropertyChanged += (s, e) =>
+            initSettingTask = LoadSetting();
+        }
+        private async Task<Setting> LoadSetting()
+        {
+            string path = Setting.DefaultPath;
+            Setting s;
+            if (File.Exists(path))
+                s = await Setting.LoadAsync(path);
+            else
+                s = Setting.GetDefault();
+            s.PropertyChanged += (sender, e) =>
             {
-                if (e.PropertyName == nameof(setting.SkinType))
+                var set = sender as Setting;
+                switch (e.PropertyName)
                 {
-                    ChangeSkin((s as Setting).SkinType);
+                    case nameof(set.Language):
+                        ChangeLanguage(set.Language);
+                        break;
+                    case nameof(set.Accent):
+                        ChangeTheme(set.Accent, set.AppTheme);
+                        break;
+                    case nameof(set.AppTheme):
+                        ChangeTheme(set.Accent, set.AppTheme);
+                        break;
                 }
             };
+            return s;
         }
         protected override void OnStartup(StartupEventArgs e)
         {
+            //task.Start();
+            //Tuple<AppTheme, Accent> appStyle = ThemeManager.DetectAppStyle(Application.Current);
+            ThemeManager.ChangeAppStyle(Current,
+                                    ThemeManager.GetAccent("Green"),
+                                    ThemeManager.GetAppTheme("BaseLight"));
             base.OnStartup(e);
+            accentList = ThemeManager.Accents.Select(x => x.Name).ToArray();
+            themeList = ThemeManager.AppThemes.Select(x => x.Name).ToArray();
             foreach (ResourceDictionary dict in Resources.MergedDictionaries)
             {
-                if (dict is SkinManager skinDict)
-                    skinList = skinDict.SkinDict.Keys.ToArray();
+                if (dict is LanguageManager skinDict)
+                    languageList = skinDict.LanguageDict.Keys.ToArray();
             }
+            initSettingTask.Wait();
+            setting = initSettingTask.Result;
+            ChangeTheme(setting.Accent, setting.AppTheme);
         }
-        public void InitializeCefSharp(){
+        public void InitializeCefSharp()
+        {
             var settings = new CefSettings();
 
             // Set BrowserSubProcessPath based on app bitness at runtime

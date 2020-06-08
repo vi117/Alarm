@@ -11,8 +11,6 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
         Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100"
-                      Background="{DynamicResource InnerBackgroundColor}"
-                      WindowTitleBrush="{DynamicResource TitleBarColor}"
                       >
     <Controls:MetroWindow.Resources>
         <HierarchicalDataTemplate
@@ -24,8 +22,6 @@
             <TextBlock Text="{Binding Path=Title}"></TextBlock>
         </DataTemplate>
         <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
-            <Setter Property="Background" Value="{DynamicResource InnerBackgroundColor}"/>
-            <Setter Property="Foreground" Value="{DynamicResource CharacterColor}"/>
             <Setter Property="IsSelected" Value="{Binding IsSelected}" />
             <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
         </Style>
@@ -159,7 +155,6 @@
                       MouseMove="NavTreeView_MouseMove"
                       DragEnter="NavTreeView_DragEnter"
                       Drop="NavTreeView_Drop"
-                      Background="{DynamicResource InnerBackgroundColor}"
                       >
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="SelectedItemChanged">
@@ -172,12 +167,11 @@
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </TreeView>
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"
-                          Background="{DynamicResource GridSplitterColor}"/>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Background="{DynamicResource GrayBrush9}"/>
             <Frame Grid.Column="2" x:Name="PageFrame" NavigationUIVisibility="Hidden"
                    Content="{Binding Path=DisplayPage, Mode=TwoWay}"
                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                   Background="{DynamicResource InnerBackgroundColor}"/>
+                   />
         </Grid>
     </DockPanel>
 </Controls:MetroWindow>
