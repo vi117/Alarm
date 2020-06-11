@@ -13,11 +13,11 @@ namespace Alarm
     {
         public LanguageDictionary LanguageDict { get; set; }
 
-        public const string English = "LightSkin";
+        public const string English = "English";
 
         internal void UpdateSource(string languageType)
         {
-            if (!LanguageDict.ContainsKey(languageType)) throw new KeyNotFoundException("Skin Key not found.");
+            if (!LanguageDict.ContainsKey(languageType)) throw new KeyNotFoundException("Language Key not found.");
             var val = LanguageDict[languageType];
             if (val != null && base.Source != val)
                 base.Source = val;
