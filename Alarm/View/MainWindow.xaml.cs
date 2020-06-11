@@ -188,11 +188,58 @@ namespace Alarm.View
         {
             viewModel = ViewModelLoader.LoadViewModel();
             InitializeComponent();
+            RegisterTrayIcon();
             DataContext = viewModel;
             BindCommand();
         }
+        
+        public void RegisterTrayIcon()
+        {
+            var contextMenu = new System.Windows.Forms.ContextMenu();
+            var ItemShow = new System.Windows.Forms.MenuItem()
+            {
+                Index = 0,
+                Text = "Show"
+            };
+            ItemShow.Click += (s, e) =>
+            {
+                if (this.WindowState == WindowState.Minimized)
+                {
+                    this.Show();
+                    this.WindowState = WindowState.Normal;
+                }
+            };
+            var ItemExit = new System.Windows.Forms.MenuItem()
+            {
+                Index = 1,
+                Text="Exit"
+            };
+            contextMenu.MenuItems.Add(ItemShow);
+            contextMenu.MenuItems.Add(ItemExit);
+            ItemExit.Click += (s, e) => { this.Close(); };
 
+            var ni = new System.Windows.Forms.NotifyIcon() {
+                Icon = Properties.Resources.speed,
+                Visible = true,
+                ContextMenu = contextMenu,
+                Text = Properties.Settings.Default.Title
+            };
+            
+            ni.DoubleClick +=(sender, args) => 
+                {
+                    Show();
+                    WindowState = WindowState.Normal;
+                };
+        }
 
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if(this.WindowState == WindowState.Minimized)
+            {
+                this.Hide();
+            }
+            base.OnStateChanged(e);
+        }
 
         Point startPoint;
         private void NavTreeView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
