@@ -8,9 +8,10 @@
         xmlns:local="clr-namespace:Alarm.View"
         xmlns:view ="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:cmd ="clr-namespace:Alarm.ViewModels"
+        xmlns:props ="clr-namespace:Alarm.Properties"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
-        Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100"
+        Title="{Binding Path=Title, Source={x:Static props:Settings.Default}}" Height="450" Width="800" MinWidth="100" MinHeight="100"
         Icon="/Alarm;component/Properties/speed.ico"
                       >
     <Controls:MetroWindow.Resources>
