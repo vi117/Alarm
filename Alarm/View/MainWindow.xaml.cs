@@ -192,7 +192,8 @@ namespace Alarm.View
             DataContext = viewModel;
             BindCommand();
         }
-        
+
+        private System.Windows.Forms.NotifyIcon notifyIcon;
         public void RegisterTrayIcon()
         {
             var contextMenu = new System.Windows.Forms.ContextMenu();
@@ -218,14 +219,14 @@ namespace Alarm.View
             contextMenu.MenuItems.Add(ItemExit);
             ItemExit.Click += (s, e) => { this.Close(); };
 
-            var ni = new System.Windows.Forms.NotifyIcon() {
+            notifyIcon = new System.Windows.Forms.NotifyIcon() {
                 Icon = Properties.Resources.speed,
                 Visible = true,
                 ContextMenu = contextMenu,
                 Text = Properties.Settings.Default.Title
             };
-            
-            ni.DoubleClick +=(sender, args) => 
+
+            notifyIcon.DoubleClick +=(sender, args) => 
                 {
                     Show();
                     WindowState = WindowState.Normal;
@@ -240,7 +241,11 @@ namespace Alarm.View
             }
             base.OnStateChanged(e);
         }
-
+        protected override void OnClosed(EventArgs e)
+        {
+            notifyIcon.Visible = false;
+            base.OnClosed(e);
+        }
         Point startPoint;
         private void NavTreeView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
