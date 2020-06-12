@@ -38,9 +38,6 @@
                                 VerticalAlignment="Top"/>
             </Grid>
         </DataTemplate>
-        <Style TargetType="ListBoxItem">
-            <Setter Property="IsSelected" Value="{Binding Path=IsSelected}"/>
-        </Style>
     </Page.Resources>
     <Grid>
         <ListBox x:Name="ListBox" ItemTemplate="{StaticResource DocumentTemplate}" ItemsSource="{Binding Path=Documents}" 

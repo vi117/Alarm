@@ -26,22 +26,8 @@ namespace ViewModel
             }
         }
 
-        private bool isSelected;
-
         protected DocumentViewModel() : base() {}
 
-        public bool IsSelected
-        {
-            get => isSelected;
-            set
-            {
-                if (isSelected != value)
-                {
-                    isSelected = value;
-                    OnPropertyChanged(nameof(isSelected));
-                }
-            }
-        }
 
         public string ShowingPageName => "ContentView";
         virtual public object ShowingPage { get; set; }
