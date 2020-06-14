@@ -23,10 +23,6 @@
         <DataTemplate DataType="{x:Type view:FetcherViewModel}">
             <TextBlock Text="{Binding Path=Title}"></TextBlock>
         </DataTemplate>
-        <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
-            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-            <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
-        </Style>
         <Style TargetType="Button" BasedOn="{StaticResource AlarmButton}">
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>

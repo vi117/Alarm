@@ -31,7 +31,7 @@ namespace Model {
 						   let title = item.Title.Text
 						   let summary = item.Summary?.Text ?? ""
 						   let id = item.Id
-						   let date = item.LastUpdatedTime.ToString()
+						   let date = item.PublishDate.ToString()
 						   let url = item.Links.First()?.Uri?.ToString() ?? "about:blank"
 						   select DocumentBuilder.Doc()
 							   .Title(title)

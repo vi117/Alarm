@@ -14,17 +14,26 @@
       d:DataContext="{d:DesignData Source=/DesignSampleData/DesignNewsSample.xaml}"
       x:Name="ContentListViewPage"
       HorizontalAlignment="Stretch"
-      Loaded="ContentListViewPage_Loaded"
-      SizeChanged="ContentListViewPage_SizeChanged"
       Margin="0"
       >
     <Page.Resources>
-        <Style TargetType="TextBlock" x:Key="NewsForm">
+        <Style x:Key="NewsForm" TargetType="TextBlock">
             <Style.Triggers>
                 <DataTrigger Binding ="{Binding Path=IsRead}" Value="true">
                     <Setter Property="Opacity" Value="0.5"></Setter>
                 </DataTrigger>
             </Style.Triggers>
+        </Style>
+        <Style TargetType="Label" x:Key="NewCharacters">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsRead}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Date, Converter={local:IsNewerThanNowBefore 24}}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="IsHitTestVisible" Value="False"/>
         </Style>
         <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}" >
             <Grid HorizontalAlignment="Stretch" Height="100 ">
@@ -32,8 +41,12 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="70"/>
                 </Grid.RowDefinitions>
-                <TextBlock FontSize="20" Text="{Binding Path=Title, Mode=OneWay}" Style="{StaticResource NewsForm}"
+                <Grid>
+                    <Label Content="New" Margin="0,0,10,0" Foreground="#ffc107" HorizontalAlignment="Right" VerticalAlignment="Center"
+                           Style="{StaticResource NewCharacters}"/>
+                    <TextBlock FontSize="20" Text="{Binding Path=Title, Mode=OneWay}" Style="{StaticResource NewsForm}" 
                            Background="Transparent"/>
+                </Grid>
                 <html:HtmlLabel Grid.Row="1" Text="{Binding Path=Summary, Mode=OneWay}" Background="Transparent" 
                                 VerticalAlignment="Top"/>
             </Grid>

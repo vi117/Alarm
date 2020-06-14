@@ -38,7 +38,7 @@ namespace Model
                               let title = item.Title.Text
                               let description = item.Summary.Text
                               let guid = item.Id
-                              let pubData = item.LastUpdatedTime.DateTime
+                              let pubData = item.PublishDate.DateTime
                               let wholeUri = item.Links.First().Uri.ToString()
                               select DocumentBuilder.Doc()
                                 .Title(title)

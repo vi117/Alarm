@@ -236,6 +236,7 @@
     <Compile Include="View\AddFetcherWindow.xaml.cs">
       <DependentUpon>AddFetcherWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\IsNewerThanNowBefore.cs" />
     <Compile Include="View\FetcherForm\AtomForm.xaml.cs">
       <DependentUpon>AtomForm.xaml</DependentUpon>
     </Compile>

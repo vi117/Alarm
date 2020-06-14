@@ -26,17 +26,5 @@ namespace Alarm.View
         {
             InitializeComponent();
         }
-
-        private void ContentListViewPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            /*var frame = this.TryFindParent<Frame>();
-            MaxWidth = frame.ActualWidth;*/
-        }
-
-        private void ContentListViewPage_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            /*var frame = this.TryFindParent<Frame>();
-            this.ListBox.Width = frame.ActualWidth;*/
-        }
     }
 }
