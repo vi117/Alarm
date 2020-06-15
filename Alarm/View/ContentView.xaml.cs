@@ -31,6 +31,11 @@ namespace Alarm.View
             Box1.Children.Add(CBrowser);
         }
 
+        public void ReloadBrowser()
+        {
+            CBrowser.Reload();
+        }
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             var doc = DataContext as ViewModel.DocumentViewModel;

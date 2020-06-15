@@ -41,8 +41,6 @@ namespace ViewModel
             this.fetcher = fetcher;
             this.title = title;
             documents = new MockListViewModel<DocumentViewModel>(this);
-            IsSelected = false;
-            IsExpanded = false;
         }
         public override string Title
         {

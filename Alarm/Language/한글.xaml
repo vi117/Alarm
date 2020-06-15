@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="AddButtonStr">추가</sys:String>
+    <sys:String x:Key="RefreshButtonStr">갱신</sys:String>
+    <sys:String x:Key="TranslateButtonStr">번역</sys:String>
+    <sys:String x:Key="RemoveButtonStr">삭제</sys:String>
+    <sys:String x:Key="EditButtonStr">수정</sys:String>
+    <sys:String x:Key="SettingButtonStr">설정</sys:String>
+    <sys:String x:Key="AddCategoryTitle">범주 추가</sys:String>
+    <sys:String x:Key="AddCategoryMessage">범주 이름을 적어주세요</sys:String>
+    <sys:String x:Key="RemoveCategoryTitle">범주 삭제</sys:String>
+    <sys:String x:Key="RemoveCategoryMessage">정말로 범주를 제거하겠습니까?</sys:String>
+    <sys:String x:Key="EditCategoryTitle">범주 수정</sys:String>
+    <sys:String x:Key="EditCategoryMessage">범주의 새 이름을 적어주세요</sys:String>
+    <sys:String x:Key="WindowAddButtonStr">추가</sys:String>
+    <sys:String x:Key="WindowCancelButtonStr">취소</sys:String>
+    <sys:String x:Key="WIndowConfirmButtonStr">확인</sys:String>
+    <sys:String x:Key="LangStr">언어</sys:String>
+    <sys:String x:Key="ThemeStr">테마</sys:String>
+    <sys:String x:Key="AccentStr">색 테마</sys:String>
+    <sys:String x:Key="PapagoApiKeyStr">파파고API키</sys:String>
+    <sys:String x:Key="PapagoApiSecretStr">파파고API비밀키</sys:String>
+    <sys:String x:Key="FetcherTypeStr">Fetcher 종류</sys:String>
+    <sys:String x:Key="FetcherTitleStr">Fetcher 이름</sys:String>
+    <sys:String x:Key="URLStr">주소</sys:String>
+    <sys:String x:Key="UpdateFrequencyStr">갱신 주기</sys:String>
+    <sys:String x:Key="AlertTitle">경고!</sys:String>
+    <sys:String x:Key="TranslateCommandSelectWrongObject">번역할수 있는 올바른 대상이 아닙니다.</sys:String>
+    <sys:String x:Key="SelectFirstMessage">먼저 번역할 뉴스를 선택하세요.</sys:String>
+    <sys:String x:Key="FailedTranslateMessage">번역에 실패했습니다. API의 키와 비밀키를 확인해주세요.</sys:String>
+</ResourceDictionary>

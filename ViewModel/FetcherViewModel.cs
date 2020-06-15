@@ -11,8 +11,6 @@ namespace ViewModel
 {
     public abstract class FetcherViewModel : ViewModelBase, IPageShow
     {
-        private bool isSelected;
-        private bool isExpanded;
 
         public string ShowingPageName => "ContentListView";
         public object ShowingPage { get; set; }
@@ -31,30 +29,7 @@ namespace ViewModel
         public abstract string Title { get; set; }
         public abstract PublishedStatusCode StatusCode { get; set; }
         public abstract string StatusMessage { get; set; }
-        public bool IsSelected
-        {
-            get => isSelected;
-            set
-            {
-                if (isSelected != value)
-                {
-                    isSelected = value;
-                    OnPropertyChanged(nameof(IsSelected));
-                }
-            }
-        }
-        public bool IsExpanded
-        {
-            get => isExpanded;
-            set
-            {
-                if (isExpanded != value)
-                {
-                    isExpanded = value;
-                    OnPropertyChanged(nameof(isExpanded));
-                }
-            }
-        }
+
         public abstract Fetcher Fetcher { get; set; }
         public abstract IListViewModel<DocumentViewModel> Documents { get; }
     }

@@ -14,6 +14,9 @@ using Alarm.Helper;
 using MessageBox = System.Windows.MessageBox;
 using System.Windows.Interactivity;
 using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro;
+using System.Windows.Media.Animation;
+using Alarm.Language;
 
 namespace Alarm.View
 {
@@ -40,7 +43,9 @@ namespace Alarm.View
         }
         async void AddCategoryView()
         {
-            var t = await DialogManager.ShowInputAsync(this, "Add Category", "Write the category's name");
+            var t = await this.ShowInputAsync(
+                this.GetText("AddCategoryTitle"),
+                this.GetText("AddCategoryMessage"));
             if (t != null && t != string.Empty)
             {
                 viewModel.EmplaceCategory(t);
@@ -48,7 +53,10 @@ namespace Alarm.View
         }
         async void RemoveCategoryView(CategoryViewModel category)
         {
-            var t = await DialogManager.ShowMessageAsync(this, "Confirm", "Delete this category?",MessageDialogStyle.AffirmativeAndNegative);
+            var t = await this.ShowMessageAsync(
+                this.GetText("RemoveCategoryTitle"),
+                this.GetText("RemoveCategoryMessage"),
+                MessageDialogStyle.AffirmativeAndNegative);
             if(t == MessageDialogResult.Affirmative)
                 (category.Parent as ViewModel.ViewModel).RemoveCategory(category);
         }
@@ -64,7 +72,9 @@ namespace Alarm.View
         }
         async void EditCategoryView(CategoryViewModel category)
         {
-            var t = await DialogManager.ShowInputAsync(this, "Edit Category", "Write the new name of category");
+            var t = await this.ShowInputAsync(
+                this.GetText("EditCategoryTitle"),
+                this.GetText("EditCategoryMessage"));
             if (t != null && t != string.Empty)
             {
                 category.Title = t;
@@ -161,13 +171,17 @@ namespace Alarm.View
                 ));
             CommandBindings.Add(new CommandBinding(AppCommand.RefreshFetcherCommand,
                 (sender, eventArgs) => {
-                    switch (NavTreeView.SelectedItem)
+                    var displayed = (Page)viewModel.DisplayPage;
+                    switch (displayed?.DataContext)
                     {
+                        case FetcherViewModel fetcher:
+                            fetcher.Refresh();
+                            break;
                         case CategoryViewModel category:
                             category.RefreshAll();
                             break;
-                        case FetcherViewModel fetcher:
-                            fetcher.Refresh();
+                        case DocumentViewModel _:
+                            ((ContentView)displayed).ReloadBrowser();
                             break;
                         case null:
                             break;
@@ -175,17 +189,89 @@ namespace Alarm.View
                             throw new InvalidOperationException("Unreachable!");
                     }
                 }));
+            CommandBindings.Add(new CommandBinding(AppCommand.TranslateCommand, 
+                (sender,eventArgs) => {
+                    var displayed = (Page)viewModel.DisplayPage;
+                    switch (displayed?.DataContext)
+                    {
+                        case FetcherViewModel _:
+                            ((ContentListView)displayed).TranslateSelected();
+                            break;
+                        case CategoryViewModel _:
+                        case DocumentViewModel _:
+                        case null:
+                            this.ShowMessageAsync(
+                                this.GetText("AlertTitle"),
+                                this.GetText("TranslateCommandSelectWrongObject"));
+                            break;
+                        default:
+                            throw new InvalidOperationException("Unreachable!");
+                    }
+                }));
         }
+        
         public MainWindow()
         {
             viewModel = ViewModelLoader.LoadViewModel();
             InitializeComponent();
+            RegisterTrayIcon();
             DataContext = viewModel;
             BindCommand();
         }
 
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+        public void RegisterTrayIcon()
+        {
+            var contextMenu = new System.Windows.Forms.ContextMenu();
+            var ItemShow = new System.Windows.Forms.MenuItem()
+            {
+                Index = 0,
+                Text = "Show"
+            };
+            ItemShow.Click += (s, e) =>
+            {
+                if (this.WindowState == WindowState.Minimized)
+                {
+                    this.Show();
+                    this.WindowState = WindowState.Normal;
+                }
+            };
+            var ItemExit = new System.Windows.Forms.MenuItem()
+            {
+                Index = 1,
+                Text="Exit"
+            };
+            contextMenu.MenuItems.Add(ItemShow);
+            contextMenu.MenuItems.Add(ItemExit);
+            ItemExit.Click += (s, e) => { this.Close(); };
 
+            notifyIcon = new System.Windows.Forms.NotifyIcon() {
+                Icon = Properties.Resources.speed,
+                Visible = true,
+                ContextMenu = contextMenu,
+                Text = Properties.Settings.Default.Title
+            };
 
+            notifyIcon.DoubleClick +=(sender, args) => 
+                {
+                    Show();
+                    WindowState = WindowState.Normal;
+                };
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if(this.WindowState == WindowState.Minimized)
+            {
+                this.Hide();
+            }
+            base.OnStateChanged(e);
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            notifyIcon.Visible = false;
+            base.OnClosed(e);
+        }
         Point startPoint;
         private void NavTreeView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

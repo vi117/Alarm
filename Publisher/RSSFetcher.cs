@@ -36,9 +36,9 @@ namespace Model
                 var items = root.Items;
                 var doclist = from item in items
                               let title = item.Title.Text
-                              let description = item.Summary.Text
-                              let guid = item.Id
-                              let pubData = item.LastUpdatedTime.DateTime
+                              let description = item.Summary?.Text ?? ""
+                              let guid = item?.Id ?? title
+                              let pubData = item.PublishDate.DateTime
                               let wholeUri = item.Links.First().Uri.ToString()
                               select DocumentBuilder.Doc()
                                 .Title(title)
@@ -64,6 +64,10 @@ namespace Model
             catch(UriFormatException e)
             {
                 return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Invailed Uri Format Error : " + e.Message);
+            }
+            catch(NullReferenceException e)
+            {
+                return new PublishedEventArg(PublishedStatusCode.UnknownError, "Code Error : " + e.Message);
             }
         }
     }

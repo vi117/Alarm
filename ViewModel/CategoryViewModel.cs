@@ -8,8 +8,6 @@ namespace ViewModel
     {
         public string ShowingPageName => "CategoryView";
         public object ShowingPage { get; set; }
-        private bool isSelected = false;
-        private bool isExpanded = false;
 
         abstract public void Emplace(string title,Fetcher fetcher);
         abstract public bool Remove(FetcherViewModel fetcherViewModel);
@@ -22,30 +20,7 @@ namespace ViewModel
         }
 
         public abstract string Title { get; set; }
-        public bool IsSelected
-        {
-            get => isSelected;
-            set
-            {
-                if (isSelected != value)
-                {
-                    isSelected = value;
-                    OnPropertyChanged(nameof(IsSelected));
-                }
-            }
-        }
-        public bool IsExpanded
-        {
-            get => isExpanded;
-            set
-            {
-                if (isExpanded != value)
-                {
-                    isExpanded = value;
-                    OnPropertyChanged(nameof(isExpanded));
-                }
-            }
-        }
+
         public abstract ICollectionViewModel<FetcherViewModel> SiteModels { get; }
     }
 }

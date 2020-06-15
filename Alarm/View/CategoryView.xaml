@@ -13,7 +13,7 @@
       >
     <Page.Resources>
         <DataTemplate x:Key="CategoryTemplate" DataType="{x:Type mv:FetcherViewModel}">
-            <Grid Background="{DynamicResource InnerBackgroundColor}">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -39,11 +39,9 @@
                     </Rectangle.Style>
                 </Rectangle>
                 <TextBlock Text="{Binding Path=Title}" FontSize="16" Grid.Column="1" 
-                           Background="Transparent"
-                           Foreground="{DynamicResource CharacterColor}"/>
+                           Background="Transparent"/>
                 <TextBlock Text="{Binding Path=StatusMessage}" Grid.Column="1" Grid.Row="1" 
-                           Background="Transparent"
-                           Foreground="{DynamicResource CharacterColor}"/>
+                           Background="Transparent"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
