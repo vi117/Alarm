@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -19,10 +21,27 @@ namespace Alarm.View
     /// </summary>
     public partial class SettingWindow : MahApps.Metro.Controls.MetroWindow
     {
+        private Setting settingOrigin;
         public SettingWindow()
         {
             InitializeComponent();
             DataContext = App.Setting;
+            settingOrigin = new Setting();
+            App.Setting.CopyTo(settingOrigin);
+        }
+
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.Setting.Save(Setting.DefaultPath);
+            this.DialogResult = true;
+            e.Handled = true;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            settingOrigin.CopyTo(App.Setting);
+            DialogResult = false;
+            e.Handled = true;
         }
     }
 }

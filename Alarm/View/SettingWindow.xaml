@@ -9,16 +9,10 @@
         mc:Ignorable="d"
         Title="Settings" Height="450" Width="800"
         WindowStartupLocation="CenterOwner"
-        Background="{DynamicResource BackgroundColor}"
-        WindowTitleBrush="{DynamicResource TitleBarColor}"
         d:DataContext="{d:DesignInstance Type=apps:Setting,IsDesignTimeCreatable=True}">
     <Controls:MetroWindow.Resources>
         <Style TargetType="Label">
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Foreground" Value="{DynamicResource CharacterColor}"/>
-        </Style>
-        <Style TargetType="ComboBox">
-            <Setter Property="Background" Value="{DynamicResource ComboBoxBackgroundColor}"/>
         </Style>
     </Controls:MetroWindow.Resources>
     <DockPanel>
@@ -33,10 +27,10 @@
                     <Setter Property="Height" Value="30"/>
                 </Style>
             </Grid.Resources>
-            <Button Grid.Column="0" Content="Ok" x:Name="OkButton" IsDefault="True"/>
-            <Button Grid.Column="1" Content="Cancel" x:Name="CancelButton" IsCancel="True"/>
+            <Button Grid.Column="0" Content="{DynamicResource WIndowConfirmButtonStr}" x:Name="ConfirmButton" IsDefault="True" Click="ConfirmButton_Click"/>
+            <Button Grid.Column="1" Content="{DynamicResource WindowCancelButtonStr}" x:Name="CancelButton" Click="CancelButton_Click"/>
         </Grid>
-        <ScrollViewer DockPanel.Dock="Top">
+        <ScrollViewer DockPanel.Dock="Top" Margin="5">
             <Grid Margin="5" Height="Auto">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MinWidth="120" Width="*"/>
@@ -44,14 +38,44 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Content="Skin"/>
-                <ComboBox x:Name="SkinComboBox"
+                <Label Content="{DynamicResource LangStr}"/>
+                <ComboBox x:Name="LanguageComboBox"
                       Grid.Column="1"
-                      ItemsSource="{x:Static apps:App.SkinList}"
-                      SelectedItem="{Binding Path=SkinType}"
-                      ItemContainerStyle="{StaticResource AlarmComboBoxItem}"/>
+                      ItemsSource="{x:Static apps:App.LanguageList}"
+                      SelectedItem="{Binding Path=Language}"/>
+                <Label Content="{DynamicResource ThemeStr}" Grid.Row="2"/>
+                <ComboBox x:Name="ThemeComboBox"
+                      Grid.Row="2"
+                      Grid.Column="1"
+                      ItemsSource="{x:Static apps:App.ThemeList}"
+                      SelectedItem="{Binding Path=AppTheme}"/>
+                <Label Content="{DynamicResource AccentStr}" Grid.Row="4"/>
+                <ComboBox x:Name="AccentComboBox"
+                      Grid.Row="4"
+                      Grid.Column="1"
+                      ItemsSource="{x:Static apps:App.AccentList}"
+                      SelectedItem="{Binding Path=Accent}"/>
+                <Label Content="{DynamicResource PapagoApiKeyStr}" Grid.Row="6"/>
+                <TextBox x:Name="PapagoAPIKeyInput"
+                      Grid.Row="6"
+                      Grid.Column="1"
+                      Text="{Binding Path=PapagoApiID}"/>
+                <Label Content="{DynamicResource PapagoApiSecretStr}" Grid.Row="8"/>
+                <TextBox x:Name="PapagoAPISecretInput"
+                      Grid.Row="8"
+                      Grid.Column="1"
+                      Text="{Binding Path=PapagoApiSecret}"/>
             </Grid>
         </ScrollViewer>
     </DockPanel>

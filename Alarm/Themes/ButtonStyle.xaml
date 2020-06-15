@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style TargetType="Button" BasedOn="{StaticResource MetroFlatButton}" x:Key="AlarmButton">
-        <Setter Property="Foreground" Value="{DynamicResource CharacterColor}"/>
-        <Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
+        <Setter Property="Background" Value="{DynamicResource GrayBrush9}"/>
+        <Setter Property="Foreground" Value="{DynamicResource LabelTextBrush}"/>
     </Style>
+    <Style TargetType="Button" BasedOn="{StaticResource AlarmButton}"/>
 </ResourceDictionary>

@@ -8,11 +8,13 @@
         xmlns:local="clr-namespace:Alarm.View"
         xmlns:view ="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:cmd ="clr-namespace:Alarm.ViewModels"
+        xmlns:props ="clr-namespace:Alarm.Properties"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
-        Title="Alarm" Height="450" Width="800" MinWidth="100" MinHeight="100"
-                      Background="{DynamicResource InnerBackgroundColor}"
-                      WindowTitleBrush="{DynamicResource TitleBarColor}"
+        Title="{Binding Path=Title, Source={x:Static props:Settings.Default}}" Height="450" Width="800" MinWidth="100" MinHeight="100"
+        Icon="/Alarm;component/Properties/speed.ico"
+        OverlayFadeIn="{StaticResource OverlayFastSemiFadeIn}"
+        OverlayFadeOut="{StaticResource OverlayFastSemiFadeOut}"
                       >
     <Controls:MetroWindow.Resources>
         <HierarchicalDataTemplate
@@ -23,12 +25,6 @@
         <DataTemplate DataType="{x:Type view:FetcherViewModel}">
             <TextBlock Text="{Binding Path=Title}"></TextBlock>
         </DataTemplate>
-        <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
-            <Setter Property="Background" Value="{DynamicResource InnerBackgroundColor}"/>
-            <Setter Property="Foreground" Value="{DynamicResource CharacterColor}"/>
-            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-            <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
-        </Style>
         <Style TargetType="Button" BasedOn="{StaticResource AlarmButton}">
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -66,9 +62,7 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE710;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Add
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource AddButtonStr}"/>
                 </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
@@ -81,9 +75,7 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE72c;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Refresh
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource RefreshButtonStr}"/>
                 </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
@@ -96,19 +88,20 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE97e;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Translate
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource TranslateButtonStr}"/>
                 </StackPanel>
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="Click">
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.TranslateCommand}"/>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
             </Button>
             <Button Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE74d;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Remove
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource RemoveButtonStr}"/>
                 </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
@@ -121,9 +114,7 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE70f;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Edit
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource EditButtonStr}"/>
                 </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
@@ -136,9 +127,7 @@
                     <TextBlock Style="{StaticResource Symbols}">
                         &#xE713;
                     </TextBlock>
-                    <TextBlock Style="{StaticResource Characters}">
-                        Setting
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource SettingButtonStr}"/>
                 </StackPanel>
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="Click">
@@ -159,7 +148,6 @@
                       MouseMove="NavTreeView_MouseMove"
                       DragEnter="NavTreeView_DragEnter"
                       Drop="NavTreeView_Drop"
-                      Background="{DynamicResource InnerBackgroundColor}"
                       >
                 <ie:Interaction.Triggers>
                     <ie:EventTrigger EventName="SelectedItemChanged">
@@ -172,12 +160,11 @@
                     </ie:EventTrigger>
                 </ie:Interaction.Triggers>
             </TreeView>
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"
-                          Background="{DynamicResource GridSplitterColor}"/>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Background="{DynamicResource GrayBrush9}"/>
             <Frame Grid.Column="2" x:Name="PageFrame" NavigationUIVisibility="Hidden"
                    Content="{Binding Path=DisplayPage, Mode=TwoWay}"
                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                   Background="{DynamicResource InnerBackgroundColor}"/>
+                   />
         </Grid>
     </DockPanel>
 </Controls:MetroWindow>

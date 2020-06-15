@@ -1,0 +1,31 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="AddButtonStr">Add</sys:String>
+    <sys:String x:Key="RefreshButtonStr">Refresh</sys:String>
+    <sys:String x:Key="TranslateButtonStr">Translate</sys:String>
+    <sys:String x:Key="RemoveButtonStr">Remove</sys:String>
+    <sys:String x:Key="EditButtonStr">Edit</sys:String>
+    <sys:String x:Key="SettingButtonStr">Setting</sys:String>
+    <sys:String x:Key="AddCategoryTitle">Add Category</sys:String>
+    <sys:String x:Key="AddCategoryMessage">Write the category's name</sys:String>
+    <sys:String x:Key="RemoveCategoryTitle">Remove Confirm</sys:String>
+    <sys:String x:Key="RemoveCategoryMessage">Delete this category?</sys:String>
+    <sys:String x:Key="EditCategoryTitle">Edit Category</sys:String>
+    <sys:String x:Key="EditCategoryMessage">Write the new name of category</sys:String>
+    <sys:String x:Key="WindowAddButtonStr">Add</sys:String>
+    <sys:String x:Key="WindowCancelButtonStr">Cancel</sys:String>
+    <sys:String x:Key="WIndowConfirmButtonStr">Confirm</sys:String>
+    <sys:String x:Key="LangStr">Language</sys:String>
+    <sys:String x:Key="ThemeStr">Theme</sys:String>
+    <sys:String x:Key="AccentStr">Accent</sys:String>
+    <sys:String x:Key="PapagoApiKeyStr">Papago Key</sys:String>
+    <sys:String x:Key="PapagoApiSecretStr">Papago Secret</sys:String>
+    <sys:String x:Key="FetcherTitleStr">Fetcher Title</sys:String>
+    <sys:String x:Key="FetcherTypeStr">Fetcher Type</sys:String>
+    <sys:String x:Key="URLStr">URL</sys:String>
+    <sys:String x:Key="UpdateFrequencyStr">Frequency</sys:String>
+    <sys:String x:Key="AlertTitle">Alert!</sys:String>
+    <sys:String x:Key="TranslateCommandSelectWrongObject">It's not correct object that could be translated.</sys:String>
+    <sys:String x:Key="SelectFirstMessage">Select First!</sys:String>
+</ResourceDictionary>
