@@ -171,14 +171,18 @@ namespace Alarm.View
                 ));
             CommandBindings.Add(new CommandBinding(AppCommand.RefreshFetcherCommand,
                 (sender, eventArgs) => {
-                    switch (NavTreeView.SelectedItem)//TodoTodododootod
+                    var displayed = (Page)viewModel.DisplayPage;
+                    switch (displayed?.DataContext)
                     {
+                        case FetcherViewModel fetcher:
+                            fetcher.Refresh();
+                            break;
                         case CategoryViewModel category:
                             category.RefreshAll();
                             break;
-                        case FetcherViewModel fetcher:
-                            fetcher.Refresh();
-                            break;//TODODOTODO
+                        case DocumentViewModel _:
+                            ((ContentView)displayed).ReloadBrowser();
+                            break;
                         case null:
                             break;
                         default:
