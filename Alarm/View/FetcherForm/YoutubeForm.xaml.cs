@@ -31,7 +31,7 @@ namespace Alarm.View.FetcherForm
             set => FetcherTitle.Text = value;
         }
 
-        public RSSForm()
+        public YoutubeForm()
         {
             InitializeComponent();
         }
@@ -44,16 +44,17 @@ namespace Alarm.View.FetcherForm
         override public void SetFromFetcher(Fetcher f)
         {
             var fetcher = f as YoutubeFetcher;
-            Feed.Text = fetcher.channelId;
+            Feed.Text = fetcher.ChannelId;
             IntervalBox.SelectedTime = fetcher.Interval;
         }
 
         override public Model.Fetcher CreateFetcher()
         {
-			if (YoutubeFetcher.IsYoutubeURL(Feed.Text))
-				return YoutubeFetcher.FromURL(Feed.Text) { Interval = IntervalBox.SelectedTime };
-			else
-				return YoutubeFetcher.FromChannelId(Feed.Text) { Interval = IntervalBox.SelectedTime };
+            var f = YoutubeFetcher.IsYoutubeURL(Feed.Text) ?
+                YoutubeFetcher.FromURL(Feed.Text) :
+                YoutubeFetcher.FromChannelId(Feed.Text);
+            f.Interval = IntervalBox.SelectedTime;
+            return f;
         }
     }
 }

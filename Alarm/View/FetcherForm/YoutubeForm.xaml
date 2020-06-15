@@ -1,4 +1,4 @@
-﻿<local:FetcherFormControl x:Class="Alarm.View.FetcherForm.RSSForm"
+﻿<local:FetcherFormControl x:Class="Alarm.View.FetcherForm.YoutubeForm"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -22,7 +22,7 @@
         </local:LineInput>
         <Label Content="Channel ID or URL" FontSize="16" Grid.Row="1"/>
         <local:LineInput Grid.Row="1" Grid.Column="1" BackgroundText="Channel ID" FontSize="16" x:Name="Feed"
-                         BackgroundTextFill="Gray" Validation="UrlValid"
+                         BackgroundTextFill="Gray"
                          >
         </local:LineInput>
         <Label Content="Frequency" FontSize="16" Grid.Row="2"/>
