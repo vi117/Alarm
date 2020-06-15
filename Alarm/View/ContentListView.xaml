@@ -45,10 +45,10 @@
                     <Label Content="New" Margin="0,0,10,0" Foreground="#ffc107" HorizontalAlignment="Right" VerticalAlignment="Center"
                            Style="{StaticResource NewCharacters}"/>
                     <TextBlock FontSize="20" Text="{Binding Path=Title, Mode=OneWay}" Style="{StaticResource NewsForm}" 
-                           Background="Transparent"/>
+                           Background="Transparent" x:Name="TitleLabel"/>
                 </Grid>
                 <html:HtmlLabel Grid.Row="1" Text="{Binding Path=Summary, Mode=OneWay}" Background="Transparent" 
-                                VerticalAlignment="Top"/>
+                                VerticalAlignment="Top" x:Name="SummaryLabel"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>

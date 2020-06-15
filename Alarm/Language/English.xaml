@@ -19,8 +19,13 @@
     <sys:String x:Key="LangStr">Language</sys:String>
     <sys:String x:Key="ThemeStr">Theme</sys:String>
     <sys:String x:Key="AccentStr">Accent</sys:String>
+    <sys:String x:Key="PapagoApiKeyStr">Papago Key</sys:String>
+    <sys:String x:Key="PapagoApiSecretStr">Papago Secret</sys:String>
     <sys:String x:Key="FetcherTitleStr">Fetcher Title</sys:String>
     <sys:String x:Key="FetcherTypeStr">Fetcher Type</sys:String>
     <sys:String x:Key="URLStr">URL</sys:String>
     <sys:String x:Key="UpdateFrequencyStr">Frequency</sys:String>
+    <sys:String x:Key="AlertTitle">Alert!</sys:String>
+    <sys:String x:Key="TranslateCommandSelectWrongObject">It's not correct object that could be translated.</sys:String>
+    <sys:String x:Key="SelectFirstMessage">Select First!</sys:String>
 </ResourceDictionary>

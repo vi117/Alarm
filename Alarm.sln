@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextRankTest", "TextRank\Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{48CD1A49-9D54-45D1-B94F-F991417E9250}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papago", "Papago\Papago.csproj", "{AE809769-E452-4FA3-8BB9-67BBB3BAD564}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{48CD1A49-9D54-45D1-B94F-F991417E9250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48CD1A49-9D54-45D1-B94F-F991417E9250}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48CD1A49-9D54-45D1-B94F-F991417E9250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE809769-E452-4FA3-8BB9-67BBB3BAD564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE809769-E452-4FA3-8BB9-67BBB3BAD564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE809769-E452-4FA3-8BB9-67BBB3BAD564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE809769-E452-4FA3-8BB9-67BBB3BAD564}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

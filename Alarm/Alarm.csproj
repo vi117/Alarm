@@ -64,6 +64,9 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.24.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.24\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
     </Reference>
@@ -230,6 +233,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helper\SizeExtension.cs" />
+    <Compile Include="Language\Localization.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Themes\Helper.cs" />
     <Compile Include="ViewModels\PlatformService.cs" />
@@ -380,6 +384,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Papago\Papago.csproj">
+      <Project>{ae809769-e452-4fa3-8bb9-67bbb3bad564}</Project>
+      <Name>Papago</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Publisher\Model.csproj">
       <Project>{dbd6c19b-c48c-4e60-a80c-cc944f86d27d}</Project>
       <Name>Model</Name>

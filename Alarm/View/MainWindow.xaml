@@ -13,6 +13,8 @@
         d:DataContext="{d:DesignData Source=/DesignSampleData/DesignDataDictionary.xaml}"
         Title="{Binding Path=Title, Source={x:Static props:Settings.Default}}" Height="450" Width="800" MinWidth="100" MinHeight="100"
         Icon="/Alarm;component/Properties/speed.ico"
+        OverlayFadeIn="{StaticResource OverlayFastSemiFadeIn}"
+        OverlayFadeOut="{StaticResource OverlayFastSemiFadeOut}"
                       >
     <Controls:MetroWindow.Resources>
         <HierarchicalDataTemplate
@@ -88,6 +90,11 @@
                     </TextBlock>
                     <TextBlock Style="{StaticResource Characters}" Text="{DynamicResource TranslateButtonStr}"/>
                 </StackPanel>
+                <ie:Interaction.Triggers>
+                    <ie:EventTrigger EventName="Click">
+                        <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.TranslateCommand}"/>
+                    </ie:EventTrigger>
+                </ie:Interaction.Triggers>
             </Button>
             <Button Grid.Column="3">
                 <StackPanel Orientation="Horizontal">

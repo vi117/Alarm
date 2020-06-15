@@ -38,8 +38,15 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Label Content="{DynamicResource LangStr}"/>
@@ -47,18 +54,28 @@
                       Grid.Column="1"
                       ItemsSource="{x:Static apps:App.LanguageList}"
                       SelectedItem="{Binding Path=Language}"/>
-                <Label Content="{DynamicResource ThemeStr}" Grid.Row="1"/>
+                <Label Content="{DynamicResource ThemeStr}" Grid.Row="2"/>
                 <ComboBox x:Name="ThemeComboBox"
-                      Grid.Row="1"
+                      Grid.Row="2"
                       Grid.Column="1"
                       ItemsSource="{x:Static apps:App.ThemeList}"
                       SelectedItem="{Binding Path=AppTheme}"/>
-                <Label Content="{DynamicResource AccentStr}" Grid.Row="2"/>
+                <Label Content="{DynamicResource AccentStr}" Grid.Row="4"/>
                 <ComboBox x:Name="AccentComboBox"
-                      Grid.Row="2"
+                      Grid.Row="4"
                       Grid.Column="1"
                       ItemsSource="{x:Static apps:App.AccentList}"
                       SelectedItem="{Binding Path=Accent}"/>
+                <Label Content="{DynamicResource PapagoApiKeyStr}" Grid.Row="6"/>
+                <TextBox x:Name="PapagoAPIKeyInput"
+                      Grid.Row="6"
+                      Grid.Column="1"
+                      Text="{Binding Path=PapagoApiID}"/>
+                <Label Content="{DynamicResource PapagoApiSecretStr}" Grid.Row="8"/>
+                <TextBox x:Name="PapagoAPISecretInput"
+                      Grid.Row="8"
+                      Grid.Column="1"
+                      Text="{Binding Path=PapagoApiSecret}"/>
             </Grid>
         </ScrollViewer>
     </DockPanel>

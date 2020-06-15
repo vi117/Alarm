@@ -15,6 +15,8 @@ using MessageBox = System.Windows.MessageBox;
 using System.Windows.Interactivity;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro;
+using System.Windows.Media.Animation;
+using Alarm.Language;
 
 namespace Alarm.View
 {
@@ -41,9 +43,9 @@ namespace Alarm.View
         }
         async void AddCategoryView()
         {
-            var t = await DialogManager.ShowInputAsync(this, 
-                (string)FindResource("AddCategoryTitle"),
-                (string)FindResource("AddCategoryMessage"));
+            var t = await this.ShowInputAsync(
+                this.GetText("AddCategoryTitle"),
+                this.GetText("AddCategoryMessage"));
             if (t != null && t != string.Empty)
             {
                 viewModel.EmplaceCategory(t);
@@ -51,9 +53,9 @@ namespace Alarm.View
         }
         async void RemoveCategoryView(CategoryViewModel category)
         {
-            var t = await DialogManager.ShowMessageAsync(this, 
-                (string)FindResource("RemoveCategoryTitle"),
-                (string)FindResource("RemoveCategoryMessage"),
+            var t = await this.ShowMessageAsync(
+                this.GetText("RemoveCategoryTitle"),
+                this.GetText("RemoveCategoryMessage"),
                 MessageDialogStyle.AffirmativeAndNegative);
             if(t == MessageDialogResult.Affirmative)
                 (category.Parent as ViewModel.ViewModel).RemoveCategory(category);
@@ -70,9 +72,9 @@ namespace Alarm.View
         }
         async void EditCategoryView(CategoryViewModel category)
         {
-            var t = await DialogManager.ShowInputAsync(this,
-                (string)FindResource("EditCategoryTitle"),
-                (string)FindResource("EditCategoryMessage"));
+            var t = await this.ShowInputAsync(
+                this.GetText("EditCategoryTitle"),
+                this.GetText("EditCategoryMessage"));
             if (t != null && t != string.Empty)
             {
                 category.Title = t;
@@ -169,21 +171,41 @@ namespace Alarm.View
                 ));
             CommandBindings.Add(new CommandBinding(AppCommand.RefreshFetcherCommand,
                 (sender, eventArgs) => {
-                    switch (NavTreeView.SelectedItem)
+                    switch (NavTreeView.SelectedItem)//TodoTodododootod
                     {
                         case CategoryViewModel category:
                             category.RefreshAll();
                             break;
                         case FetcherViewModel fetcher:
                             fetcher.Refresh();
-                            break;
+                            break;//TODODOTODO
                         case null:
                             break;
                         default:
                             throw new InvalidOperationException("Unreachable!");
                     }
                 }));
+            CommandBindings.Add(new CommandBinding(AppCommand.TranslateCommand, 
+                (sender,eventArgs) => {
+                    var displayed = (Page)viewModel.DisplayPage;
+                    switch (displayed?.DataContext)
+                    {
+                        case FetcherViewModel _:
+                            ((ContentListView)displayed).TranslateSelected();
+                            break;
+                        case CategoryViewModel _:
+                        case DocumentViewModel _:
+                        case null:
+                            this.ShowMessageAsync(
+                                this.GetText("AlertTitle"),
+                                this.GetText("TranslateCommandSelectWrongObject"));
+                            break;
+                        default:
+                            throw new InvalidOperationException("Unreachable!");
+                    }
+                }));
         }
+        
         public MainWindow()
         {
             viewModel = ViewModelLoader.LoadViewModel();

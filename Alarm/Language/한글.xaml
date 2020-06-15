@@ -19,8 +19,13 @@
     <sys:String x:Key="LangStr">언어</sys:String>
     <sys:String x:Key="ThemeStr">테마</sys:String>
     <sys:String x:Key="AccentStr">색 테마</sys:String>
+    <sys:String x:Key="PapagoApiKeyStr">파파고API키</sys:String>
+    <sys:String x:Key="PapagoApiSecretStr">파파고API비밀키</sys:String>
     <sys:String x:Key="FetcherTypeStr">Fetcher 종류</sys:String>
     <sys:String x:Key="FetcherTitleStr">Fetcher 이름</sys:String>
     <sys:String x:Key="URLStr">주소</sys:String>
     <sys:String x:Key="UpdateFrequencyStr">갱신 주기</sys:String>
+    <sys:String x:Key="AlertTitle">경고!</sys:String>
+    <sys:String x:Key="TranslateCommandSelectWrongObject">번역할수 있는 올바른 대상이 아닙니다.</sys:String>
+    <sys:String x:Key="SelectFirstMessage">먼저 번역할 뉴스를 선택하세요.</sys:String>
 </ResourceDictionary>

@@ -7,6 +7,9 @@ using System.Text.Json;
 using System.ComponentModel;
 using System.IO;
 using System.Text.Json.Serialization;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using Papago;
 
 namespace Alarm
 {
@@ -18,7 +21,7 @@ namespace Alarm
         private string language = LanguageManager.English;
         private string appTheme = "BaseLight";
         private string accent = "Green";
-        
+        private Papago.ApiPass pass;
         public string Language
         {
             get => language;
@@ -31,6 +34,7 @@ namespace Alarm
                 }
             }
         }
+
         public string AppTheme
         {
             get => appTheme;
@@ -55,7 +59,36 @@ namespace Alarm
                 }
             }
         }
-        
+        public string PapagoApiID { 
+            get => pass?.Id;
+            set
+            {
+                if(pass == null)
+                {
+                    pass = new Papago.ApiPass();
+                }
+                pass.Id = value;
+                InvokeChangeEvent(nameof(PapagoApiID));
+            }
+        }
+        public string PapagoApiSecret {
+            get => pass?.Secret;
+            set
+            {
+                if (pass == null)
+                {
+                    pass = new Papago.ApiPass();
+                }
+                pass.Secret = value;
+                InvokeChangeEvent(nameof(PapagoApiSecret));
+            }
+        }
+        [JsonIgnore]
+        public ApiPass PapagoApiPass
+        {
+            get => pass;
+            set => pass = value;
+        }
         public void InvokeChangeEvent(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -83,8 +116,13 @@ namespace Alarm
         }
         public void Save(string path)
         {
-            string jsonStr = JsonSerializer.Serialize(this);
-            File.WriteAllText(path, jsonStr);
+            var option = new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+            };
+            var jsonStr = JsonSerializer.SerializeToUtf8Bytes(this,option);
+            File.WriteAllBytes(path, jsonStr);
         }
         static public Setting Load(string path)
         {

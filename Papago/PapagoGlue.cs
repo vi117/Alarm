@@ -5,17 +5,17 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace PapagoGlue
+namespace Papago
 {
-	private class ApiPass
+	public class ApiPass
 	{
-		// Strangely, if someone remove setter here, JsonSerializer
-		// does not work.
 		public string Id { get; set; }
 		public string Secret { get; set; }
 
-		public static ApiPass FromFile(string path) {
-			using (StreamReader f = File.OpenText(path)) {
+		public static ApiPass FromFile(string path)
+		{
+			using (StreamReader f = File.OpenText(path))
+			{
 				string conf = f.ReadToEnd();
 				return JsonSerializer.Deserialize<ApiPass>(conf);
 			}
@@ -23,23 +23,26 @@ namespace PapagoGlue
 		}
 	}
 
-	private class NotAuthorizedException: Exception { }
+	public class NotAuthorizedException : Exception { }
 
-    public class PapagoGlue
-    {
+	public class PapagoGlue
+	{
 		// Papago Api URL
 		const string url = "https://openapi.naver.com/v1/papago/n2mt";
 
-		static private ApiPass apiPass = ApiPass.FromFile("key.json");
+		private ApiPass apiPass;
 
 		private HttpClient client;
 
-		public PapagoGlue() {
+		public PapagoGlue(ApiPass apiPass)
+		{
+			this.apiPass = apiPass;
 			client = new HttpClient();
 		}
 
 		// TODO: Handle Errors appropriately (error handling not present)
-		async public Task<String> Translate(String s) {
+		async public Task<String> Translate(String s)
+		{
 			var request = new HttpRequestMessage(new HttpMethod("POST"), url);
 			var d = new Dictionary<String, String>();
 			{
@@ -48,7 +51,7 @@ namespace PapagoGlue
 				d.Add("text", s);
 			}
 			var con = new FormUrlEncodedContent(d);
-			
+
 			// naver open api auth
 			request.Headers.Add("X-Naver-Client-Id", apiPass.Id);
 			request.Headers.Add("X-Naver-Client-Secret", apiPass.Secret);
@@ -56,19 +59,22 @@ namespace PapagoGlue
 
 			// send request
 			var response = await client.SendAsync(request);
-			if (response.IsSuccessStatusCode) {
+			if (response.IsSuccessStatusCode)
+			{
 				var content = await response.Content.ReadAsStringAsync();
 				var rjson = JsonDocument.Parse(content);
 
-				var translatedText =  rjson.RootElement
+				var translatedText = rjson.RootElement
 					.GetProperty("message")
 					.GetProperty("result")
 					.GetProperty("translatedText");
 
 				return translatedText.ToString();
-			} else {
+			}
+			else
+			{
 				throw new NotAuthorizedException();
 			}
 		}
-    }
+	}
 }
