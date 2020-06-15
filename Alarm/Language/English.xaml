@@ -28,4 +28,5 @@
     <sys:String x:Key="AlertTitle">Alert!</sys:String>
     <sys:String x:Key="TranslateCommandSelectWrongObject">It's not correct object that could be translated.</sys:String>
     <sys:String x:Key="SelectFirstMessage">Select First!</sys:String>
+    <sys:String x:Key="FailedTranslateMessage">Failed to translate the title and summary. Check your api key and secret.</sys:String>
 </ResourceDictionary>

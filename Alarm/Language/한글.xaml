@@ -28,4 +28,5 @@
     <sys:String x:Key="AlertTitle">경고!</sys:String>
     <sys:String x:Key="TranslateCommandSelectWrongObject">번역할수 있는 올바른 대상이 아닙니다.</sys:String>
     <sys:String x:Key="SelectFirstMessage">먼저 번역할 뉴스를 선택하세요.</sys:String>
+    <sys:String x:Key="FailedTranslateMessage">번역에 실패했습니다. API의 키와 비밀키를 확인해주세요.</sys:String>
 </ResourceDictionary>

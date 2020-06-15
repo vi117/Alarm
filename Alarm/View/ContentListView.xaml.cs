@@ -1,6 +1,7 @@
 ﻿using Alarm.Language;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Papago;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,25 +45,35 @@ namespace Alarm.View
         }
         async public void TranslateSelected()
         {
-            var item = ListBox.ItemContainerGenerator.ContainerFromItem(ListBox.SelectedItem);
-            if(item == null)
+            try
+            {
+                var item = ListBox.ItemContainerGenerator.ContainerFromItem(ListBox.SelectedItem);
+                if (item == null)
+                {
+                    await this.TryFindParent<MainWindow>().ShowMessageAsync(
+                        this.GetText("AlertTitle"),
+                        this.GetText("SelectFirstMessage"));
+                    return;
+                }
+                var title = item.FindChild<TextBlock>("TitleLabel");
+                var summary = item.FindChild<HtmlLabel>("SummaryLabel");
+                var pass = App.Setting.PapagoApiPass;
+                var translator = new Papago.PapagoGlue(pass);
+                var titleResult = translator.Translate(title.Text);
+                var doc = new HtmlAgilityPack.HtmlDocument();
+                doc.LoadHtml(summary.Text);
+                await TranslateHtmlLabel(doc.DocumentNode, translator);
+                var summaryResult = doc.DocumentNode.InnerHtml;
+                title.Text = await titleResult;
+                summary.Text = summaryResult;
+            }
+            catch(NotAuthorizedException _)
             {
                 await this.TryFindParent<MainWindow>().ShowMessageAsync(
-                    this.GetText("AlertTitle"),
-                    this.GetText("SelectFirstMessage"));
+                        this.GetText("AlertTitle"),
+                        this.GetText("FailedTranslateMessage"));
                 return;
             }
-            var title = item.FindChild<TextBlock>("TitleLabel");
-            var summary = item.FindChild<HtmlLabel>("SummaryLabel");
-            var pass = App.Setting.PapagoApiPass;
-            var translator = new Papago.PapagoGlue(pass);
-            var titleResult = translator.Translate(title.Text);
-            var doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(summary.Text);
-            await TranslateHtmlLabel(doc.DocumentNode,translator);
-            var summaryResult = doc.DocumentNode.InnerHtml;
-            title.Text = await titleResult;
-            summary.Text = summaryResult;
         }
     }
 }
