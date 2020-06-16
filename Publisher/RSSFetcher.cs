@@ -65,6 +65,10 @@ namespace Model
             {
                 return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Invailed Uri Format Error : " + e.Message);
             }
+            catch(WebException e)
+            {
+                return new PublishedEventArg(PublishedStatusCode.ConnectionFailError, "Connection Failed : " + e.Message);
+            }
             catch(NullReferenceException e)
             {
                 return new PublishedEventArg(PublishedStatusCode.UnknownError, "Code Error : " + e.Message);

@@ -1,0 +1,31 @@
+﻿<local:FetcherFormControl x:Class="Alarm.View.FetcherForm.YoutubeForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Alarm.View.FetcherForm"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="800">
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" MinWidth="50"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Content="{DynamicResource FetcherTitleStr}" FontSize="16"/>
+        <local:LineInput Grid.Column="1" BackgroundText="Fetcher Title" FontSize="16" x:Name="FetcherTitle"
+                         BackgroundTextFill="Gray">
+        </local:LineInput>
+        <Label Content="Ch.ID or URL" FontSize="16" Grid.Row="1"/>
+        <local:LineInput Grid.Row="1" Grid.Column="1" BackgroundText="Channel ID" FontSize="16" x:Name="Feed"
+                         BackgroundTextFill="Gray"
+                         >
+        </local:LineInput>
+        <Label Content="{DynamicResource UpdateFrequencyStr}" FontSize="16" Grid.Row="2"/>
+        <local:TimeComboBox Grid.Row="2" Grid.Column="1" x:Name="IntervalBox"/>
+    </Grid>
+</local:FetcherFormControl>

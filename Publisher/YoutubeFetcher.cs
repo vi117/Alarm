@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
@@ -12,44 +11,64 @@ namespace Model
     {
         private RSSFetcher inner = null;
 
-        public string URL { 
-            get => inner.URL;
-            set {
-                if (inner == null) inner = new RSSFetcher();
-                inner.URL = value;
-            }
+        public string URL
+        {
+            get => inner?.URL;
+            set => inner.URL = value;
         }
-        //xml serialize 용도.
-        public YoutubeFetcher() { }
 
-        static private readonly Regex URLPattern = new Regex("https://www.youtube.com/channel/(.*)");
+        [XmlIgnore]
+		public string ChannelId {
+			get
+            {
+                var match = URLRSSPattern.Match(URL);
+                return match.Success ? match.Groups[1].Value : null;
+            }
+            set => inner.URL = "https://www.youtube.com/feeds/videos.xml?channel_id=" + value;
+        }
 
+        public YoutubeFetcher() { inner = new RSSFetcher(); }
+
+        private static readonly Regex URLPattern = new Regex("https?://www.youtube.com/channel/(.*)");
+        private static readonly Regex URLRSSPattern = new Regex("https?://www.youtube.com/feeds/videos.xml[?]channel_id=(.*)");
         static public bool IsYoutubeURL(string s)
         {
-            return URLPattern.Match(s).Success;
+            return URLPattern.Match(s ?? "").Success;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns><c>null</c> if Converting is failed else url</returns>
+        static public string GetIDFromYoutubeURL(string s)
+        {
+            var r = URLPattern.Match(s);
+            return r.Success ? r.Groups[1].Value : null;
+        }
+        static public string GetYoutubeURLFromID(string id)
+        {
+            return "https://www.youtube.com/feeds/videos.xml?channel_id=" + id;
         }
 
         static public YoutubeFetcher FromChannelId(string id)
         {
-            var url = "https://www.youtube.com/feeds/videos.xml?channel_id=" + id;
-            var inner = new RSSFetcher(url);
+            var url = GetYoutubeURLFromID(id);
             return new YoutubeFetcher()
             {
-                inner = inner
+				ChannelId = id
             };
         }
 
         static public YoutubeFetcher FromURL(string url)
         {
-            var r = URLPattern.Match(url);
-            var id = r.Captures[0].Value;
-
+            var id = GetIDFromYoutubeURL(url);
+            if (id == null) throw new InvalidCastException();
             return FromChannelId(id);
         }
 
         public override Task<PublishedEventArg> Fetch()
         {
-            return this.inner.Fetch();
+            return inner.Fetch();
         }
     }
 }
