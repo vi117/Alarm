@@ -16,16 +16,16 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label Content="Fetcher Title" FontSize="16"/>
+        <Label Content="{DynamicResource FetcherTitleStr}" FontSize="16"/>
         <local:LineInput Grid.Column="1" BackgroundText="Fetcher Title" FontSize="16" x:Name="FetcherTitle"
                          BackgroundTextFill="Gray">
         </local:LineInput>
-        <Label Content="Channel ID or URL" FontSize="16" Grid.Row="1"/>
+        <Label Content="Ch.ID or URL" FontSize="16" Grid.Row="1"/>
         <local:LineInput Grid.Row="1" Grid.Column="1" BackgroundText="Channel ID" FontSize="16" x:Name="Feed"
                          BackgroundTextFill="Gray"
                          >
         </local:LineInput>
-        <Label Content="Frequency" FontSize="16" Grid.Row="2"/>
+        <Label Content="{DynamicResource UpdateFrequencyStr}" FontSize="16" Grid.Row="2"/>
         <local:TimeComboBox Grid.Row="2" Grid.Column="1" x:Name="IntervalBox"/>
     </Grid>
 </local:FetcherFormControl>
