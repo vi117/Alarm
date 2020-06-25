@@ -29,7 +29,7 @@ namespace Model
             set
             {
                 var uri = new Uri(value);
-                HostUri = uri.Host;
+                HostUri = uri.Scheme + "://" + uri.Host;
                 PathUri = uri.PathAndQuery;
             }
         }
