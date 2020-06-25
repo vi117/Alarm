@@ -29,7 +29,7 @@ namespace ViewModel.DB
             public TreeViewCollection(LoadContext loadContext, ViewModelBase parent) {
                 this.parent = parent;
                 categoriesCache =
-                        loadContext.DBContext.Categorys.AsNoTracking().ToArray()
+                        loadContext.DBContext.Categories.AsNoTracking().ToArray()
                         .Select((x) => (CategoryViewModel)new DBCategoryViewModel(loadContext, x, parent))
                         .OrderBy((x) => x.Title)
                         .ToDictionary((x) => x.Title);
@@ -75,7 +75,7 @@ namespace ViewModel.DB
                 {
                     using (var context = new AppDBContext())
                     {
-                        context.Categorys.Remove(dB.GetDBCategory(context));
+                        context.Categories.Remove(dB.GetDBCategory(context));
                         context.SaveChanges();
                     }
                 }

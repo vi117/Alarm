@@ -16,7 +16,7 @@ namespace Model.DB
     {
         //static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Warning));
 
-        public DbSet<DBCategory> Categorys { get; set; }
+        public DbSet<DBCategory> Categories { get; set; }
         public DbSet<DBFetcher> Fetchers { get; set; }
         public DbSet<DBDocument> Documents { get; set; }
         private static bool _created = false;
@@ -42,7 +42,7 @@ namespace Model.DB
                 ctx.SaveChanges();
                 ctx.Add(new DBCategory { Title = "AAA" } );
                 ctx.SaveChanges();
-                var category = ctx.Categorys
+                var category = ctx.Categories
                     .OrderBy(b => b.DBCategoryId)
                     .First();
                 var fetcher = new DBFetcher()
@@ -52,7 +52,7 @@ namespace Model.DB
                 fetcher.SetFetcher(new RSSFetcher("https://www.naver.com") { Interval = new TimeSpan(0,1,0)});
                 category.Fetchers.Add(fetcher);
                 ctx.SaveChanges();
-                var fs = ctx.Categorys.ToList();
+                var fs = ctx.Categories.ToList();
                 foreach (var f in fs)
                 {
                     Console.WriteLine($"{f.DBCategoryId} : {f.Title} , {f.Fetchers.GetType().FullName}");

@@ -98,7 +98,7 @@ namespace ViewModel.DB
             cachedTitle = title;
             using (var context = new AppDBContext()) {
                 var dbCategory = new DBCategory() { Title = title };
-                context.Categorys.Add(dbCategory);
+                context.Categories.Add(dbCategory);
                 context.SaveChanges();
                 siteModels = new SiteModelCollection(dbCategory, this);
             }
@@ -118,7 +118,7 @@ namespace ViewModel.DB
             }
         }
         public DBCategory GetDBCategory(AppDBContext context) {
-            return context.Categorys.Find(categoryId);
+            return context.Categories.Find(categoryId);
         }
         public int DBCategoryId => categoryId;
 

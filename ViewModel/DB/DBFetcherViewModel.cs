@@ -220,7 +220,6 @@ namespace ViewModel.DB
         /// <summary>
         /// create new fetcher view model and add db.
         /// </summary>
-        /// <param name="publisher"></param>
         /// <param name="title"></param>
         /// <param name="fetcher"></param>
         /// <param name="categoryId"></param>
@@ -235,7 +234,7 @@ namespace ViewModel.DB
                     Title = title
                 };
                 f.SetFetcher(fetcher);
-                var category = context.Categorys.Find(categoryId);
+                var category = context.Categories.Find(categoryId);
                 category.Fetchers.Add(f);
                 context.SaveChanges();
                 fetcherId = f.DBFetcherId;
