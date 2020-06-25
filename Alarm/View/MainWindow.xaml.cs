@@ -277,16 +277,7 @@ namespace Alarm.View
         {
             startPoint = e.GetPosition(null);
         }
-        private bool IsParent(DependencyObject obj, DependencyObject p)
-        {
-            var col = obj.GetSelfAndAncestors();
-            foreach (var it in col)
-            {
-                if (it == p)
-                    return true;
-            }
-            return false;
-        }
+
         private void NavTreeView_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
