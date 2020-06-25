@@ -18,6 +18,7 @@ namespace Alarm.ViewModels
             ShowEditFetcherWindowCommand = new RoutedCommand("ShowEditFetcherWindow", typeof(AppCommand));
             RefreshFetcherCommand = new RoutedCommand("RefreshFetcher", typeof(AppCommand));
             TranslateCommand = new RoutedCommand("Translate", typeof(AppCommand));
+            StartWebBrowserCommand = new RoutedCommand("StartWebBrowser", typeof(AppCommand));
         }
         static public RoutedCommand NavigateCommand { get; }
         static public RoutedCommand ShowSettingWindowCommand { get; }
@@ -26,5 +27,6 @@ namespace Alarm.ViewModels
         static public RoutedCommand ShowEditFetcherWindowCommand { get; }
         static public RoutedCommand RefreshFetcherCommand { get; }
         static public RoutedCommand TranslateCommand { get; }
+        static public RoutedCommand StartWebBrowserCommand { get; }
     }
 }

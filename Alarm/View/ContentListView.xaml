@@ -37,6 +37,12 @@
         </Style>
         <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type view:DocumentViewModel}" >
             <Grid HorizontalAlignment="Stretch" Height="100 ">
+                <Grid.InputBindings>
+                    <MouseBinding Gesture="Control + LeftClick" Command="{x:Static cmd:AppCommand.StartWebBrowserCommand}"
+                                  CommandParameter="{Binding Path=Uri}"/>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{x:Static cmd:AppCommand.NavigateCommand}" 
+                                  CommandParameter="{Binding}"/>
+                </Grid.InputBindings>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="70"/>
@@ -57,13 +63,6 @@
                  VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
                  HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  Background="Transparent"
-                 >
-            <ie:Interaction.Triggers>
-                <ie:EventTrigger EventName="MouseDoubleClick">
-                    <ie:InvokeCommandAction Command="{x:Static cmd:AppCommand.NavigateCommand}"
-                                                    CommandParameter="{Binding ElementName=ListBox,Path=SelectedItem}"></ie:InvokeCommandAction>
-                </ie:EventTrigger>
-            </ie:Interaction.Triggers>
-        </ListBox>
+                 />
     </Grid>
 </Page>

@@ -208,6 +208,12 @@ namespace Alarm.View
                             throw new InvalidOperationException("Unreachable!");
                     }
                 }));
+            CommandBindings.Add(new CommandBinding(AppCommand.StartWebBrowserCommand,
+                (sender, eventArgs) => {
+                    var uri = eventArgs.Parameter as string;
+                    if(uri != null)
+                        Process.Start(uri);
+                }));
         }
         
         public MainWindow()
