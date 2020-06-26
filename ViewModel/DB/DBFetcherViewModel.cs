@@ -98,6 +98,7 @@ namespace ViewModel.DB
                         return ret;
                     }).ToArray();
                     var fetcher = context.Fetchers.Find(fetcherId);
+                    if (fetcher == null) return;
                     foreach (var i in documents)
                     {
                         var remainder = from d in context.Documents
