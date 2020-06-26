@@ -25,7 +25,7 @@ namespace Alarm.ViewModels
                     if (dispatcher != null && !dispatcher.CheckAccess()) // 액세스 불가능하면
                     {
                         dispatcher.BeginInvoke(//STA thread의 디스패처에게 가서 이벤트를 보냄.
-                            (Action)(() => nh.Invoke(sender, e)),// new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset)
+                            (Action)(() => nh.Invoke(sender, e)),
                             DispatcherPriority.DataBind);
                         continue;
                     }
@@ -41,7 +41,7 @@ namespace Alarm.ViewModels
                 if(nh.Target is DispatcherObject dispatcherObject)
                 {
                     var dispatcher = dispatcherObject.Dispatcher;
-                    if(dispatcher != null & !dispatcher.CheckAccess())
+                    if(dispatcher != null && !dispatcher.CheckAccess())
                     {
                         dispatcher.BeginInvoke(
                             (Action)(() => nh.Invoke(sender, e)),

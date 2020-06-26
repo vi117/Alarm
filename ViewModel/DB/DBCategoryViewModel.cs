@@ -132,6 +132,7 @@ namespace ViewModel.DB
             bool ret = siteModels.CacheRemove(fetcherViewModel);
             if (fetcherViewModel is DBFetcherViewModel dbFetcherViewModel)
             {
+                fetcherViewModel.Fetcher.Stop();
                 using (var context = new AppDBContext())
                 {
                     var dbfetcher = dbFetcherViewModel.GetDBFetcher(context);

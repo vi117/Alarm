@@ -79,6 +79,7 @@ namespace ViewModel
 
         public override bool Remove(FetcherViewModel fetcherViewModel)
         {
+            fetcherViewModel.Fetcher.Stop();
             return siteModels.Remove(fetcherViewModel);
         }
     }
