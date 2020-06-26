@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 namespace Model 
 {
     // Wrapper of RSSFetcher
-    [Serializable]
     public class YoutubeFetcher : Fetcher
     {
         private RSSFetcher inner = null;

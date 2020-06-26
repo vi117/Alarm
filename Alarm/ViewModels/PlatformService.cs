@@ -24,7 +24,7 @@ namespace Alarm.ViewModels
                     Dispatcher dispatcher = dispObj.Dispatcher; //그 쓰레드의 디스패처에 접근해서
                     if (dispatcher != null && !dispatcher.CheckAccess()) // 액세스 불가능하면
                     {
-                        dispatcher.BeginInvoke(//STA thread의 디스패처에게 가서 이벤트를 보냄.
+                        dispatcher.BeginInvoke(//STA thread의 디스패처가 이벤트를 보내게 함.
                             (Action)(() => nh.Invoke(sender, e)),
                             DispatcherPriority.DataBind);
                         continue;

@@ -13,7 +13,6 @@ using System.IO;
 
 namespace Model
 {
-    [Serializable]
     public class RSSFetcher : Fetcher
     {
         private string url;

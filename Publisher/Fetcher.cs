@@ -14,7 +14,6 @@ namespace Model
     /// Base of all fetcher class
     /// Property setter must exist.
     /// </summary>
-    [Serializable]
     abstract public class Fetcher : INotifyPublished
     {
         private TimeSpan interval;
