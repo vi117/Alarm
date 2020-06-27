@@ -44,6 +44,7 @@ namespace Papago
 		async public Task<String> Translate(String s)
 		{
 			var request = new HttpRequestMessage(new HttpMethod("POST"), url);
+			if (s == string.Empty) return string.Empty;
 			var d = new Dictionary<String, String>();
 			{
 				d.Add("source", "en");
