@@ -19,6 +19,7 @@ namespace ViewModel.DB
             var context = new LoadContext() {
                 DBContext = new AppDBContext(),
             };
+            context.DBContext.ChangeTracker.AutoDetectChangesEnabled = false;
             var viewModel = new DBViewModel(context);
             context.DBContext.SaveChanges();
             return viewModel;

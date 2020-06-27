@@ -35,6 +35,7 @@ namespace ViewModel.DB
                         .ToDictionary((x) => x.Title);
                 if(categoriesCache.Count == 0)
                 {
+                    loadContext.DBContext.ChangeTracker.AutoDetectChangesEnabled = true;
                     Emplace("Default");
                 }
             }

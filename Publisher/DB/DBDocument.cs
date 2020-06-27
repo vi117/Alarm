@@ -76,8 +76,8 @@ namespace Model.DB
         public string Title {get; set;}
         public string FetcherXml { get; set; }
         public virtual List<DBDocument> Documents { get; set; } = new List<DBDocument>(); /*{ get; set; }*/
-
-        public int DBCategoryId { get; set; }
+        [ForeignKey("DBCategory")]
+        public virtual int DBCategoryId { get; set; }
         public virtual DBCategory DBCategory { get; set; }
 
         public void ChangeOwner(DBCategory dBCategory)

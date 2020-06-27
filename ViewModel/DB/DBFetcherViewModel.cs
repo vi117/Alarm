@@ -293,12 +293,12 @@ namespace ViewModel.DB
                 var old_owner_model = Parent as DBCategoryViewModel;
                 using (var context = new AppDBContext())
                 {
+                    context.ChangeTracker.AutoDetectChangesEnabled = false;
                     var dbf = new DBFetcher();
                     dbf.DBFetcherId = fetcherId;
                     context.Attach(dbf);
                     dbf.DBCategoryId = dbCategory.DBCategoryId;
-                    //For speed
-                    context.ChangeTracker.AutoDetectChangesEnabled = false;
+                    context.ChangeTracker.DetectChanges();
                     context.SaveChanges();
                 }
                 old_owner_model.SitesModelDetail.CacheRemove(this);
