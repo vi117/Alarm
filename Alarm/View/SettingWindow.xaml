@@ -72,10 +72,10 @@
                       Grid.Column="1"
                       Text="{Binding Path=PapagoApiID}"/>
                 <Label Content="{DynamicResource PapagoApiSecretStr}" Grid.Row="8"/>
-                <TextBox x:Name="PapagoAPISecretInput"
+                <PasswordBox x:Name="PapagoAPISecretInput"
                       Grid.Row="8"
                       Grid.Column="1"
-                      Text="{Binding Path=PapagoApiSecret}"/>
+                      PasswordChanged="PapagoAPISecretInput_PasswordChanged"/>
             </Grid>
         </ScrollViewer>
     </DockPanel>

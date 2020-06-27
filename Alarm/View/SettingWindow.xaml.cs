@@ -28,6 +28,7 @@ namespace Alarm.View
             DataContext = App.Setting;
             settingOrigin = new Setting();
             App.Setting.CopyTo(settingOrigin);
+            PapagoAPISecretInput.Password = App.Setting.PapagoApiSecret;
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
@@ -42,6 +43,11 @@ namespace Alarm.View
             settingOrigin.CopyTo(App.Setting);
             DialogResult = false;
             e.Handled = true;
+        }
+
+        private void PapagoAPISecretInput_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            App.Setting.PapagoApiSecret = PapagoAPISecretInput.Password;
         }
     }
 }

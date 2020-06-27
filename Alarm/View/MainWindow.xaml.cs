@@ -64,6 +64,7 @@ namespace Alarm.View
         void EditFetcherView(FetcherViewModel fetcher)
         {
             AddFetcherWindow window = new AddFetcherWindow(fetcher.Title,fetcher.Fetcher);
+            window.Owner = this;
             bool? b = window.ShowDialog();
             if (b.HasValue && b.Value)
             {
