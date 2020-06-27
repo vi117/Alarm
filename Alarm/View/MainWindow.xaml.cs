@@ -34,6 +34,7 @@ namespace Alarm.View
         void AddFetcherWindow(CategoryViewModel categoryView)
         {
             AddFetcherWindow window = new AddFetcherWindow();
+            window.Owner = this;
             bool? b = window.ShowDialog();
             if (b.HasValue && b.Value)
             {
@@ -104,6 +105,7 @@ namespace Alarm.View
                 (sender, eventArgs) =>
                 {
                     SettingWindow window = new SettingWindow();
+                    window.Owner = this;
                     window.ShowDialog();
                     eventArgs.Handled = true;
                 },
@@ -218,10 +220,10 @@ namespace Alarm.View
         
         public MainWindow()
         {
-            viewModel = ViewModelLoader.LoadViewModel();
             InitializeComponent();
-            RegisterTrayIcon();
+            viewModel = ViewModelLoader.LoadViewModel();
             DataContext = viewModel;
+            RegisterTrayIcon();
             BindCommand();
         }
 
